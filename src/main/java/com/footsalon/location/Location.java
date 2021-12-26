@@ -1,14 +1,14 @@
 package com.footsalon.location;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Data
+@Getter
+@Setter
 @Entity
 public class Location {
-
     @Id
     private String localCode;
     private String localCity;

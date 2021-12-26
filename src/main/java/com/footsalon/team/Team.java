@@ -2,7 +2,8 @@ package com.footsalon.team;
 
 import com.footsalon.location.Location;
 import com.footsalon.member.Member;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -10,7 +11,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @DynamicInsert
 @DynamicUpdate
