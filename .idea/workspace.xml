@@ -4,34 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f57dbf1b-0f13-420e-8872-d7e949207ec7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/common/code/Config.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/common/code/ErrorCode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/common/code/member/MemberGrade.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/common/exception/HandlableException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/common/exception/handler/ExceptionAdvice.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/common/interceptor/AuthInterceptor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/common/mail/EmailSender.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/common/mail/handler/MailHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/common/popup/PopupController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/common/util/file/FileHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/common/util/file/FileInfo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/common/util/file/FileUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/common/util/pagination/Paging.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/common/validator/ValidatorResult.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/config/AppConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/config/WebConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/match/MatchMaster.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/member/Member.java" afterDir="false" />
+    <list default="true" id="eb483004-ac83-45f7-8f8a-1ea2273d9e88" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/alarm/Alarm.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/inquiry/Inquiry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/team/Team.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/teamPenalty/TeamPenalty.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.2/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.2/checksums/checksums.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.2/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.2/checksums/md5-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.2/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.2/checksums/sha1-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,6 +78,10 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File" value="JAVA" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/com/footsalon/common/validator" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -110,7 +96,7 @@
       <recent name="C:\CODE\futsalon-v2\src\main\java\com\footsalon\common\code" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.FootsalonApplication">
     <configuration name="FootsalonApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.footsalon.FootsalonApplication" />
       <module name="footsalon.main" />
@@ -120,6 +106,13 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FootsalonApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="footsalon.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.footsalon.FootsalonApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
