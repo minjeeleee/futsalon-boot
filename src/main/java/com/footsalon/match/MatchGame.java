@@ -6,6 +6,8 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Data
 @Entity
@@ -15,7 +17,11 @@ public class MatchGame {
 
     @Id
     private long mgIdx;
-    private long mmIdx;
+
+    @ManyToOne
+    @JoinColumn(name = "mmIdx")
+    private MatchMaster matchMaster;
+
     private int state;
     private String applicantCode;
     private String userId;
