@@ -4,10 +4,7 @@ import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -16,6 +13,7 @@ import javax.persistence.ManyToOne;
 public class MatchGame {
 
     @Id
+    @GeneratedValue
     private long mgIdx;
 
     @ManyToOne
@@ -26,4 +24,5 @@ public class MatchGame {
     private String applicantCode;
     private String userId;
     private String delYn;
+
 }

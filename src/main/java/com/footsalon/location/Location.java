@@ -1,4 +1,4 @@
-package com.footsalon.common.location;
+package com.footsalon.location;
 
 import lombok.Data;
 

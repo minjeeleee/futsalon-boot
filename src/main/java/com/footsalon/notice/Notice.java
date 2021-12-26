@@ -5,6 +5,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 
@@ -15,7 +16,9 @@ import java.time.LocalDateTime;
 public class Notice {
 
     @Id
+    @GeneratedValue
     private long ntIdx;
+
     private String ntTitle;
     private String ntContent;
     private LocalDateTime regDate;

@@ -4,8 +4,7 @@ import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -14,9 +13,17 @@ import javax.persistence.Id;
 public class Result {
 
     @Id
+    @GeneratedValue
     private long thIdx;
-    private long mgIdx;
+
+    @OneToOne
+    @JoinColumn(name = "mgIdx")
+    private MatchGame matchGame;
+
+    @Column(columnDefinition = "number default 0")
     private int rivalRating;
+    @Column(columnDefinition = "number default 0")
     private int hostRating;
+
     private String winner;
 }
