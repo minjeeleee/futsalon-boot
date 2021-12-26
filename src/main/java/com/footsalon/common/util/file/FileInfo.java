@@ -1,18 +1,14 @@
 package com.footsalon.common.util.file;
 
-import java.time.LocalDate;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
 import com.footsalon.common.code.Config;
+import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-
-import lombok.Data;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -23,13 +19,12 @@ public class FileInfo {
 	@Id
 	@GeneratedValue
 	private Long flIdx;
+	private String tmCoe;
 	private String originFileName;
 	private String renameFileName;
 	private String savePath;
-	@Column(columnDefinition = "date default sysdate")
 	private LocalDate regDate;
-	@Column(columnDefinition = "number default 0")
-	private Boolean isDel;
+	private String delYn;
 	
 	public String getLink() {
 		return Config.DOMAIN.DESC + "/file/" + savePath + renameFileName;
