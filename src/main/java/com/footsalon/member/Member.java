@@ -1,15 +1,13 @@
 package com.footsalon.member;
 
+import com.footsalon.common.code.member.MemberGrade;
 import com.footsalon.team.Team;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import java.time.LocalDateTime;
+import javax.persistence.*;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -26,13 +24,17 @@ public class Member {
 
     private String password;
     private String userName;
-    private String grade;
+
+    @Enumerated(EnumType.STRING)
+    private MemberGrade grade;
+
     private String userNick;
     private String email;
     private String tell;
     private String capacity;
     private String leaveYn;
-    private LocalDateTime regDate;
+    private LocalDate regDate;
+
 
 
 }
