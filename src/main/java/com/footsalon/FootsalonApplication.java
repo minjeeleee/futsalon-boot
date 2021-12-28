@@ -10,5 +10,4 @@ public class FootsalonApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(FootsalonApplication.class, args);
 	}
-
 }
