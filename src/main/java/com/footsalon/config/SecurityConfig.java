@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	public void configure(HttpSecurity http) throws Exception{
 		http.authorizeRequests()
-			.mvcMatchers(HttpMethod.GET,"/mypage/**","/member/logout").authenticated()
+			.mvcMatchers(HttpMethod.GET,"/member/logout").authenticated()
 			.mvcMatchers(HttpMethod.GET,"/team/managing").hasAuthority("leader")
 			.mvcMatchers(HttpMethod.GET,"/team/create-form","/team/join-team").hasAuthority("normal")
 			.mvcMatchers(HttpMethod.GET,"/matching/list-up").hasAuthority("leader")

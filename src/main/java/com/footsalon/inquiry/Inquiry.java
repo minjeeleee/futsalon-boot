@@ -1,10 +1,17 @@
 package com.footsalon.inquiry;
 
 import com.footsalon.member.Member;
+import lombok.Data;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Data
+@Entity
+@DynamicInsert
+@DynamicUpdate
 public class Inquiry {
 
     @Id
@@ -22,7 +29,6 @@ public class Inquiry {
     private LocalDateTime regDate;
     private LocalDateTime delDate;
 
-    @Column(columnDefinition = "char default 'N'")
     private String answerYn;
     private String answer;
 }

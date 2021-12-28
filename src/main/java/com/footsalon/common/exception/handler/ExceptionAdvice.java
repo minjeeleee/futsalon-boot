@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 
 @Component
-@ControllerAdvice(basePackages = "com.kh.spring")
+@ControllerAdvice(basePackages = "com.footsalon")
 public class ExceptionAdvice {
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());

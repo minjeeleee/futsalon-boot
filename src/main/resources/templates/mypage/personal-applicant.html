@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace = "fragments/head :: head">
+</head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/mypage/mypage.css" />
+    <link rel="stylesheet" type="text/css" href="/css/mypage/mypage-form.css" />
+    <link rel="stylesheet" type="text/css" href="/css/matching/matching-mercenary.css" />
+</head>
+<body>
+<header th:replace = " fragments/header :: header"></header>
+<section>
+    <div class="mypage-wrap">
+        <h2><i class="fas fa-user-cog"></i> 마이페이지</h2>
+        <div class="mypage-con">
+           <!-- <%@ include file="/WEB-INF/views/mypage/mypage_tab.jsp" %>-->
+            <div class="match-box use-mypage">
+                <div class="tit-area">
+                    <div class="tit-info">
+                        <div class="state recruiting">모집중</div>
+                       <!-- <c:when test="${match.state == 1}"><div class="state recruiting" >모집완료</div></c:when>
+                        <c:when test="${match.state == 2}"><div  class="state recruiting" style="background-color: gray;">게임 완료</div></c:when>-->
+                        <div class="tit">
+                            <strong>오늘의 용병 매칭 모집합니다!</strong>
+                            <div> ★★★★★</div>
+                            &nbsp;&nbsp;&nbsp;전적 3전  2승 1패&nbsp;&nbsp;&nbsp;&nbsp;4명남음
+                        </div>
+                    </div>
+                    <div class="profile_n_appli">
+                        <div class="profile-img"style="border:solid gray; background-size: cover; background-image: url('/resources/img/team/no-img.jpg')"></div>
+                        <div class="profile-name">
+                            룰루랄라
+                            <span><i class="fas fa-search"></i>정보보기</span>
+                        </div>
+                        <div class="btn-appli" >신청취소</div>
+                        <!-- <c:when test="${match.state == 2}"><div  class="btn-appli">게임 종료</div></c:when>-->
+                        </div>
+                    </div>
+                    <div class="match-detail">
+                        <ul>
+                            <li><span class="tit">지역</span>
+                                서울 강남구 <a class="view-map" onclick="window.open('https://map.kakao.com/link/search/${match.address}', 'pop01', 'top=10, left=10, width=1000, height=600, status=no, menubar=no, toolbar=no, resizable=no');">
+                                    <i class="fas fa-map-marker-alt"></i> 지도보기
+                                </a></li>
+                            <li><span class="tit">매치날짜</span>2021-12-20 <br>&nbsp;&nbsp;20:12</li>
+                        </ul>
+                        <ul>
+                            <li><span class="tit">매치방식</span>5:5</li>
+                            <li><span class="tit">실력</span>상</li>
+                            <li><span class="tit">용병비</span>6000</li>
+                        </ul>
+                        <div class="txt">재밌게 게임하실 분 모십니다!!!!1</div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace = " fragments/footer :: footer"></footer>
+</body>
+</html>
