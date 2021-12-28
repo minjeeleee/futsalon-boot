@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace = "fragments/head :: head">
-    <link rel="stylesheet" type="text/css" href="${request.contextPath}/resources/css/matching/matching.css" />
+</head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/matching/matching.css" />
 </head>
 <body>
 <c:if test="${not empty param.err}">
@@ -142,7 +144,9 @@
     </div>
 </section>
 
-<footer th:fragment="fragments/footer :: footer"></footer>
+<footer th:fragment="fragments/footer :: footer">
+    Copyright 2021 by PCLASS 4TEAM. All Rights Reserved.
+</footer>
 
 <script type="text/javascript">
 	let matchRequset = (idx,tmCode,user,date,time,title,hostId) => {
