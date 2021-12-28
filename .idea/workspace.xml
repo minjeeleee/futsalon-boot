@@ -5,8 +5,53 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f57dbf1b-0f13-420e-8872-d7e949207ec7" name="Changes" comment="gitignore">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/index/controller/IndexController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/common/all.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/common/common.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/join/join.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/login/login.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/matching/matching-mercenary-input.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/matching/matching-mercenary-modify.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/matching/matching-mercenary.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/matching/matching-team-input.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/matching/matching-team-modify.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/matching/matching-team.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/matching/matching.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/mypage/mypage-form.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/mypage/mypage.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/myteam/myteam-form.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/myteam/myteam.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/notice/notice-posting.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/notice/notice.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/support/support-detail.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/support/support-form.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/support/support-modify.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/common/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/common/logo_pc.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/main/main.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/team/1fed135b-f47c-4063-901a-b01292efb5f6" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/team/2fd4cfd7-b3b2-42b6-ac10-4ad0bd785bb1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/team/no-img.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/kakaoLogin/kakaoLogin.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/matching/matching.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/matching/mercenaryMatchForm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/member/joinForm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/member/modifyForm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/popup/popup.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/team/createForm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/team/joinForm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/team/managing.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/team/modify.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/webUtil.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/footer.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/head.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/header.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.3.2/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.2/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.3.2/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.2/checksums/md5-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.3.2/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.2/checksums/sha1-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/footsalon/FootsalonApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/footsalon/FootsalonApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/index.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +62,14 @@
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -37,13 +90,24 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/build.gradle" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources/static" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\fusalonboot\footsalon\src\main\resources\static" />
+      <recent name="D:\fusalonboot\footsalon\src\main\resources\static\css" />
+      <recent name="D:\fusalonboot\footsalon\src\main\resources\templates\fragments" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\fusalonboot\footsalon\src\main\resources\static" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="FootsalonApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -105,7 +169,14 @@
       <option name="project" value="LOCAL" />
       <updated>1640530126391</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="gitignore">
+      <created>1640677196601</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1640677196601</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
