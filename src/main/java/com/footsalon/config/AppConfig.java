@@ -1,14 +1,12 @@
 package com.footsalon.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 public class AppConfig {
@@ -32,14 +30,6 @@ public class AppConfig {
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-	}
-	
-	@Bean
-	public CommonsMultipartResolver multipartResolver() {
-		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-		multipartResolver.setMaxInMemorySize(10485760);
-		multipartResolver.setMaxUploadSize(10485760);
-		return multipartResolver;
 	}
 	
 	
