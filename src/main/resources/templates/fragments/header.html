@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+  <header th:fragment = "header">
+    <div class="header">
+      <th:if test="${empty authentication}">
+        <ul class="util-wrap">
+          <li><a href="/member/login-form">· 로그인</a></li>
+          <li><a href="/member/join-form">· 회원가입</a></li>
+          <li><a href="/mypage/support/support-form">· 문의하기</a></li>
+        </ul>
+      </th:if>
+<!--      <th:if test="${not empty authentication}">-->
+<!--        <ul class="util-wrap">-->
+<!--          <li><strong style="padding-right:3px">${authentication.userId}</strong>님 </li>-->
+<!--          <li><a href="/member/logout" onclick="kakaoLogout()">· 로그아웃</a></li>-->
+<!--          <li><a href="/mypage/support/support-form">· 문의하기</a></li>-->
+<!--        </ul>-->
+<!--      </th:if>-->
+
+      <div class=nav-wrap>
+        <h1><img onclick="location.href='/index';" src="/img/common/logo_pc.png"></h1>
+        <nav>
+          <ul>
+            <li><a href="/notice/notice-list">공지사항</a></li>
+            <li><a href="/matching/team/team-list">매칭하기</a></li>
+            <li><a href="/team/main">나의 팀관리</a></li>
+            <li><a href="/mypage/personal-notice">마이페이지</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+</html>
