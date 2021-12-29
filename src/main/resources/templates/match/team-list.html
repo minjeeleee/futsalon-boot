@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace = "fragments/head :: head">
+</head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/matching/matching-team.css" />
+</head>
+<body>
+<header th:replace = " fragments/header :: header"></header>
+<section>
+    <div class="section">
+        <div class="new-match-wrap">
+            <div class="sub-nav-wrap">
+                <div class="sub-nav">
+                    <a href="/match/team-list">팀매칭</a>
+                    <a href="/match/mercenary-list">용병매칭</a>
+                </div>
+            </div>
+            <div class="search-wrap">
+                <form onsubmit="return formCheck()" action="/matching/team/team-match-search" method="post">
+                    <dl>
+                        <dt>경기지역</dt>
+                        <dd class="local">
+                            <label th:each="location : ${locations}">
+                                <input type="radio" name="localCode" th:value="${location.localCode}" required /> [[${location.localCity}]]
+                            </label>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>기간</dt>
+                        <dd>
+                            <input type="date" name="date" id="currentDate">
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>상대팀 실력</dt>
+                        <dd class="level-dd">
+                            <label><input type="radio" name="level" value="HIGH">상</label>
+                            <label><input type="radio" name="level" value="MIDDLE">중</label>
+                            <label><input type="radio" name="level" value="LOW">하</label>
+                        </dd>
+                    </dl>
+                    <input type="submit" value="검색">
+
+                </form>
+            </div>
+            <!-- End search wrap -->
+            <div class="search-role-wrap">
+                <div class="search-role">
+                    <!--<a href="/match/team/recent?match=team">최신순</a> <a href="/match/team/rating?match=team">별점순</a>-->
+                </div>
+                <div class="matching-write">
+                    <a href="team-match-form"><i class="fas fa-pencil-alt"></i>글쓰기</a>
+                </div>
+            </div>
+                <div class="match-box">
+                    <div class="tit-area">
+                        <div class="tit-info">
+                            <c:choose>
+                                <c:when test="${matchBox.getState() == 1}">
+                                    <div class="state end">모집완료</div>
+                                </c:when>
+                                <c:when test="${matchBox.isCheckMatchTime() == true}">
+                                    <div class="state end">모집완료</div>
+                                </c:when>
+                                <c:when test="${matchBox.getState() == 0}">
+                                    <div class="state recruiting">모집중</div>
+                                </c:when>
+                            </c:choose>
+                            <div class="tit">
+                                <strong>${matchBox.getTitle()}</strong>
+                                <div>
+                                    <c:forEach var="i" begin="1" end="${matchBox.getTmRating()}">
+                                        <div style="float: left;"><i class="fas fa-star full-star"></i></div>
+                                    </c:forEach>
+                                    <c:if test="${matchBox.getTmRating()%1!=0}">
+                                        <div style="float: left;"><i class="fas fa-star-half-alt"></i></div>
+                                    </c:if>
+                                    <c:forEach var="i" begin="1" end="${5-matchBox.getTmRating()}">
+                                        <div style="float: left;"><i class="far fa-star star"></i></div>
+                                    </c:forEach>
+                                </div>
+                                <c:set var="lose" value="${matchBox.getGameCnt() - matchBox.getTmWin()}"></c:set>
+                                &nbsp;&nbsp;전적 ${matchBox.getGameCnt()}전${matchBox.getTmWin()}승<c:out value="${lose}"></c:out>패
+
+                            </div>
+                        </div>
+                        <div class="profile_n_appli">
+                            <div class="profile">
+                                <div class="profile-img"></div>
+                                <div class="profile-name">
+                                    ${matchBox.getTmName()}
+                                    <span>
+										<i class="fas fa-search"></i>정보보기
+									</span>
+                                </div>
+                            </div>
+                            <c:choose>
+                                <c:when test="${matchBox.getState() == 1}">
+                                    <div class="btn-appli" onclick="expiration()">신청하기</div>
+                                </c:when>
+                                <c:when test="${matchBox.getState() == 0}">
+                                    <div class="btn-appli" onclick="matchRequset(${matchBox.getMmIdx()},'${matchBox.getTmCode()}','${authentication.userId}','${matchBox.getMatchDate()}','${matchBox.getMatchTime()}','${matchBox.getTitle()}','${matchBox.getUserId()}')">신청하기</div>
+                                </c:when>
+                            </c:choose>
+
+
+                        </div>
+                    </div>
+                    <div class="match-detail">
+                        <ul>
+                            <li><span class="tit">지역</span>[${matchBox.getLocalCode()}]
+                                ${matchBox.getAddress()} <a class="view-map"
+                                                            onclick="window.open('https://map.kakao.com/link/search/${matchBox.getAddress()}', 'pop01', 'top=10, left=10, width=1000, height=600, status=no, menubar=no, toolbar=no, resizable=no');">
+                                    <i class="fas fa-map-marker-alt"></i> 지도보기
+                                </a></li>
+                            <li><span class="tit">매치날짜</span>${matchBox.getMatchDate()}
+                                ${matchBox.getMatchTime()}</li>
+                        </ul>
+                        <ul>
+                            <li><span class="tit">매치방식</span>${matchBox.getTmMatch()}:${matchBox.getTmMatch()}</li>
+                            <li><span class="tit">실력</span> <c:choose>
+                                <c:when test="${matchBox.getGrade() eq 'high'}">
+                                    상
+                                </c:when>
+                                <c:when test="${matchBox.getGrade() eq 'middle'}">
+                                    중
+                                </c:when>
+                                <c:when test="${matchBox.getGrade() eq 'low'}">
+                                    하
+                                </c:when>
+                                <c:otherwise>${matchBox.getGrade()}</c:otherwise>
+                            </c:choose></li>
+                            <li><span class="tit">구장비</span>${matchBox.getExpense()}원</li>
+                        </ul>
+                        <div class="txt">${matchBox.getContent()}</div>
+                    </div>
+                </div>
+                <!-- End 매치 박스 -->
+        </div>
+    </div>
+</section>
+<div class="pop-msg-wrap msg">
+    <div class="pop-msg">
+        <p></p>
+        <button onclick="btnClose();">확인</button>
+    </div>
+</div>
+<div class="pop-msg-wrap question">
+    <div class="pop-msg">
+        <p></p>
+        <button class="cancel-btn" onclick="btnClose();">취소</button>
+        <button class="submit-btn" onclick=""></button>
+    </div>
+</div>
+<div class="pop-msg-wrap answer">
+    <div class="pop-msg">
+        <p></p>
+        <button class="close-btn">확인</button>
+    </div>
+</div>
+<footer th:replace = " fragments/footer :: footer"></footer>
+<script type="text/javascript" src="/js/team/createForm.js"></script>
+</body>
+</html>

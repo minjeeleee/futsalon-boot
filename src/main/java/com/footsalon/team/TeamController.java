@@ -25,7 +25,8 @@ public class TeamController {
     }
 
     @GetMapping(path = "/create")
-    public void createTeam() {
+    public void createTeam(Model model) {
+        model.addAttribute("locations", locationService.findAllLocations());
     }
 
     @GetMapping(path = "/join")
