@@ -49,4 +49,8 @@ public class MemberService implements UserDetailsService {
         member.setUserNick(convertToMember.getUserNick());
         memberRepository.save(member);
     }
+
+    public void leaveMember(Member member) {
+        memberRepository.save(member);
+    }
 }

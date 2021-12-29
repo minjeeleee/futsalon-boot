@@ -1,5 +1,7 @@
 package com.footsalon.mypage;
 
+import com.footsalon.common.code.ErrorCode;
+import com.footsalon.common.exception.HandlableException;
 import com.footsalon.common.validator.ValidatorResult;
 import com.footsalon.member.MemberAccount;
 import com.footsalon.member.model.service.MemberService;
@@ -40,6 +42,27 @@ public class MypageController {
     @GetMapping("leave-id")
     public void leaveId() {}
 
+    @PostMapping("leave-id")
+    public String leaveIdImpl(@AuthenticationPrincipal MemberAccount member
+            ,String password
+            ,RedirectAttributes redirectAttr
+            ,Model model
+            ,HttpSession session
+    ){
+        if(!passwordEncoder.matches(password,member.getPassword())) {
+            model.addAttribute("message","비밀번호가 틀렸습니다");
+            return "mypage/leave-id";
+        }
+
+        member.getMember().setLeaveYn("Y");
+        memberService.leaveMember(member.getMember());
+        session.invalidate();
+
+        model.addAttribute("msg","탈퇴처리가 완료 되었습니다");
+        model.addAttribute("url","/");
+        return "common/result";
+    }
+
     @GetMapping("personal-applicant")
     public void personalApplicant() {}
 
@@ -75,7 +98,9 @@ public class MypageController {
         UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(newPrincipal, authentication.getCredentials(),newPrincipal.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(newAuth);
 
-        return "redirect:/mypage/profile-modify";
+        model.addAttribute("msg","회원 정보 수정이 완료 되었습니다.");
+        model.addAttribute("url","/mypage/profile-modify");
+        return "common/result";
     }
 
     @GetMapping("pw-check")
