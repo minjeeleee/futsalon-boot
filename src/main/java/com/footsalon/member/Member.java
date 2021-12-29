@@ -3,6 +3,7 @@ package com.footsalon.member;
 import com.footsalon.common.code.member.MemberGrade;
 import com.footsalon.team.Team;
 import lombok.Data;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -29,6 +30,7 @@ public class Member {
     @NotEmpty
     private String userName;
 
+    @ColumnDefault("'ME00'")
     @Enumerated(EnumType.STRING)
     private MemberGrade grade;
 
@@ -40,8 +42,9 @@ public class Member {
     private String tell;
     @NotEmpty
     private String capacity;
-
+    @ColumnDefault("'N'")
     private String leaveYn;
+    @ColumnDefault("sysdate")
     private LocalDate regDate;
 
 
