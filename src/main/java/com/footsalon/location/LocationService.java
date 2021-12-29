@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -23,4 +25,7 @@ public class LocationService {
         return locationRepository.findById(localCode).orElseThrow(()-> new HandlableException(ErrorCode.LOCAL_CODE_DOES_NOT_EXIST));
     }
 
+    public List<Location> findAllLocations() {
+        return locationRepository.findAll();
+    }
 }

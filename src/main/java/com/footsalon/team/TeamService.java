@@ -29,11 +29,9 @@ public class TeamService {
     public void createTeam(TeamRequest request, MultipartFile teamFile) {
         Location location = locationService.findLocation(request.getLocalCode());
 
-        Team team = Team.createTeam(request);
-        team.setLocation(location);
+        Team team = Team.createTeam(request, location);
 
         if(!teamFile.isEmpty()) {
-            System.out.println("==========================");
             FileUtil fileUtil = new FileUtil();
             FileInfo fileInfo = fileUtil.fileUpload(teamFile);
             team.setFile(fileInfo);
@@ -55,4 +53,17 @@ public class TeamService {
         return team;
     }
 
+    public void modifyTeam(Long teamIdx, TeamRequest request, MultipartFile teamFile) {
+
+        Team team = teamRepository.findById(teamIdx).orElseThrow(() -> new HandlableException(ErrorCode.TEAM_DOES_NOT_EXIST));
+        Location location = locationService.findLocation(request.getLocalCode());
+
+        team.modifyTeam(request, location);
+
+        if(!teamFile.isEmpty()) {
+            FileUtil fileUtil = new FileUtil();
+            FileInfo fileInfo = fileUtil.fileUpload(teamFile);
+            team.setFile(fileInfo);
+        }
+    }
 }

@@ -23,7 +23,7 @@ import java.util.List;
 public class Team {
 
     @Id @GeneratedValue
-    @Column(name = "team_id")
+    @Column(name = "team_idx")
     private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -49,14 +49,22 @@ public class Team {
     private LocalDateTime delDate;
 
     /* create */
-
-    public static Team createTeam(TeamRequest request) {
+    public static Team createTeam(TeamRequest request, Location location) {
         return Team.builder()
                 .tmName(request.getTmName())
                 .tmGrade(TeamGrade.valueOf(request.getTmGrade()))
                 .tmInfo(request.getTmInfo())
+                .location(location)
                 .regDate(LocalDateTime.now())
                 .build();
+    }
+
+    /* update */
+    public void modifyTeam(TeamRequest request, Location location) {
+        this.tmName = request.getTmName();
+        this.tmGrade = TeamGrade.valueOf(request.getTmGrade());
+        this.tmInfo = request.getTmInfo();
+        this.location = location;
     }
 
     /* setter */
