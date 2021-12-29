@@ -19,6 +19,7 @@ public class MemberAccount extends User {
     public Member getMember() {
         return member;
     }
+    public String getUserId(){return member.getUserId();}
     public String getPassword(){
         return member.getPassword();
     }
