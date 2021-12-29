@@ -19,26 +19,19 @@
                     <th>상태</th>
                     <th style="width:50%">제목</th>
                     <th>날짜</th>
-                    <th>관리</th>
                 </tr>
-                <tr>
-                    <td>불편사항</td>
+                <tr th:each="inquiry : ${inquiryList}">
+                    <td>[[${inquiry.type}]]</td>
                     <td>
-                        <span>답변대기</span>
-                    </td>
-                    <td>
-                        <span>작성자</span>
+                        <span th:value="${inquiry.answerYn == 'Y'}? '답변완료':'답변대기'" ></span>
                     </td>
                     <td style="text-align:left;">
-                        <a href="">제목</a>
+                        <a th:href = "|/inquiry/inquiry-detail(iqIdx=${inquiry.iqIdx})|">[[${inquiry.title}]]</a>
                     </td>
-                    <td>2021-12-29</td>
-                    <td class="btn-inq">
-                        <button class="modify" >수정</button>
-                        <button class="delete">삭제</button>
-                    </td>
+                    <td>[[${inquiry.regDate}]]</td>
                 </tr>
             </table>
+           <!-- <div th:replace="fragments/paging :: paging"></div>-->
         </div>
     </div>
 </section>
