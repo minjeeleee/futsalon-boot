@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace = "fragments/head :: head">
+</head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/team/team.css" />
+    <link rel="stylesheet" type="text/css" href="/css/team/team-form.css" />
+</head>
+<body>
+<header th:replace = " fragments/header :: header"></header>
+<section>
+    <div class="section">
+        <div class="myteam-wrap">
+            <h2><i class="far fa-futbol"></i> 팀 참가하기</h2>
+            <div class="myteam-con">
+                <p class="join-team-msg">
+                    <i class="fas fa-user-lock"></i>
+                    전달받으신 <strong>팀 참가 코드</strong>를 입력하세요.
+                </p>
+                <div class="team-join-form">
+                    <input type="text" name="tmCode" id="tmCode" placeholder="팀 참가코드를 입력하세요." required />
+                    <button id="tmCodeCheck">팀 참가하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<footer th:replace = " fragments/footer :: footer"></footer>
+</body>
+</html>

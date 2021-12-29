@@ -18,13 +18,14 @@ class LocationServiceTest {
     @Test
     @DisplayName("지역 생성")
     public void createLocation() throws Exception {
-        Location location = new Location();
-        location.setLocalCode("02");
-        location.setLocalCity("서울");
+        //given
+        Location location = Location.createLocation(new Location("LC11", "서울"));
         Location savedLocation = locationService.createLocation(location);
 
-        Location foundLocation = locationService.findLocation("02");
+        //when
+        Location foundLocation = locationService.findLocation("LC11");
 
+        //then
         assertThat(foundLocation).isEqualTo(savedLocation);
     }
 

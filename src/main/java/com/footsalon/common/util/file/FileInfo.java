@@ -19,10 +19,6 @@ public class FileInfo {
 	@GeneratedValue
 	private Long flIdx;
 
-	@OneToOne
-	@JoinColumn(name = "tmCode")
-	private Team team;
-
 	private String originFileName;
 	private String renameFileName;
 	private String savePath;

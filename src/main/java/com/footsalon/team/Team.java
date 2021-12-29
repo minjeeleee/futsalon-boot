@@ -1,40 +1,75 @@
 package com.footsalon.team;
 
+import com.footsalon.common.util.file.FileInfo;
 import com.footsalon.location.Location;
 import com.footsalon.member.Member;
-import lombok.Getter;
-import lombok.Setter;
+import com.footsalon.team.dto.TeamRequest;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Setter
 @Entity
 @DynamicInsert
 @DynamicUpdate
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder(access = AccessLevel.PRIVATE)
 public class Team {
 
-    @Id
-    private String tmCode;
+    @Id @GeneratedValue
+    @Column(name = "team_id")
+    private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "localCode")
     private Location location;
 
+    @Column(unique = true)
     private String tmName;
-    private String tmGrade;
+
     private String tmInfo;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "team", fetch = FetchType.EAGER)
-    private List<Member> memberList;    //멤버
+    @Enumerated(EnumType.STRING)
+    private TeamGrade tmGrade;
 
-    //private Member leader;              //팀장
+    @OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
+    private List<Member> memberList = new ArrayList<>();
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "flIdx")
+    private FileInfo file;
 
     private LocalDateTime regDate;
     private LocalDateTime delDate;
 
+    /* create */
+
+    public static Team createTeam(TeamRequest request) {
+        return Team.builder()
+                .tmName(request.getTmName())
+                .tmGrade(TeamGrade.valueOf(request.getTmGrade()))
+                .tmInfo(request.getTmInfo())
+                .regDate(LocalDateTime.now())
+                .build();
+    }
+
+    /* setter */
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public void setMemberList(Member member) {
+        this.getMemberList().add(member);
+    }
+
+    public void setFile(FileInfo file) {
+        this.file = file;
+    }
 }

@@ -8,8 +8,7 @@ public enum Config {
 	SMTP_AUTHENTICATION_PASSWORD("cxjguuxgisrswugo"),
 	COMPANY_EMAIL("futsalon2021@gmail.com"),
 	//UPLOAD_PATH("C:\\CODE\\upload") 운영서버
-	//UPLOAD_PATH("C:\\CODE\\upload\\");//개발서버
-	UPLOAD_PATH("/resources/img/team/");
+	UPLOAD_PATH("C:\\CODE\\upload\\futsalon\\");//개발서버
 	
 	public final String DESC;
 	

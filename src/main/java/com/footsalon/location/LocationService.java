@@ -13,11 +13,14 @@ public class LocationService {
 
     private final LocationRepository locationRepository;
 
-    public Location createLocation(Location location) {
+    @Transactional
+    public Location createLocation(Location request) {
+        Location location = Location.createLocation(request);
         return locationRepository.save(location);
     }
 
     public Location findLocation(String localCode) {
         return locationRepository.findById(localCode).orElseThrow(()-> new HandlableException(ErrorCode.LOCAL_CODE_DOES_NOT_EXIST));
     }
+
 }
