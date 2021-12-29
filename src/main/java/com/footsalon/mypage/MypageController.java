@@ -47,12 +47,13 @@ public class MypageController {
     public void alarm() {}
 
     @GetMapping("profile-modify")
-    public void profileModify() {}
+    public void profileModify(Model model) {
+        model.addAttribute(new ModifyForm()).addAttribute("error", new ValidatorResult().getError());
+    }
 
     @PostMapping("profile-modify")
     public String profileModify(@Validated ModifyForm form
             , Errors errors
-            , @RequestParam(required = false) MultipartFile profileImage
             , Model model
             , HttpSession session
             , RedirectAttributes redirectAttr
@@ -64,7 +65,7 @@ public class MypageController {
 
         if(errors.hasErrors()) {
             vr.addErrors(errors);
-            return "mypage/profile";
+            return "mypage/profile-modify";
         }
 
         memberService.updateMember(form.convertToMember());

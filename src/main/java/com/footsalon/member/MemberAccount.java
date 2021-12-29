@@ -35,20 +35,19 @@ public class MemberAccount extends User {
         return member.getUserNick();
     }
     public String getEmail(){
-        return member.getPassword();
+        return member.getEmail();
     }
     public String getTell(){
-        return member.getPassword();
+        return member.getTell();
     }
     public String getCapacity(){
-        return member.getPassword();
+        return member.getCapacity();
     }
     public String getLeaveYn(){
-        return member.getPassword();
+        return member.getLeaveYn();
     }
     public LocalDate getRegDate(){
         return member.getRegDate();
     }
-
 
 }

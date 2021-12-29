@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -36,14 +37,7 @@ public class MemberService implements UserDetailsService {
 
 
     public boolean existsMemberByUserNick(String nickName) {
-        Member member = memberRepository.findByUserNickAndLeaveYn(nickName,"N")
-                .orElseThrow(()-> new UsernameNotFoundException(nickName));
-
-        if(member == null){
-            return true;
-        }else{
-            return false;
-        }
+        return memberRepository.existsByUserNickAndLeaveYn(nickName,"N");
     }
 
     @Transactional

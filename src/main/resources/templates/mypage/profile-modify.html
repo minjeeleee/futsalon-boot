@@ -13,12 +13,13 @@
         <h2><i class="fas fa-user-cog"></i> 마이페이지</h2>
         <div class="mypage-con">
             <!--<%@ include file="/WEB-INF/views/mypage/mypage_tab.jsp" %>-->
-            <form th:action="@{/mypage/profile-modify}" th:object="${modifyForm}" method="post" id ="frm_modify">
+            <form th:action="|/mypage/profile-modify?${_csrf.parameterName}=${_csrf.token}|" th:object="${modifyForm}" method="post" id ="frm_modify">
                 <table class="mypage-form">
                     <tr>
                         <th>아이디</th>
                         <td>
-                            <input type="text" name="userId" id="userId" th:value="${#authentication.principal.userId}" readonly>
+                            <input type="hidden" name="userId" id="userId" th:value="${#authentication.principal.userId}">
+                            [[${#authentication.principal.userId}]]
                         </td>
                     </tr>
                     <tr>
@@ -69,14 +70,15 @@
                     <tr>
                         <th>이메일</th>
                         <td>
+                            [[${#authentication.principal.email}]]
                         </td>
                     </tr>
                     <tr>
                         <th>실력</th>
                         <td>
-                            <label><input type="radio" name="capacity" id="capacity1" value="상 "> 상</label>
-                            <label><input type="radio" name="capacity" id="capacity2" value="중 "/> 중</label>
-                            <label><input type="radio" name="capacity" id="capacity3" value="하 "/> 하</label>
+                            <label><input type="radio" name="capacity" id="capacity1" value="상 " th:checked="${#authentication.principal.capacity == '상 '}"> 상</label>
+                            <label><input type="radio" name="capacity" id="capacity2" value="중 "  th:checked="${#authentication.principal.capacity == '중 '}"/> 중</label>
+                            <label><input type="radio" name="capacity" id="capacity3" value="하 " th:checked="${#authentication.principal.capacity == '하 '}"/> 하</label>
                         </td>
                     </tr>
                     <tr>
@@ -89,21 +91,12 @@
                     </tr>
                 </table>
             </form>
-            <script type="text/javascript" src="/resources/js/member/modifyForm.js"></script>
-
         </div>
     </div>
 </section>
 
 <footer th:replace = " fragments/footer :: footer"></footer>
-<script type="text/javascript" th:inline="javascript" >
-    (()=>{
-        let capacity = "[(${#authentication.principal.capacity})]";
-        if(capacity == '상') document.getElementById('capacity1').setAttribute('checked','checked');
-        if(capacity == '중') document.getElementById('capacity2').setAttribute('checked','checked');
-        if(capacity == '하') document.getElementById('capacity3').setAttribute('checked','checked');
-    })();
+<script type="text/javascript" src="../js/member/modifyForm.js"></script>
 
-</script>
 </body>
 </html>

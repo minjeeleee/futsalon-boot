@@ -17,6 +17,7 @@ public class ModifyForm {
 	public Member convertToMember() {
 		String newPw = newMemberPass.equals("") ? memberPass : newMemberPass;
 		Member member = new Member();
+		member.setUserId(userId);
 		member.setPassword(newPw);
 		member.setTell(tell);
 		member.setUserNick(nickName);
