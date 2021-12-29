@@ -38,17 +38,17 @@
             </tr>
           </table>
         </form>
-        <th:if test="${param.error}">
+        <th:block th:if ="${param.error}">
           <div class="error_message" style="padding-left:15px; ">
             아이디 또는 비밀번호가 잘못 입력 되었습니다.<br>
             <strong>아이디</strong>와 <strong>비밀번호</strong>를 정확히 입력해 주세요.
           </div>
-        </th:if>
+        </th:block>
         <div class="login-info">
           <a class="btn-search-id" href="/member/login/lost-id">아이디 찾기</a>
           <a class="btn-search-pw" href="/member/login/lost-password">비밀번호 찾기</a>
           <a class="btn-kakao-login" href="javascript:kakaoLogin();"><i class="fas fa-comment"></i> 카카오 로그인</a>
-          <a class="btn-join" href="/member/join-form">회원가입</a>
+          <a class="btn-join" href="/member/join">회원가입</a>
 
         </div>
       </div>
