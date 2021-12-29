@@ -23,4 +23,7 @@ public class MemberService implements UserDetailsService {
         return new MemberAccount(member);
     }
 
+    public void join(Member member) {
+        memberRepository.save(member);
+    }
 }
