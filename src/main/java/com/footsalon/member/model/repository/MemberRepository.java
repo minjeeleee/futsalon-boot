@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, String> {
 
     Optional<Member> findByUserIdAndLeaveYn(String userId,String isLeave);
-
+    Optional<Member> findByUserNickAndLeaveYn(String userNick,String isLeave);
 }
