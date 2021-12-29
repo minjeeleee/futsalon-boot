@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace = "fragments/head :: head">
+</head>
+
+<head>
+  <link rel="stylesheet" type="text/css" href="/css/login/login.css" />
+</head>
+
+<body>
+
+<header th:replace = " fragments/header :: header"></header>
+
+<section>
+  <div class="section">
+    <div class="login-wrap">
+      <h2><i class="fas fa-user-check"></i> 로그인</h2>
+      <div class="login-con">
+        <form th:action="@{/member/login}" method="post">
+          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+          <table class="login-form">
+            <tr>
+              <th><i class="fas fa-user-alt"></i></th>
+              <td><input type="text" name="userId" id="userId" placeholder="아이디를 입력하세요."></td>
+            </tr>
+            <tr class="no-border"><td colspan="2"></td></tr>
+            <tr>
+              <th><i class="fas fa-key"></i></th>
+              <td><input type="password" name="password" id="password" placeholder="비밀번호를 입력하세요."></td>
+            </tr>
+            <tr class="no-border"><td colspan="2"></td></tr>
+            <tr class="no-border">
+              <td class="btn-login" colspan="2">
+                <input type="submit" value="로그인" />
+              </td>
+            </tr>
+          </table>
+        </form>
+        <th:if test="${param.error}">
+          <div class="error_message" style="padding-left:15px; ">
+            아이디 또는 비밀번호가 잘못 입력 되었습니다.<br>
+            <strong>아이디</strong>와 <strong>비밀번호</strong>를 정확히 입력해 주세요.
+          </div>
+        </th:if>
+        <div class="login-info">
+          <a class="btn-search-id" href="/member/login/lost-id">아이디 찾기</a>
+          <a class="btn-search-pw" href="/member/login/lost-password">비밀번호 찾기</a>
+          <a class="btn-kakao-login" href="javascript:kakaoLogin();"><i class="fas fa-comment"></i> 카카오 로그인</a>
+          <a class="btn-join" href="/member/join-form">회원가입</a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer th:replace = " fragments/footer :: footer"></footer>
+
+<script type="text/javascript" src="/resources/js/kakaoLogin/kakaoLogin.js"></script>
+</body>
+</html>

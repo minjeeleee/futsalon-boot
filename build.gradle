@@ -33,12 +33,11 @@ dependencies {
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 
 
-	implementation group: 'commons-io', name: 'commons-io'
-	implementation group: 'commons-fileupload', name: 'commons-fileupload'
-
+	implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
+	implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
 
 	implementation "com.oracle.database.jdbc:ucp"
-	implementation 'com.oracle.ojdbc:ucp'
+	implementation 'com.oracle.ojdbc:ucp:19.3.0.0'
 	implementation 'com.oracle.database.security:oraclepki'
 	implementation 'com.oracle.database.security:osdt_core'
 	implementation 'com.oracle.database.security:osdt_cert'

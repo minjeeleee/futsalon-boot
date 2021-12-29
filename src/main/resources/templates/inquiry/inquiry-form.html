@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace = "fragments/head :: head">
+</head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/support/support-form.css" />
+</head>
+<body>
+<header th:replace = " fragments/header :: header"></header>
+<section>
+    <div class="section">
+        <div class="new-support-wrap">
+            <div class="sub-nav-wrap">
+                <div class="sub-nav">
+                    <i class="fas fa-question-circle"></i>문의사항등록
+                </div>
+            </div>
+            <div class="search-wrap">
+                <form action="" method="post">
+
+                    <div class="type_wrapper">문의 유형 :
+                        <select name="type" id="type">
+                            <option value="1" selected>불편사항</option>
+                            <option value="2">신고</option>
+                            <option value="3">기타</option>
+                        </select>
+                    </div>
+                    <div class="tit_wraper"> 제목 : <input type="text" name="title" id="title" required="required"/></div>
+                    <div class="textarea-wraper">
+                        <textarea name="content" id="content" cols="100" rows="20" placeholder="내용을 입력해주세요." style="resize: none;"></textarea>
+                    </div>
+                    <input type="submit" value="등록">
+                </form>
+            </div>
+
+        </div>
+    </div>
+</section>
+<footer th:replace = " fragments/footer :: footer"></footer>
+</body>
+</html>

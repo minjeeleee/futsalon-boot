@@ -19,7 +19,6 @@ public class MemberAccount extends User {
     public Member getMember() {
         return member;
     }
-
     public String getPassword(){
         return member.getPassword();
     }
