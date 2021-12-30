@@ -17,12 +17,28 @@
                     <br>탈퇴 후 되돌릴 수 없으니 신중하게 결정해주세요.</p>
                 <br>
                 <strong>버튼을 클릭하면 바로 탈퇴가 진행이 되니 신중히 눌려주세요.</strong>
-                <button type="submit" class="btn-leave-member" style="color:red" >풋살온 탈퇴하기</button>
-
+                <br>
+                <span th:if="${message}" th:text="${message}" class="valid-msg" style="color: red; font-size: 14px;"></span>
+                <br>
+                <form  th:action="@{/mypage/leave-id}" method="post" id="leave_form">
+                    <input type="password"  id="password" name="password" placeholder="password">
+                    <button type="submit" class="btn-leave-member" style="color:red" >풋살온 탈퇴하기</button>
+                </form>
             </div>
         </div>
     </div>
 </section>
 <footer th:replace = " fragments/footer :: footer"></footer>
+<script type="text/javascript">
+	 document.querySelector('#leave_form').addEventListener('submit',e=>{
+       let paswsord = document.querySelector('#password').value;
+
+       if(!paswsord){
+           alert('비밀번호를 작성하지 않았습니다.');
+           document.querySelector('#password').focus();
+           e.preventDefault();
+       }
+   });
+</script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head th:replace = "fragments/head :: head">
 </head>
 <head>
-    <link rel="stylesheet" type="text/css" href="/css/support/support-detail.css" />
+    <link rel="stylesheet" type="text/css" href="/css/support/support-form.css" />
 </head>
 <body>
 <header th:replace = " fragments/header :: header"></header>
@@ -15,37 +15,62 @@
                     <i class="far fa-clipboard"></i>문의사항 상세 페이지
                 </div>
             </div>
-            <div class="search-wrap">
-
-                <div class="type_wrapper">문의 유형 :
-                    <span>기타</span>
-                </div>
-                <div class="tit_wraper" > 제목 : <span></span></div>
-                <div class="content-wraper">
-                    <pre>내용</pre>
-                </div>
-                <!--<c:if test="${support.isAnswer == 1 || authentication.grade == 'AD00'}">
-                    <div class="ans_wraper" style="margin-top: 3%; font-size: 2vw;">
-                        <span>Answer</span>
+            <form id="modify-form" action="" method="post" th:object="${inquiry}">
+                <div class="search-wrap" >
+                    <input type="hidden" name="iqIdx" id="iqIdx" th:value="*{iqIdx}">
+                    <div class="type_wrapper">문의 유형 :
+                        <select name="type" id="type" disabled>
+                            <option value="불편사항" th:selected="*{type == '불편사항'}">불편사항</option>
+                            <option value="신고" th:selected="*{type == '신고'}">신고</option>
+                            <option value="기타" th:selected="*{type == '기타'}">기타</option>
+                        </select>
                     </div>
-                </c:if>
-
-                <c:if test="${support.isAnswer == 1 && authentication.grade != 'AD00'}">
-                    <div class="content-wraper" style="height: 250px;">
-                        <pre><c:out value="${support.answer}"/></pre>
+                    <div class="tit_wraper"> 제목 : <input type="text" name="title" id="title" th:value="*{title}" readonly/></div>
+                    <div class="textarea-wraper">
+                        <textarea name="content" id="content" cols="100" rows="20"  th:text="*{content}" readonly style="resize: none;"></textarea>
                     </div>
-                </c:if>-->
-                </form>
+                    <!--<c:if test="${support.isAnswer == 1 || authentication.grade == 'AD00'}">
+                        <div class="ans_wraper" style="margin-top: 3%; font-size: 2vw;">
+                            <span>Answer</span>
+                        </div>
+                    </c:if>
 
-                <div class="button_wrapper">
-                    <input type="submit" value="수정">
-                    <input type="submit"  value="삭제">
+                    <c:if test="${support.isAnswer == 1 && authentication.grade != 'AD00'}">
+                        <div class="content-wraper" style="height: 250px;">
+                            <pre><c:out value="${support.answer}"/></pre>
+                        </div>
+                    </c:if>-->
+
+                    <div class="button_wrapper">
+                        <input type="button" id="modify" class="but-style" value="수정">
+                        <input type="hidden" id="done" class="but-style" value="수정 완료">
+                        <div style="display:inline-block" class="but-style"> <a class="but-style" th:href = "|/inquiry/delete?iqIdx=*{iqIdx}|">삭제</a></div>
+                    </div>
                 </div>
-            </div>
-
+            </form>
         </div>
     </div>
 </section>
 <footer th:replace = " fragments/footer :: footer"></footer>
+<script type="text/javascript">
+    	let modify = document.getElementById('modify');
+	    let del = document.getElementById('delete');
+	    let type = document.getElementById('type');
+
+        let form = document.getElementById('modify-form');
+	    let done = document.getElementById('done');
+
+	    modify.addEventListener('click', () => {
+	       document.getElementById('title').removeAttribute('readonly');
+            document.getElementById('content').removeAttribute('readonly');
+            type.removeAttribute('disabled');
+            done.setAttribute('type','submit');
+            modify.setAttribute('type','hidden');
+	    })
+
+        document.getElementById('done').addEventListener('click', () => {
+            form.setAttribute("action","/inquiry/modify");
+        })
+    </script>
 </body>
 </html>

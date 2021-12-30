@@ -133,6 +133,21 @@ textarea:focus {
 	cursor:pointer;
 }
 
+.but-style{
+	font-weight:bold;
+	padding:16px 25px;
+	background: linear-gradient(45deg, #000, #1c1350, #000);
+	color:#ffffff;
+	border-radius:5px;
+	border:none;
+	cursor:pointer;
+	width:49.8%;
+}
+
+.button_wrapper{
+    margin-top:10px;
+}
+
 .new-support-wrap h2{
 	/* padding-top:50px; */
 	text-align:center;
