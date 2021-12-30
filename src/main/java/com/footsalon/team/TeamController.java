@@ -2,6 +2,7 @@ package com.footsalon.team;
 
 import com.footsalon.location.Location;
 import com.footsalon.location.LocationService;
+import com.footsalon.member.Member;
 import com.footsalon.team.dto.TeamRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.Banner;
@@ -46,7 +47,8 @@ public class TeamController {
     }
 
     @GetMapping(path = "modify")
-    public void modifyTeam(Model model) {
+    public void modifyTeam(Model model, @SessionAttribute Member member) {
+        System.out.println("member = " + member);
         Team team = teamService.findTeamById(1L);
         model.addAttribute("team", team);
         model.addAttribute("locations", locationService.findAllLocations());

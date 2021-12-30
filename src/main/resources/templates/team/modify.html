@@ -36,9 +36,9 @@
                         <tr>
                             <th>실력</th>
                             <td>
-                                    <label><input type="radio" name="tmGrade" value="상" ${team.tmGrade eq '상'?'checked':''} /> 상</label>
-                                    <label><input type="radio" name="tmGrade" value="중" ${team.tmGrade eq '중'?'checked':''} /> 중</label>
-                                    <label><input type="radio" name="tmGrade" value="하" ${team.tmGrade eq '하'?'checked':''} /> 하</label>
+                                <label><input type="radio" name="tmGrade" value="HIGH" th:checked="${team.tmGrade eq 'HIGH' ? 'true' : 'false'}"  /> 상</label>
+                                <label><input type="radio" name="tmGrade" value="MIDDLE" th:checked="${team.tmGrade eq 'MIDDLE' ? 'true' : 'false'}" /> 중</label>
+                                <label><input type="radio" name="tmGrade" value="LOW" th:checked="${team.tmGrade eq 'LOW' ? 'true' : 'false'}" /> 하</label>
                             </td>
                         </tr>
                         <tr>
