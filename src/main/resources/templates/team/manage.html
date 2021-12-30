@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace = "fragments/head :: head"></head>
 <head>
     <link rel="stylesheet" type="text/css" href="/css/team/team.css" />
@@ -27,12 +28,14 @@
                         <td th:text="${member.userId}">userId</td>
                         <td th:text="${member.userName}">userName</td>
                         <td>
-                            <div class="selectbox">
-                                <select name="grdOpt">
-                                    <option value="ME02">매니저</option>
-                                    <option value="ME01">팀원</option>
-                                </select>
-                            </div>
+                            <th:block th:if="${#authentication.principal.grade.toString().equals('ME03')}">
+                                <div class="selectbox">
+                                    <select name="grdOpt">
+                                        <option value="ME02">매니저</option>
+                                        <option value="ME01">팀원</option>
+                                    </select>
+                                </div>
+                            </th:block>
                             <button class="btn-change-grade" onclick="manageGrade(this, '${tmMembers.userId}');return false;">변경</button>
                         </td>
                         <td><button onclick="manageDelegation('${tmMembers.userId}');">팀장 위임</button></td>

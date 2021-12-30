@@ -42,7 +42,7 @@ public class TeamService {
 
         teamRepository.save(team);
 //        회원등급 - 리더로 변경
-        member.setGrade(MemberGrade.ME03);
+        findMember.setGrade(MemberGrade.ME03);
     }
 
     public String tmNameCheck(String tmName) {
@@ -58,8 +58,8 @@ public class TeamService {
     }
 
     @Transactional
-    public void modifyTeam(Long teamIdx, TeamRequest request, MultipartFile teamFile) {
-        Team team = teamRepository.findById(teamIdx).orElseThrow(() -> new HandlableException(ErrorCode.TEAM_DOES_NOT_EXIST));
+    public void modifyTeam(Long teamId, TeamRequest request, MultipartFile teamFile) {
+        Team team = teamRepository.findById(teamId).orElseThrow(() -> new HandlableException(ErrorCode.TEAM_DOES_NOT_EXIST));
         Location location = locationService.findLocation(request.getLocalCode());
         team.modifyTeam(request, location);
         System.out.println("request = " + request.getTmGrade());
@@ -73,8 +73,8 @@ public class TeamService {
     }
 
     @Transactional
-    public void leaveTeam(Long teamIdx) {
-        Team team = teamRepository.findById(teamIdx).orElseThrow(() -> new HandlableException(ErrorCode.TEAM_DOES_NOT_EXIST));
+    public void leaveTeam(Long teamId) {
+        Team team = teamRepository.findById(teamId).orElseThrow(() -> new HandlableException(ErrorCode.TEAM_DOES_NOT_EXIST));
         team.setDelDate();
     }
 

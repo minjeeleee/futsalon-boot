@@ -14,7 +14,7 @@
             <div class="myteam-con">
                 <div th:replace = " team/include/tab :: team-tab"></div>
                 <div th:if="${team.file == null}" style="background:url('/img/team/no-img.jpg') center center; background-size: cover;" class="team-img bg-img"></div>
-                <div th:if="${team.file != null}" style="background:url('/img/team/no-img.jpg') center center; background-size: cover;" class="team-img bg-img"></div>
+                <div th:if="${team.file != null}" style="background:url('|/file/{savePath}{renameFileName}(savePath=${team.file.savePath}, renameFileName=${team.file.renameFileName})|') center center; background-size: cover;" class="team-img bg-img"></div>
                 <form id="frm_create-team" th:action="@{/team/modify}" method="post" enctype="multipart/form-data">
                     <table class="team-create-form">
                         <tr>

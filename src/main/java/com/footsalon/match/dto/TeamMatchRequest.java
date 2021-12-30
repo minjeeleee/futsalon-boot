@@ -10,10 +10,10 @@ public class TeamMatchRequest {
     private String localCode;
     private String placeName;
     private String placeAddress;
-    private String size;
-    private LocalDateTime matchDateTime;
-    private String cost;
-    private String level;
+    private String matchStyle;
+    private String matchDateTime;
+    private String teamLevel;
+    private String expense;
     private String content;
 
 }

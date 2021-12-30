@@ -4,10 +4,15 @@ import com.footsalon.location.Location;
 import com.footsalon.location.LocationService;
 import com.footsalon.member.Member;
 import com.footsalon.member.MemberAccount;
+import com.footsalon.member.model.service.MemberService;
 import com.footsalon.team.dto.TeamRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.Banner;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +27,7 @@ public class TeamController {
 
     private final TeamService teamService;
     private final LocationService locationService;
+    private final MemberService memberService;
 
     @GetMapping(path = "/main")
     public String teamMain(@AuthenticationPrincipal MemberAccount member) {
@@ -74,9 +80,18 @@ public class TeamController {
     }
 
     @PostMapping(path = "/create")
-    public String createTeam(@AuthenticationPrincipal MemberAccount memberAccount, TeamRequest request, @RequestParam MultipartFile teamFile) {
+    public String createTeam(TeamRequest request,
+                             @RequestParam MultipartFile teamFile,
+                             @AuthenticationPrincipal MemberAccount memberAccount) {
+
         teamService.createTeam(memberAccount.getMember(), request, teamFile);
-        return "redirect:/team/main";
+//        Security 설정
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails newPrincipal = memberService.loadUserByUsername(memberAccount.getUserId());
+        UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(newPrincipal, authentication.getCredentials(),newPrincipal.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+
+        return "redirect:/team/modify";
     }
 
     @PostMapping(path = "modify")
