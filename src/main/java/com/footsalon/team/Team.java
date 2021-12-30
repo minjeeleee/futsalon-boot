@@ -60,7 +60,6 @@ public class Team {
 
     /* update */
     public void modifyTeam(TeamRequest request, Location location) {
-        this.tmName = request.getTmName();
         this.tmGrade = request.getTmGrade();
         this.tmInfo = request.getTmInfo();
         this.location = location;
@@ -73,7 +72,8 @@ public class Team {
     }
 
     public void setMemberList(Member member) {
-        this.getMemberList().add(member);
+        //this.getMemberList().add(member);
+        member.setTeam(this);
     }
 
     public void setFile(FileInfo file) {

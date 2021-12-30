@@ -13,8 +13,8 @@
             <h2><i class="far fa-futbol"></i> 나의 팀</h2>
             <div class="myteam-con">
                 <div th:replace = " team/include/tab :: team-tab"></div>
-                <div th:if="${team.file == null}" style="background:url('/img/team/no-img.jpg') center center;" class="team-img bg-img"></div>
-                <div th:if="${team.file != null}" style="background:url('@{/file/{team.file.savePath}/{team.file.renameFileName}}') center center;" class="team-img bg-img"></div>
+                <div th:if="${team.file == null}" style="background:url('/img/team/no-img.jpg') center center; background-size: cover;" class="team-img bg-img"></div>
+                <div th:if="${team.file != null}" style="background:url('/img/team/no-img.jpg') center center; background-size: cover;" class="team-img bg-img"></div>
                 <form id="frm_create-team" th:action="@{/team/modify}" method="post" enctype="multipart/form-data">
                     <table class="team-create-form">
                         <tr>
@@ -27,7 +27,9 @@
                                 <input type="file" name="teamFile" id="teamFile" onchange="fileCheck(this.files)">
                                 <span class="msg">JPG/GIF/PNG 파일만 업로드 가능</span>
                                 <div class="team-file leader">
-                                    <a class="view-file" target="_blank" href="/img/team/${file.savePath}${file.renameFileName}"><i class="fas fa-eye"></i> 현재 팀 이미지 :  ${file.originFileName}</a>
+                                    <a class="view-file" target="_blank" th:href="@{/file/{savePath}{renameFileName}(savePath=${team.file.savePath}, renameFileName=${team.file.renameFileName})}">
+                                        <i class="fas fa-eye"></i> 현재 팀 이미지 :  [[${team.file.originFileName}]]
+                                    </a>
                                 </div>
                             </td>
                         </tr>
@@ -52,7 +54,7 @@
                         <tr>
                             <th>소개글</th>
                             <td>
-                                <textarea name="tmInfo" placeholder="팀 소개 내용을 입력해주세요.">${team.tmInfo}</textarea>
+                                <textarea name="tmInfo" placeholder="팀 소개 내용을 입력해주세요.">[[${team.tmInfo}]]</textarea>
                             </td>
                         </tr>
                         <tr>
@@ -68,6 +70,26 @@
         </div>
     </div>
 </section>
+<div class="pop-msg-wrap msg">
+    <div class="pop-msg">
+        <p></p>
+        <button onclick="btnClose();">확인</button>
+    </div>
+</div>
+<div class="pop-msg-wrap question">
+    <div class="pop-msg">
+        <p></p>
+        <button class="cancel-btn" onclick="btnClose();">취소</button>
+        <button class="submit-btn" onclick=""></button>
+    </div>
+</div>
+<div class="pop-msg-wrap answer">
+    <div class="pop-msg">
+        <p></p>
+        <button class="close-btn">확인</button>
+    </div>
+</div>
+<script type="text/javascript" src="/js/team/modify.js"></script>
 <footer th:replace = " fragments/footer :: footer"></footer>
 </body>
 </html>
