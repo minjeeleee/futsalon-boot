@@ -18,7 +18,7 @@ public class TeamPenalty {
     @GeneratedValue
     private Long tpIdx;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private Member member;
     private LocalDateTime delDate;

@@ -16,7 +16,7 @@ public class MatchGame {
     @GeneratedValue
     private long mgIdx;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mmIdx")
     private MatchMaster matchMaster;
 

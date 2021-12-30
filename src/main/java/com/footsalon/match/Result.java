@@ -16,7 +16,7 @@ public class Result {
     @GeneratedValue
     private long thIdx;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mgIdx")
     private MatchGame matchGame;
 
