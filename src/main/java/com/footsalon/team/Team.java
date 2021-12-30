@@ -79,4 +79,8 @@ public class Team {
     public void setFile(FileInfo file) {
         this.file = file;
     }
+
+    public void setDelDate() {
+        this.delDate = LocalDateTime.now();
+    }
 }

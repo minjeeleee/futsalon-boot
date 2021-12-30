@@ -71,4 +71,11 @@ public class TeamService {
             team.setFile(fileInfo);
         }
     }
+
+    @Transactional
+    public void leaveTeam(Long teamIdx) {
+        Team team = teamRepository.findById(teamIdx).orElseThrow(() -> new HandlableException(ErrorCode.TEAM_DOES_NOT_EXIST));
+        team.setDelDate();
+    }
+
 }

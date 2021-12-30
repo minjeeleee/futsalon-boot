@@ -44,17 +44,39 @@ public class TeamController {
         return teamService.tmNameCheck(tmName);
     }
 
-    @PostMapping(path = "/create")
-    public String createTeam(@AuthenticationPrincipal MemberAccount memberAccount, TeamRequest request, @RequestParam MultipartFile teamFile) {
-        teamService.createTeam(memberAccount.getMember(), request, teamFile);
-        return "redirect:/team/main";
-    }
-
     @GetMapping(path = "modify")
     public void modifyTeam(Model model, @AuthenticationPrincipal MemberAccount memberAccount) {
         Team team = teamService.findTeamById(memberAccount.getMember().getTeam().getId());
         model.addAttribute("team", team);
         model.addAttribute("locations", locationService.findAllLocations());
+    }
+
+    @GetMapping(path = "manage")
+    public void manageTeam(Model model, @AuthenticationPrincipal MemberAccount memberAccount) {
+        Team team = teamService.findTeamById(memberAccount.getMember().getTeam().getId());
+        model.addAttribute("team", team);
+    }
+
+    @GetMapping(path = "score")
+    public void teamScore(Model model, @AuthenticationPrincipal MemberAccount memberAccount) {
+        Team team = teamService.findTeamById(memberAccount.getMember().getTeam().getId());
+        model.addAttribute("team", team);
+    }
+
+    @GetMapping(path = "team-board")
+    public void teamBoard() {
+
+    }
+
+    @GetMapping(path = "leave")
+    public void leaveTeam() {
+
+    }
+
+    @PostMapping(path = "/create")
+    public String createTeam(@AuthenticationPrincipal MemberAccount memberAccount, TeamRequest request, @RequestParam MultipartFile teamFile) {
+        teamService.createTeam(memberAccount.getMember(), request, teamFile);
+        return "redirect:/team/main";
     }
 
     @PostMapping(path = "modify")
