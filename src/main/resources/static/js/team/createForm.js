@@ -13,7 +13,7 @@
 			drawMsg('<i class="fas fa-exclamation-circle"></i><br>팀명은 2~8자리 한/영/숫자만 입력 가능합니다.');
 			return;
 		}
-		fetch("/team/tmName-check?tmName="+tmName)
+		fetch("/team/tm-name-check?tmName="+tmName)
 		.then(response =>{
 			if(response.ok){
 					return response.text();
@@ -23,11 +23,11 @@
 		})
 		.then(text => {
 			console.log(text);
-			if(text == 'available'){
+			if(text == 'exists'){
+				drawMsg('<i class="fas fa-times-circle"></i><br>사용 불가능한 팀명입니다.');
+			}else{
 				cfmTmName = tmName;
 				drawMsg('<i class="fas fa-check-circle"></i><br>사용 가능한 팀명입니다.');
-			}else{
-				drawMsg('<i class="fas fa-times-circle"></i><br>사용 불가능한 팀명입니다.');
 			}
 		})
 		.catch(error=>{
@@ -60,18 +60,4 @@ let fileCheck = (e) => {
 		files[0].value='';
 		return false;
 	}
-}
-
-let drawMsg = (msg) => {
-	document.querySelector('.pop-msg-wrap.question').style.display='none';
-	document.querySelector('.pop-msg-wrap.answer').style.display='none';
-	document.querySelector('.pop-msg-wrap.msg').style.display='flex';
-	document.querySelector('.pop-msg-wrap.msg p').innerHTML=msg;
-}
-
-let btnClose = () => {
-	let msgWrap = document.querySelectorAll('.pop-msg-wrap');
-	msgWrap.forEach(e=>{
-		e.style.display='none';		
-	});
 }

@@ -47,14 +47,20 @@ public class TeamService {
 
     public String tmNameCheck(String tmName) {
         if(teamRepository.existsByTmName(tmName)) {
-            return "disable";
+            return "exists";
         }
-        return "available";
+        return "notExist";
+    }
+
+    public String tmCodeCheck(String tmCode) {
+        if(teamRepository.existsByTmCode(tmCode)) {
+            return "exists";
+        }
+        return "notExist";
     }
 
     public Team findTeamById(Long teamIdx) {
-        Team team = teamRepository.findById(teamIdx).orElseThrow(()->new HandlableException(ErrorCode.TEAM_DOES_NOT_EXIST));
-        return team;
+        return teamRepository.findById(teamIdx).orElseThrow(()->new HandlableException(ErrorCode.TEAM_DOES_NOT_EXIST));
     }
 
     @Transactional
@@ -62,8 +68,6 @@ public class TeamService {
         Team team = teamRepository.findById(teamIdx).orElseThrow(() -> new HandlableException(ErrorCode.TEAM_DOES_NOT_EXIST));
         Location location = locationService.findLocation(request.getLocalCode());
         team.modifyTeam(request, location);
-        System.out.println("request = " + request.getTmLevel());
-        System.out.println("team = " + team.getTmLevel());
 
         if(!teamFile.isEmpty()) {
             FileUtil fileUtil = new FileUtil();
@@ -78,4 +82,14 @@ public class TeamService {
         team.setDelDate();
     }
 
+    @Transactional
+    public void joinTeam(String tmCode, String userId) {
+        System.out.println("===");
+        Member member = memberService.findByUserId(userId);
+        System.out.println("member.getUserId() = " + member.getUserId());
+        Team team = teamRepository.findByTmCode(tmCode);
+        System.out.println("team.getTmName() = " + team.getTmName());
+        member.setTeam(team);
+        member.setGrade(MemberGrade.ME01);
+    }
 }

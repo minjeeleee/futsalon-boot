@@ -44,37 +44,43 @@ public class TeamController {
     public void joinTeam() {
     }
 
-    @GetMapping(path = "/tmName-check")
+    @GetMapping(path = "/tm-name-check")
     @ResponseBody
     public String tmNameCheck(@RequestParam String tmName) {
         return teamService.tmNameCheck(tmName);
     }
 
-    @GetMapping(path = "modify")
+    @GetMapping(path = "/tm-code-check")
+    @ResponseBody
+    public String tmCodeCheck(@RequestParam String tmCode) {
+        return teamService.tmCodeCheck(tmCode);
+    }
+
+    @GetMapping(path = "/modify")
     public void modifyTeam(Model model, @AuthenticationPrincipal MemberAccount memberAccount) {
         Team team = teamService.findTeamById(memberAccount.getMember().getTeam().getTmIdx());
         model.addAttribute("team", team);
         model.addAttribute("locations", locationService.findAllLocations());
     }
 
-    @GetMapping(path = "manage")
+    @GetMapping(path = "/manage")
     public void manageTeam(Model model, @AuthenticationPrincipal MemberAccount memberAccount) {
         Team team = teamService.findTeamById(memberAccount.getMember().getTeam().getTmIdx());
         model.addAttribute("team", team);
     }
 
-    @GetMapping(path = "score")
+    @GetMapping(path = "/score")
     public void teamScore(Model model, @AuthenticationPrincipal MemberAccount memberAccount) {
         Team team = teamService.findTeamById(memberAccount.getMember().getTeam().getTmIdx());
         model.addAttribute("team", team);
     }
 
-    @GetMapping(path = "team-board")
+    @GetMapping(path = "/team-board")
     public void teamBoard() {
 
     }
 
-    @GetMapping(path = "leave")
+    @GetMapping(path = "/leave")
     public void leaveTeam() {
 
     }
@@ -91,6 +97,17 @@ public class TeamController {
         UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(newPrincipal, authentication.getCredentials(),newPrincipal.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(newAuth);
 
+        return "redirect:/team/modify";
+    }
+
+    @GetMapping(path = "/join-team")
+    public String joinTeam(@RequestParam String tmCode,
+                         @AuthenticationPrincipal MemberAccount memberAccount) {
+        teamService.joinTeam(tmCode, memberAccount.getMember().getUserId());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails newPrincipal = memberService.loadUserByUsername(memberAccount.getUserId());
+        UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(newPrincipal, authentication.getCredentials(),newPrincipal.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
         return "redirect:/team/modify";
     }
 

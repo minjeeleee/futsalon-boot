@@ -21,40 +21,49 @@
                             <th>팀 이름</th>
                             <td th:text="${team.tmName}"></td>
                         </tr>
-                        <tr>
+                        <tr th:if="${#authentication.principal.grade.toString().equals('ME03')}">
+                            <th>팀 코드</th>
+                            <td th:text="${team.tmCode}"></td>
+                        </tr>
+                        <tr th:if="${#authentication.principal.grade.toString().equals('ME03')}">
                             <th>팀 사진</th>
                             <td>
                                 <input type="file" name="teamFile" id="teamFile" onchange="fileCheck(this.files)">
                                 <span class="msg">JPG/GIF/PNG 파일만 업로드 가능</span>
                                 <div class="team-file leader">
-                                    <a class="view-file" target="_blank" th:href="@{/file/{savePath}{renameFileName}(savePath=${team.file.savePath}, renameFileName=${team.file.renameFileName})}">
+                                    <a th:if="${team.file != null}" class="view-file" target="_blank" th:href="@{/file/{savePath}{renameFileName}(savePath=${team.file.savePath}, renameFileName=${team.file.renameFileName})}">
                                         <i class="fas fa-eye"></i> 현재 팀 이미지 :  [[${team.file.originFileName}]]
                                     </a>
                                 </div>
                             </td>
                         </tr>
-                        <tr><th>팀 전적</th><td>${team.gameCnt}전 ${team.tmWin}승 ${team.tmLose}패</td></tr>
-                        <tr><th>팀 평점</th><td>${team.tmRating}점</td></tr>
+                        <tr><th>팀 전적</th><td>0전 0승 0패</td></tr>
+                        <tr><th>팀 평점</th><td>0점</td></tr>
                         <tr>
                             <th>실력</th>
                             <td>
-                                <label><input type="radio" name="tmGrade" value="HIGH" th:checked="${team.tmGrade eq 'HIGH' ? 'true' : 'false'}"  /> 상</label>
-                                <label><input type="radio" name="tmGrade" value="MIDDLE" th:checked="${team.tmGrade eq 'MIDDLE' ? 'true' : 'false'}" /> 중</label>
-                                <label><input type="radio" name="tmGrade" value="LOW" th:checked="${team.tmGrade eq 'LOW' ? 'true' : 'false'}" /> 하</label>
+                                <th:block th:if="${#authentication.principal.grade.toString().equals('ME03')}">
+                                    <label><input type="radio" name="tmLevel" value="HIGH" th:checked="${team.tmLevel eq 'HIGH' ? 'true' : 'false'}"  /> 상</label>
+                                    <label><input type="radio" name="tmLevel" value="MIDDLE" th:checked="${team.tmLevel eq 'MIDDLE' ? 'true' : 'false'}" /> 중</label>
+                                    <label><input type="radio" name="tmLevel" value="LOW" th:checked="${team.tmLevel eq 'LOW' ? 'true' : 'false'}" /> 하</label>
+                                </th:block>
+                                <th:block th:if="${!#authentication.principal.grade.toString().equals('ME03')}" th:text="${team.tmLevel}"></th:block>
                             </td>
                         </tr>
                         <tr>
                             <th>활동지역</th>
                             <td>
-                                <label th:each="location : ${locations}">
+                                <label th:if="${#authentication.principal.grade.toString().equals('ME03')}" th:each="location : ${locations}">
                                     <input type="radio" name="localCode" th:value="${location.localCode}" th:checked="${location.localCode eq team.location.localCode ? 'true' : 'false'}"/> [[${location.localCity}]]
                                 </label>
+                                <th:block th:if="${!#authentication.principal.grade.toString().equals('ME03')}" th:text="${team.location.localCity}"></th:block>
                             </td>
                         </tr>
                         <tr>
                             <th>소개글</th>
                             <td>
-                                <textarea name="tmInfo" placeholder="팀 소개 내용을 입력해주세요.">[[${team.tmInfo}]]</textarea>
+                                <textarea th:if="${#authentication.principal.grade.toString().equals('ME03')}" name="tmInfo" placeholder="팀 소개 내용을 입력해주세요.">[[${team.tmInfo}]]</textarea>
+                                <th:block th:if="${!#authentication.principal.grade.toString().equals('ME03')}" th:text="${team.tmInfo == null ? '팀 소개글이 없습니다.' : '#team.tmInfo'}"></th:block>
                             </td>
                         </tr>
                         <tr>
@@ -76,17 +85,17 @@
         <button onclick="btnClose();">확인</button>
     </div>
 </div>
+<div class="pop-msg-wrap answer">
+    <div class="pop-msg">
+        <p></p>
+        <button onclick="">확인</button>
+    </div>
+</div>
 <div class="pop-msg-wrap question">
     <div class="pop-msg">
         <p></p>
         <button class="cancel-btn" onclick="btnClose();">취소</button>
         <button class="submit-btn" onclick=""></button>
-    </div>
-</div>
-<div class="pop-msg-wrap answer">
-    <div class="pop-msg">
-        <p></p>
-        <button class="close-btn">확인</button>
     </div>
 </div>
 <script type="text/javascript" src="/js/team/modify.js"></script>

@@ -15,15 +15,14 @@ import java.time.LocalDateTime;
 public class TeamApplicant {
 
     @Id @GeneratedValue
-    @Column(name = "team_applicant_id")
-    private Long id;
+    private Long taIdx;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id")
+    @JoinColumn(name = "tm_idx")
     private Team team;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "user_id")
     private Member member;
 
     private LocalDateTime appDate;

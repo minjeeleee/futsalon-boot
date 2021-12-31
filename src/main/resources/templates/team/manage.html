@@ -35,11 +35,13 @@
                                         <option value="ME01">팀원</option>
                                     </select>
                                 </div>
-                            </th:block>
                             <button class="btn-change-grade" onclick="manageGrade(this, '${tmMembers.userId}');return false;">변경</button>
+                            </th:block>
+                            <th:block th:unless="${#authentication.principal.grade.toString().equals('ME03')}" th:text="${member.grade.toString().equals('ME03') ? '팀장' : member.grade.toString().equals('ME02') ? '매니저' : '팀원'}">
+                            </th:block>
                         </td>
-                        <td><button onclick="manageDelegation('${tmMembers.userId}');">팀장 위임</button></td>
-                        <td><button onclick="manageExpulsion('${tmMembers.userId}');">추방</button></td>
+                        <td th:if="${#authentication.principal.grade.toString().equals('ME03')}"><button onclick="manageDelegation('${tmMembers.userId}');">팀장 위임</button></td>
+                        <td th:if="${#authentication.principal.grade.toString().equals('ME03')}"><button onclick="manageExpulsion('${tmMembers.userId}');">추방</button></td>
                     </tr>
                 </table>
 

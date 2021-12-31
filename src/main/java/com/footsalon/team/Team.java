@@ -12,6 +12,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
 @Getter
 @Entity
@@ -24,6 +26,8 @@ public class Team {
 
     @Id @GeneratedValue
     private Long tmIdx;
+
+    private String tmCode;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "localCode")
@@ -49,6 +53,7 @@ public class Team {
     /* create */
     public static Team createTeam(TeamRequest request, Location location) {
         return Team.builder()
+                .tmCode(UUID.randomUUID().toString().toUpperCase(Locale.ROOT))
                 .tmName(request.getTmName())
                 .tmLevel(request.getTmLevel())
                 .tmInfo(request.getTmInfo())

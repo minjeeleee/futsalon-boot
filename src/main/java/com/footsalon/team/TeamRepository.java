@@ -8,5 +8,9 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
 
     Team findByTmName(String tmName);
 
-    Boolean existsByTmName(String tmName);
+    boolean existsByTmName(String tmName);
+
+    boolean existsByTmCode(String tmCode);
+
+    Team findByTmCode(String tmCode);
 }

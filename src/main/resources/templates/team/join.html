@@ -18,13 +18,21 @@
                     전달받으신 <strong>팀 참가 코드</strong>를 입력하세요.
                 </p>
                 <div class="team-join-form">
-                    <input type="text" name="tmCode" id="tmCode" placeholder="팀 참가코드를 입력하세요." required />
+                    <input type="text" name="tmCode" id="tmCode" placeholder="팀 코드을 입력하세요." required />
                     <button id="tmCodeCheck">팀 참가하기</button>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<div class="pop-msg-wrap msg">
+    <div class="pop-msg">
+        <p></p>
+        <button onclick="btnClose();">확인</button>
+    </div>
+</div>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/team/joinForm.js"></script>
 <footer th:replace = " fragments/footer :: footer"></footer>
 </body>
 </html>
