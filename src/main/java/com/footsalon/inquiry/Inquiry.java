@@ -32,6 +32,9 @@ public class Inquiry {
     private LocalDate regDate;
 
     @ColumnDefault("'N'")
+    private String deleteYn;
+
+    @ColumnDefault("'N'")
     private String answerYn;
     private String answer;
 }

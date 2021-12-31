@@ -20,8 +20,8 @@ public class InquiryController {
     private final InquiryService inquiryService;
 
     @GetMapping("inquiry")
-    public void inquiry(Model model, @RequestParam(required = false, defaultValue = "1") int page) {
-        model.addAttribute(inquiryService.findInquirysByPage(page));
+    public void inquiry(@AuthenticationPrincipal MemberAccount memer,Model model, @RequestParam(required = false, defaultValue = "1") int page) {
+        model.addAttribute(inquiryService.findInquirysByPage(page,memer.getUserId()));
     }
 
     @GetMapping("inquiry-form")
