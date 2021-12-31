@@ -14,6 +14,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Getter
 @DynamicInsert
 @DynamicUpdate
@@ -25,11 +27,10 @@ public class MatchMaster {
 
     @Id
     @GeneratedValue
-    @Column(name = "mm_idx")
-    private long id;
+    private long mmIdx;
 
     @ManyToOne
-    @JoinColumn(name = "tmCode")
+    @JoinColumn(name = "tmIdx")
     private Team team;
 
     private String title;           //타이틀
@@ -47,11 +48,12 @@ public class MatchMaster {
 
     private int mercenaryCnt;
     private int state;
+
     private LocalDateTime regDate;
     private String delYn;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "matchMaster", fetch = FetchType.EAGER)
-    private List<MatchGame> matchGames = new ArrayList<MatchGame>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "matchMaster", fetch = LAZY)
+    private List<MatchGame> matchGames = new ArrayList<>();
 
     public static MatchMaster createMatchMaster(TeamMatchRequest request, Location location, Team team) {
         String matchDateStr = request.getMatchDateTime().replace("T", " ");

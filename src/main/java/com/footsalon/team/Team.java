@@ -23,8 +23,7 @@ import java.util.List;
 public class Team {
 
     @Id @GeneratedValue
-    @Column(name = "team_idx")
-    private Long id;
+    private Long tmIdx;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "localCode")

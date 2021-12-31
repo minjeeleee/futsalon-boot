@@ -6,8 +6,11 @@ import com.footsalon.match.dto.TeamMatchRequest;
 import com.footsalon.team.Team;
 import com.footsalon.team.TeamService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,5 +27,9 @@ public class MatchMasterService {
         Location location = locationService.findLocation(request.getLocalCode());
         MatchMaster matchMaster = MatchMaster.createMatchMaster(request, location, team);
         matchMasterRepository.save(matchMaster);
+    }
+
+    public List<MatchMaster> findIngMatchs() {
+        return matchMasterRepository.findByState(0, Sort.by(Sort.Direction.DESC, "regDate"));
     }
 }

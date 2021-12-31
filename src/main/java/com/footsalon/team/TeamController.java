@@ -52,20 +52,20 @@ public class TeamController {
 
     @GetMapping(path = "modify")
     public void modifyTeam(Model model, @AuthenticationPrincipal MemberAccount memberAccount) {
-        Team team = teamService.findTeamById(memberAccount.getMember().getTeam().getId());
+        Team team = teamService.findTeamById(memberAccount.getMember().getTeam().getTmIdx());
         model.addAttribute("team", team);
         model.addAttribute("locations", locationService.findAllLocations());
     }
 
     @GetMapping(path = "manage")
     public void manageTeam(Model model, @AuthenticationPrincipal MemberAccount memberAccount) {
-        Team team = teamService.findTeamById(memberAccount.getMember().getTeam().getId());
+        Team team = teamService.findTeamById(memberAccount.getMember().getTeam().getTmIdx());
         model.addAttribute("team", team);
     }
 
     @GetMapping(path = "score")
     public void teamScore(Model model, @AuthenticationPrincipal MemberAccount memberAccount) {
-        Team team = teamService.findTeamById(memberAccount.getMember().getTeam().getId());
+        Team team = teamService.findTeamById(memberAccount.getMember().getTeam().getTmIdx());
         model.addAttribute("team", team);
     }
 
@@ -96,7 +96,7 @@ public class TeamController {
 
     @PostMapping(path = "modify")
     public String modifyTeam(Model model, TeamRequest request, @RequestParam MultipartFile teamFile, @AuthenticationPrincipal MemberAccount memberAccount) {
-        teamService.modifyTeam(memberAccount.getMember().getTeam().getId(), request, teamFile);
+        teamService.modifyTeam(memberAccount.getMember().getTeam().getTmIdx(), request, teamFile);
         return "redirect:/team/main";
     }
 
