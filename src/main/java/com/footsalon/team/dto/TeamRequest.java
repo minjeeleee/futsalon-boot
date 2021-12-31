@@ -15,7 +15,7 @@ public class TeamRequest {
     private String tmInfo;
 
     @NotBlank
-    private String tmGrade;
+    private String tmLevel;
 
     @NotBlank
     private String localCode;

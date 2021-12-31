@@ -62,8 +62,8 @@ public class TeamService {
         Team team = teamRepository.findById(teamIdx).orElseThrow(() -> new HandlableException(ErrorCode.TEAM_DOES_NOT_EXIST));
         Location location = locationService.findLocation(request.getLocalCode());
         team.modifyTeam(request, location);
-        System.out.println("request = " + request.getTmGrade());
-        System.out.println("team = " + team.getTmGrade());
+        System.out.println("request = " + request.getTmLevel());
+        System.out.println("team = " + team.getTmLevel());
 
         if(!teamFile.isEmpty()) {
             FileUtil fileUtil = new FileUtil();

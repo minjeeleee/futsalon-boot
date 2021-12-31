@@ -34,7 +34,7 @@ public class Team {
 
     private String tmInfo;
 
-    private String tmGrade;
+    private String tmLevel;
 
     @OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
     private List<Member> memberList = new ArrayList<>();
@@ -50,7 +50,7 @@ public class Team {
     public static Team createTeam(TeamRequest request, Location location) {
         return Team.builder()
                 .tmName(request.getTmName())
-                .tmGrade(request.getTmGrade())
+                .tmLevel(request.getTmLevel())
                 .tmInfo(request.getTmInfo())
                 .location(location)
                 .regDate(LocalDateTime.now())
@@ -59,7 +59,7 @@ public class Team {
 
     /* update */
     public void modifyTeam(TeamRequest request, Location location) {
-        this.tmGrade = request.getTmGrade();
+        this.tmLevel = request.getTmLevel();
         this.tmInfo = request.getTmInfo();
         this.location = location;
     }
