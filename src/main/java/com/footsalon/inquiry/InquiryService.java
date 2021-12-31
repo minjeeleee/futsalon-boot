@@ -3,9 +3,12 @@ package com.footsalon.inquiry;
 import com.footsalon.common.code.ErrorCode;
 import com.footsalon.common.exception.HandlableException;
 import com.footsalon.common.util.pagination.Paging;
+import com.footsalon.member.Member;
+import com.footsalon.member.model.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +20,9 @@ import java.util.Map;
 public class InquiryService {
 
     private final InquiryRepository inquiryRepository;
+    private final MemberRepository memberRepository;
 
-    public Map<String,Object> findInquirysByPage(int pageNumber) {
+    public Map<String,Object> findInquirysByPage(int pageNumber,String userId) {
 
         int cntPerPage = 5;
 
@@ -49,6 +53,8 @@ public class InquiryService {
     }
 
     public void deleteInquiry(long iqIdx) {
-        inquiryRepository.deleteById(iqIdx);
+        Inquiry inquiry = inquiryRepository.findById(iqIdx).orElseThrow(()-> new HandlableException(ErrorCode.UNAUTHORIZED_PAGE));
+        inquiry.setDeleteYn("Y");
+        inquiryRepository.save(inquiry);
     }
 }
