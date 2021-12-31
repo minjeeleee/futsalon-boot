@@ -19,11 +19,11 @@ public class Alarm {
     @GeneratedValue
     private Long alIdx;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mgIdx")
     private MatchGame matchGame;
 

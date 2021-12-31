@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace = "fragments/head :: head"></head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/team/team.css" />
+    <link rel="stylesheet" type="text/css" href="/css/team/team-form.css" />
+</head>
+<body>
+<header th:replace = " fragments/header :: header"></header>
+<section>
+    <div class="section">
+        <div class="myteam-wrap">
+            <h2><i class="far fa-futbol"></i> 나의 팀</h2>
+            <div class="myteam-con">
+                <div th:replace = " team/include/tab :: team-tab"></div>
+                <table class="team-member-form">
+                    <tr>
+                        <th width="80px">NO</th>
+                        <th>아이디</th>
+                        <th>이름</th>
+                        <th>팀원 등급</th>
+                        <th>팀장 위임</th>
+                        <th>팀원 추방</th>
+                    </tr>
+                    <tr th:each="member, status : ${team.memberList}">
+                        <td th:text="${status.count}">1</td>
+                        <td th:text="${member.userId}">userId</td>
+                        <td th:text="${member.userName}">userName</td>
+                        <td>
+                            <th:block th:if="${#authentication.principal.grade.toString().equals('ME03')}">
+                                <div class="selectbox">
+                                    <select name="grdOpt">
+                                        <option value="ME02">매니저</option>
+                                        <option value="ME01">팀원</option>
+                                    </select>
+                                </div>
+                            </th:block>
+                            <button class="btn-change-grade" onclick="manageGrade(this, '${tmMembers.userId}');return false;">변경</button>
+                        </td>
+                        <td><button onclick="manageDelegation('${tmMembers.userId}');">팀장 위임</button></td>
+                        <td><button onclick="manageExpulsion('${tmMembers.userId}');">추방</button></td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</section>
+<div class="pop-msg-wrap msg">
+    <div class="pop-msg">
+        <p></p>
+        <button onclick="btnClose();">확인</button>
+    </div>
+</div>
+<div class="pop-msg-wrap question">
+    <div class="pop-msg">
+        <p></p>
+        <button class="cancel-btn" onclick="btnClose();">취소</button>
+        <button class="submit-btn" onclick=""></button>
+    </div>
+</div>
+<div class="pop-msg-wrap answer">
+    <div class="pop-msg">
+        <p></p>
+        <button class="close-btn">확인</button>
+    </div>
+</div>
+<script type="text/javascript" src="/js/team/common.js"></script>
+<script type="text/javascript" src="/js/team/modify.js"></script>
+<footer th:replace = " fragments/footer :: footer"></footer>
+</body>
+</html>

@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 public interface TeamRepository extends JpaRepository<Team, Long> {
 
     Team findByTmName(String tmName);
+
+    Boolean existsByTmName(String tmName);
 }

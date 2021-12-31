@@ -22,7 +22,7 @@ public class Member {
     private String userId;
 
     @ManyToOne
-    @JoinColumn(name = "tmCode")
+    @JoinColumn(name = "team_idx")
     private Team team;
 
     @NotEmpty

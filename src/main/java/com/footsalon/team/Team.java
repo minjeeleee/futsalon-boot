@@ -35,8 +35,7 @@ public class Team {
 
     private String tmInfo;
 
-    @Enumerated(EnumType.STRING)
-    private TeamGrade tmGrade;
+    private String tmGrade;
 
     @OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
     private List<Member> memberList = new ArrayList<>();
@@ -52,7 +51,7 @@ public class Team {
     public static Team createTeam(TeamRequest request, Location location) {
         return Team.builder()
                 .tmName(request.getTmName())
-                .tmGrade(TeamGrade.valueOf(request.getTmGrade()))
+                .tmGrade(request.getTmGrade())
                 .tmInfo(request.getTmInfo())
                 .location(location)
                 .regDate(LocalDateTime.now())
@@ -61,8 +60,7 @@ public class Team {
 
     /* update */
     public void modifyTeam(TeamRequest request, Location location) {
-        this.tmName = request.getTmName();
-        this.tmGrade = TeamGrade.valueOf(request.getTmGrade());
+        this.tmGrade = request.getTmGrade();
         this.tmInfo = request.getTmInfo();
         this.location = location;
     }
@@ -74,10 +72,15 @@ public class Team {
     }
 
     public void setMemberList(Member member) {
-        this.getMemberList().add(member);
+        //this.getMemberList().add(member);
+        member.setTeam(this);
     }
 
     public void setFile(FileInfo file) {
         this.file = file;
+    }
+
+    public void setDelDate() {
+        this.delDate = LocalDateTime.now();
     }
 }

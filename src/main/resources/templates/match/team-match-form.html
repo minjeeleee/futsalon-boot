@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace = "fragments/head :: head">
+</head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/matching/matching-team-input.css" />
+    <script type="text/javascript"
+            src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=0e42e8466cb3ba42aaeb07ddd517695b&libraries=services,clusterer,drawing"></script>
+</head>
+<body>
+<header th:replace = " fragments/header :: header"></header>
+<section>
+    <div class="section">
+        <div class="new-match-wrap">
+            <h2><i class="far fa-futbol"></i> 팀매칭 등록</h2>
+            <div class="search-wrap">
+                <form th:action="@{/match/create-team-match}" method="post">
+                    <dl>
+                        <dt>경기지역</dt>
+                        <dd class="matchRegion">
+                            <label th:each="location : ${locations}">
+                                <input type="radio" name="localCode" th:value="${location.localCode}" required /> [[${location.localCity}]]
+                            </label>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>경기장소</dt>
+                        <dd>
+                            <input type="text" class="keyword" id="keyword" placeholder="경기장소를 입력하세요."/>
+                            <i class="fas fa-search" onclick="searchPlaces();"></i>
+                            <ul id="placesList"></ul>
+                            <input type="hidden" name="placeName">
+                            <input type="hidden" name="placeAddress">
+                            <!--<div id="map" style="width:0px; height:0px;"></div>-->
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>매치방식</dt>
+                        <dd class="matchStyle">
+                            <label><input type="radio" name="matchStyle" value="5:5">5 : 5</label>
+                            <label><input type="radio" name="matchStyle" value="6:6">6 : 6</label>
+                            <label><input type="radio" name="matchStyle" value="7:7">7 : 7</label>
+                            <span id="checkMatchStyle"></span>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>매치날짜</dt>
+                        <dd>
+                            <input type="datetime-local" id="matchDateTime" name="matchDateTime" required>
+                        </dd>
+
+                    </dl>
+
+                    <dl>
+                        <dt>구장비</dt>
+                        <dd>
+                            <input type="number" step="1000" min="0" name="expense" id="pay"/>&nbsp;&nbsp;원
+                            <span id="checkMatchPay"></span>
+                        </dd>
+
+                    </dl>
+                    <dl>
+                        <dt>우리팀 실력</dt>
+                        <dd class="level-dd">
+                            <label><input type="radio" name="teamLevel" value="HIGH">상</label>
+                            <label><input type="radio" name="teamLevel" value="MIDDLE">중</label>
+                            <label><input type="radio" name="teamLevel" value="LOW">하</label>
+                            <span id="checkMatchLevel"></span>
+                        </dd>
+                    </dl>
+                    <div class="textarea-wrap">
+                        <textarea id="contentId" name="content" placeholder="내용을 입력해주세요.">매너 게임해요!</textarea>
+                    </div>
+                    <input type="hidden" name="match" value="team">
+                    <input type="submit" value="등록">
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="pop-msg-wrap msg">
+    <div class="pop-msg">
+        <p></p>
+        <button onclick="btnClose();">확인</button>
+    </div>
+</div>
+<div class="pop-msg-wrap question">
+    <div class="pop-msg">
+        <p></p>
+        <button class="cancel-btn" onclick="btnClose();">취소</button>
+        <button class="submit-btn" onclick=""></button>
+    </div>
+</div>
+<div class="pop-msg-wrap answer">
+    <div class="pop-msg">
+        <p></p>
+        <button class="close-btn">확인</button>
+    </div>
+</div>
+<footer th:replace = " fragments/footer :: footer"></footer>
+<script type="text/javascript">
+    let searchPlaces = () => {
+        var keyword = document.getElementById('keyword').value;
+
+        if (!keyword) {
+            drawMsg('<i class="fas fa-times-circle"></i><br>경기장소를 입력해주세요.');
+            return false;
+        }
+
+        let listEl = document.getElementById('placesList');
+        listEl.innerHTML = '';
+        var places = new kakao.maps.services.Places();
+        var callback = function(result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                document.querySelector('#placesList').style.display = 'block';
+                for ( var i=0; i<result.length; i++ ) {
+                    listEl.appendChild(getListItem((result[i])));
+                }
+            } else{
+                drawMsg('<i class="fas fa-times-circle"></i><br>검색결과가 존재하지 않습니다.');
+            }
+        };
+
+        function getListItem(places) {
+            let placeName = places.place_name;
+            let placeAddress;
+            var el = document.createElement('li');
+            var itemStr = '<div class="info">' +
+                    '   <h5>' + placeName + '</h5>';
+            if (places.road_address_name) {
+                placeAddress = places.road_address_name;
+                itemStr += '    <span>' + placeAddress + '</span>';
+            } else {
+                placeAddress = places.address_name;
+                itemStr += '    <span>' +  placeAddress  + '</span>';
+            }
+            el.innerHTML = itemStr;
+            el.className = 'item';
+            el.setAttribute('onclick', 'selectPlace(this,\''+placeName+'\',\''+placeAddress+'\')');
+            return el;
+        }
+        places.keywordSearch(keyword, callback);
+    }
+
+    let selectPlace = (e, placeName, placeAddress) => {
+        let items = document.getElementsByClassName('item');
+        for (let item of items) {
+            item.style.backgroundColor = '#fff';
+        }
+        e.style.backgroundColor = '#eee';
+        document.getElementsByName('placeName')[0].value = placeName;
+        document.getElementsByName('placeAddress')[0].value = placeAddress;
+        document.getElementById('keyword').value = placeName;
+        document.querySelector('#placesList').style.display = 'none';
+    }
+
+    let regionRadios = document.querySelectorAll('.matchRegion input[type="radio"]');
+    for (let radio of regionRadios) {
+        radio.addEventListener('click', (e) => {
+           let labels = document.querySelectorAll('.regionRadios label');
+            for (let label of labels) label.className = '';
+            e.target.parentNode.className = 'selected';
+        });
+    }
+    let styleRadios = document.querySelectorAll('.matchStyle input[type="radio"]');
+    for (let radio of styleRadios) {
+        radio.addEventListener('click', (e) => {
+            let labels = document.querySelectorAll('.matchStyle label');
+            for (let label of labels) label.className = '';
+            e.target.parentNode.className = 'selected';
+        });
+    }
+    let levelRadios = document.querySelectorAll('.level-dd input[type="radio"]');
+    for (let radio of levelRadios) {
+        radio.addEventListener('click', (e) => {
+            let labels = document.querySelectorAll('.level-dd label');
+            for (let label of labels) label.className = '';
+            e.target.parentNode.className = 'selected';
+        });
+    }
+</script>
+<script type="text/javascript" src="/js/common.js"></script>
+</body>
+</html>

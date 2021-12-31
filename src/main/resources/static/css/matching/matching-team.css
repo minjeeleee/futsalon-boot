@@ -6,27 +6,24 @@
 
 /* ----------------------------sub-nav */
 .sub-nav-wrap {
-	display: flex;
-	justify-content: center;
 	margin-top: 40px;
 }
 
 .sub-nav {
+	display: flex;
 	margin: 0;
 	padding: 0;
 }
 
 .sub-nav a {
+	display: block;
+	width: 50%;
 	text-decoration: none;
-	font-size: 30px;
+	font-size: 28px;
 	font-weight: 400;
 	margin-bottom: 20px;
 	text-align: center;
-	display: inline-block;
-	float: left;
-	line-height: 53px;
-	width: 170px;
-	height: 60px;
+	line-height: 60px;
 	border: 1px solid var(--color-gray);
 	font-weight: 600;
 }

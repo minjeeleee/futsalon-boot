@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace = "fragments/head :: head"></head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/team/team.css" />
+    <link rel="stylesheet" type="text/css" href="/css/team/team-form.css" />
+</head>
+<body>
+<header th:replace = " fragments/header :: header"></header>
+<section>
+    <div class="section">
+        <div class="myteam-wrap">
+            <h2><i class="far fa-futbol"></i> 나의 팀</h2>
+            <div class="myteam-con">
+                <div th:replace = " team/include/tab :: team-tab"></div>
+                <div class="team-img"></div>
+
+                <c:if test="${authentication.grade=='ME03'}">
+                    <p class="leave-msg">팀을 해체하시면 <strong>팀원은 자동으로 전원 탈퇴되며 7일간 팀을 생성하실 수 없습니다.</strong><br>또한 동일한 이름으로 팀 생성이 불가능하니 신중하게 결정해주세요.</p>
+                    <button class="btn-leave-team" onclick="breakTeam('${team.tmCode}')">팀 해체하기</button>
+                </c:if>
+                <c:if test="${authentication.grade!='ME03'}">
+                    <p class="leave-msg">팀을 탈퇴하시면 <strong>더이상 팀 정보에 노출되지 않습니다.</strong><br>신중하게 결정해주세요.</p>
+                    <button class="btn-leave-team" onclick="leaveTeam('${authentication.userId}');">팀 탈퇴하기</button>
+                </c:if>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="pop-msg-wrap msg">
+    <div class="pop-msg">
+        <p></p>
+        <button onclick="btnClose();">확인</button>
+    </div>
+</div>
+<div class="pop-msg-wrap question">
+    <div class="pop-msg">
+        <p></p>
+        <button class="cancel-btn" onclick="btnClose();">취소</button>
+        <button class="submit-btn" onclick=""></button>
+    </div>
+</div>
+<div class="pop-msg-wrap answer">
+    <div class="pop-msg">
+        <p></p>
+        <button class="close-btn">확인</button>
+    </div>
+</div>
+<script type="text/javascript" src="/js/team/common.js"></script>
+<footer th:replace = " fragments/footer :: footer"></footer>
+</body>
+</html>

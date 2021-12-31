@@ -53,4 +53,8 @@ public class MemberService implements UserDetailsService {
     public void leaveMember(Member member) {
         memberRepository.save(member);
     }
+
+    public Member findByUserId(String userId) {
+        return memberRepository.findByUserId(userId);
+    }
 }
