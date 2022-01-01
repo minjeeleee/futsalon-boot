@@ -1,6 +1,6 @@
 package com.footsalon.alarm;
 
-import com.footsalon.match.MatchGame;
+import com.footsalon.matchGame.MatchGame;
 import com.footsalon.member.Member;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;

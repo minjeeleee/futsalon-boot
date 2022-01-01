@@ -1,5 +1,6 @@
-package com.footsalon.match;
+package com.footsalon.matchGame;
 
+import com.footsalon.match.MatchMaster;
 import com.footsalon.member.Member;
 import com.footsalon.team.Team;
 import lombok.*;
@@ -30,24 +31,26 @@ public class MatchGame {
     @JoinColumn(name = "mmIdx")
     private MatchMaster matchMaster;
 
-    @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "tmIdx")
-    private Team team;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "homeTeam")
+    private Team homeTeam;
 
-    private int state;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "awayTeam")
+    private Team awayTeam;
 
     @OneToMany
     @JoinColumn(name = "userId")
     private List<Member> mercenary = new ArrayList<>();
 
-    private String delYn;
+    private int state;
 
-    public static MatchGame createTeamMatchGame(MatchMaster matchMaster, Team team) {
+    public static MatchGame createTeamMatchGame(MatchMaster matchMaster, Team awayTeam) {
         return MatchGame.builder()
                 .matchMaster(matchMaster)
-                .team(team)
+                .homeTeam(matchMaster.getTeam())
+                .awayTeam(awayTeam)
                 .state(1)
-                .delYn("N")
                 .build();
     }
 }

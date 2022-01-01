@@ -39,16 +39,6 @@ class MatchMasterServiceTest {
         System.out.println(date);
     }
 
-    @Test
-    public void findByStateAndMatchDateTimeBeforeTest() throws Exception {
-        Team team = teamService.findTeamById(1L);
-        List<MatchMaster> matchMasterList =  matchMasterRepository.findByStateAndMatchDateTimeAfter(0, LocalDateTime.now().plusHours(4L), Sort.by(Sort.Direction.DESC, "regDate"));
-//        List<MatchMaster> matchMasterList =  matchMasterRepository.findByStateAndRegDateAfter(0, LocalDateTime.now(), Sort.by(Sort.Direction.DESC, "regDate"));
-        for (MatchMaster matchMaster : matchMasterList) {
-            System.out.println("matchMaster = " + matchMaster.getTitle());
-        }
-
-    }
 
 
 }

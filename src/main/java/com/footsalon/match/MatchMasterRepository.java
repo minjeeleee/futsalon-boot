@@ -14,4 +14,6 @@ public interface MatchMasterRepository extends JpaRepository<MatchMaster, Long> 
     List<MatchMaster> findByState(int state, Sort regDate);
 
     List<MatchMaster> findByStateAndMatchDateTimeAfter(int i, LocalDateTime plusHours, Sort regDate);
+
+    List<MatchMaster> findByTeam(Team team);
 }

@@ -42,7 +42,6 @@ public class MatchMasterController {
     @PostMapping(path = "/apply-team-match")
     @ResponseBody
     public String applyTeamMatch(Long mmIdx, @AuthenticationPrincipal MemberAccount memberAccount) {
-        System.out.println("mmIdx = " + mmIdx);
         return matchMasterService.applyTeamMatch(mmIdx, memberAccount.getTeam().getTmIdx());
     }
 

@@ -5,7 +5,7 @@ import com.footsalon.common.exception.HandlableException;
 import com.footsalon.location.Location;
 import com.footsalon.location.LocationService;
 import com.footsalon.match.dto.TeamMatchRequest;
-import com.footsalon.member.Member;
+import com.footsalon.matchGame.MatchGameService;
 import com.footsalon.member.model.service.MemberService;
 import com.footsalon.team.Team;
 import com.footsalon.team.TeamService;
@@ -23,7 +23,7 @@ import java.util.List;
 public class MatchMasterService {
 
     private final MatchMasterRepository matchMasterRepository;
-    private final MatchGameRepository matchGameRepository;
+    private final MatchGameService matchGameService;
     private final LocationService locationService;
     private final TeamService teamService;
     private final MemberService memberService;
@@ -47,9 +47,11 @@ public class MatchMasterService {
         if(matchMaster.getTeam() == team) {
             return "disable";
         }
-        MatchGame matchGame = MatchGame.createTeamMatchGame(matchMaster, team);
-        matchGameRepository.save(matchGame);
-        matchMaster.setState(1);
+        matchGameService.createMatchGame(matchMaster, team);
         return "available";
+    }
+
+    public List<MatchMaster> findMatchMastersByTeam(Team team) {
+        return matchMasterRepository.findByTeam(team);
     }
 }
