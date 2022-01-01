@@ -16,27 +16,24 @@
 }
 
 .sub-nav a {
-	display: block;
-	width: 50%;
-	text-decoration: none;
-	font-size: 28px;
-	font-weight: 400;
-	margin-bottom: 20px;
+	margin-bottom: 40px;
+	font-size: 20px;
+	width:50%;
 	text-align: center;
-	line-height: 60px;
-	border: 1px solid var(--color-gray);
-	font-weight: 600;
+	padding: 20px;
 }
 
 .sub-nav a:first-child {
-	border-radius: 10px 0 0 10px;
-	background: linear-gradient(45deg, #000, #1c1350, #000);
-	color: #fff;
+	border-top: 2px solid #483D8B;
+	border-right: 2px solid #483D8B;
+	border-left: 2px solid #483D8B;
+	color: #483d8b;
+	font-weight: bold;
 }
 
 .sub-nav a:last-child {
-	border-left: none;
-	border-radius: 0 10px 10px 0;
+	border-bottom: 2px solid #483D8B;
+	background-color: #ddd;
 }
 
 /* ----------------------------sub-nav */
@@ -81,6 +78,7 @@
 	cursor:pointer;
 	font-size:0.9em;
 	border-radius:5px;
+	margin-right: 5px;
 }
 
 .new-match-wrap label.selected{
@@ -116,7 +114,8 @@
 .search-role-wrap {
 	margin-top: 20px;
 	display: flex;
-	justify-content: end;
+	align-items: center;
+	justify-content: space-between;
 }
 
 .search-role a {
@@ -239,18 +238,15 @@
 .matching-write {
 	display: flex;
 	justify-content: end;
-	margin-bottom: 20px;
-	margin-right: 20px;
 }
 
 .matching-write a {
 	width:150px;
 	text-align:center;
-	padding:10px 20px;
+	padding:15px 20px;
 	background: linear-gradient(45deg, #000, #1c1350, #000);
 	border-radius:5px;
 	color:#ffffff;
-	margin-left:25px;
 	cursor:pointer;
 }
 

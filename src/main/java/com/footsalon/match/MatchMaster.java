@@ -74,4 +74,8 @@ public class MatchMaster {
                 .regDate(LocalDateTime.now())
                 .build();
     }
+
+    public void setState(int state) {
+        this.state = state;
+    }
 }

@@ -13,7 +13,8 @@ public enum ErrorCode {
 
 	/* 우경추가 */
 	TEAM_DOES_NOT_EXIST("팀이 존재하지 않습니다."),
-	LOCAL_CODE_DOES_NOT_EXIST("지역코드가 존재하지 않습니다.");
+	LOCAL_CODE_DOES_NOT_EXIST("지역코드가 존재하지 않습니다."),
+	MATCH_MASTER_DOES_NOT_EXIST("매치글이 존재하지 않습니다.");
 
 	public final String MSG;
 	public final String URL;

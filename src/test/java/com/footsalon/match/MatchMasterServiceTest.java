@@ -1,5 +1,7 @@
 package com.footsalon.match;
 
+import com.footsalon.team.Team;
+import com.footsalon.team.TeamService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -25,6 +27,9 @@ class MatchMasterServiceTest {
     @Autowired
     private MatchMasterRepository matchMasterRepository;
 
+    @Autowired
+    private TeamService teamService;
+
     @Test
     public void localDateTimeFormatterTest() throws Exception {
         String dateStr = "2021-12-30T19:23";
@@ -35,8 +40,10 @@ class MatchMasterServiceTest {
     }
 
     @Test
-    public void findByStateTest() throws Exception {
-        List<MatchMaster> matchMasterList =  matchMasterRepository.findByState(0, Sort.by(Sort.Direction.DESC, "regDate"));
+    public void findByStateAndMatchDateTimeBeforeTest() throws Exception {
+        Team team = teamService.findTeamById(1L);
+        List<MatchMaster> matchMasterList =  matchMasterRepository.findByStateAndMatchDateTimeAfter(0, LocalDateTime.now().plusHours(4L), Sort.by(Sort.Direction.DESC, "regDate"));
+//        List<MatchMaster> matchMasterList =  matchMasterRepository.findByStateAndRegDateAfter(0, LocalDateTime.now(), Sort.by(Sort.Direction.DESC, "regDate"));
         for (MatchMaster matchMaster : matchMasterList) {
             System.out.println("matchMaster = " + matchMaster.getTitle());
         }

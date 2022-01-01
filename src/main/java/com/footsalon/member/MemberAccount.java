@@ -1,6 +1,7 @@
 package com.footsalon.member;
 
 import com.footsalon.common.code.member.MemberGrade;
+import com.footsalon.team.Team;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -48,6 +49,10 @@ public class MemberAccount extends User {
     }
     public LocalDate getRegDate(){
         return member.getRegDate();
+    }
+
+    public Team getTeam() {
+        return member.getTeam();
     }
 
 }

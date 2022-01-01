@@ -50,10 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.mvcMatchers(HttpMethod.GET,"/member/logout").authenticated()
 			.mvcMatchers(HttpMethod.GET,"/team/managing").hasAuthority("leader")
 			.mvcMatchers(HttpMethod.GET,"/team/create-form","/team/join-team").hasAuthority("normal")
-			.mvcMatchers(HttpMethod.GET,"/matching/list-up").hasAuthority("leader")
-			.mvcMatchers(HttpMethod.GET,"/matching/mercenary-match-form","/matching/mercenary-modify","/matching/team-match-form","/matching/team-modify").hasAuthority("leader")
-			.mvcMatchers(HttpMethod.GET,"/team/managing").hasAuthority("leader")
-			.mvcMatchers(HttpMethod.GET,"/team/managing").hasAuthority("leader")
+			.mvcMatchers(HttpMethod.POST,"/match/apply-team-match","/match/team-match-form").hasAuthority("leader")
+			.mvcMatchers(HttpMethod.GET,"/team/create","/team/join").hasAuthority("normal")
 			.anyRequest().permitAll();
 		
 		http.formLogin()
@@ -65,6 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.csrf().ignoringAntMatchers("/mail");
 		http.csrf().ignoringAntMatchers("/member/**");
 		http.csrf().ignoringAntMatchers("/location/**");
+		http.csrf().ignoringAntMatchers("/match/**");
 		
 	}
 	
