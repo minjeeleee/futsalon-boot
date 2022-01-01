@@ -47,10 +47,19 @@ public class NoticeController {
         return "redirect:/notice/notice-detail?ntIdx="+notice.getNtIdx();
     }
 
+    @GetMapping ("main")
+    public String main(Model model,long ntIdx) {
+        noticeService.updateNotice(ntIdx);
+        model.addAttribute("msg","메인 등록이 완료되었습니다.");
+        model.addAttribute("url","/notice/notice-list");
+        return "common/result";
+    }
+    
+
     @GetMapping ("delete")
     public String delete(Model model,long ntIdx) {
         noticeService.deleteNotice(ntIdx);
-        model.addAttribute("msg","문의사항 삭제가 완료되었습니다.");
+        model.addAttribute("msg","공지사항 삭제가 완료되었습니다.");
         model.addAttribute("url","/notice/notice-list");
         return "common/result";
     }
