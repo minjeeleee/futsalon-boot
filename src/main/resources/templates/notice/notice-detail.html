@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace = "fragments/head :: head">
+</head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/support/support-form.css" />
+</head>
+<body>
+<header th:replace = " fragments/header :: header"></header>
+<section>
+    <div class="section">
+        <div class="new-support-wrap">
+            <div class="sub-nav-wrap">
+                <div class="sub-nav">
+                    <i class="far fa-clipboard"></i>공지사항 상세 페이지
+                </div>
+            </div>
+            <form id="modify-form" action="" method="post" th:object="${notice}">
+                <div class="search-wrap" >
+                    <input type="hidden" name="ntIdx" id="ntIdx" th:value="*{ntIdx}">
+                    <div class="tit_wraper"> 제목 : <input type="text" name="ntTitle" id="ntTitle" th:value="*{ntTitle}" readonly/></div>
+                    <div class="textarea-wraper">
+                        <textarea name="ntContent" id="ntContent" cols="100" rows="20"  th:text="*{ntContent}" readonly style="resize: none;"></textarea>
+                    </div>
+
+                    <!-- 추후 관리자 등급만 하단 버튼 보이게 처리 예정 -->
+                    <div class="button_wrapper">
+                        <input type="button" id="modify" class="but-style" value="수정">
+                        <input type="hidden" id="done" class="but-style" value="수정 완료">
+                        <div style="display:inline-block" class="but-style"> <a class="but-style" th:href = "|/notice/delete?ntIdx=*{ntIdx}|">삭제</a></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<footer th:replace = " fragments/footer :: footer"></footer>
+<script type="text/javascript">
+    	let modify = document.getElementById('modify');
+	    let del = document.getElementById('delete');
+	    let type = document.getElementById('type');
+
+        let form = document.getElementById('modify-form');
+	    let done = document.getElementById('done');
+
+	    modify.addEventListener('click', () => {
+	       document.getElementById('title').removeAttribute('readonly');
+            document.getElementById('content').removeAttribute('readonly');
+            type.removeAttribute('disabled');
+            done.setAttribute('type','submit');
+            modify.setAttribute('type','hidden');
+	    })
+
+        document.getElementById('done').addEventListener('click', () => {
+            form.setAttribute("action","/notice/modify");
+        })
+    </script>
+</body>
+</html>

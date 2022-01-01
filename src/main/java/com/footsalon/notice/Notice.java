@@ -1,13 +1,14 @@
 package com.footsalon.notice;
 
+import com.footsalon.member.Member;
 import lombok.Data;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import java.time.LocalDateTime;
+import javax.persistence.*;
+import java.time.LocalDate;
+
 
 @Data
 @Entity
@@ -19,10 +20,21 @@ public class Notice {
     @GeneratedValue
     private long ntIdx;
 
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private Member member;  //작성자
+
     private String ntTitle;
     private String ntContent;
-    private LocalDateTime regDate;
+
+    @ColumnDefault("sysdate")
+    private LocalDate regDate;
+
+    @ColumnDefault("'N'")
     private String delYn;
+
+    @ColumnDefault("0")
     private int ntMain;
+
     private int views;
 }
