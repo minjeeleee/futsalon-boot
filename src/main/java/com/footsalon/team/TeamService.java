@@ -7,8 +7,9 @@ import com.footsalon.common.util.file.FileInfo;
 import com.footsalon.common.util.file.FileUtil;
 import com.footsalon.location.Location;
 import com.footsalon.location.LocationService;
+import com.footsalon.matchGame.MatchGame;
+import com.footsalon.matchGame.MatchGameService;
 import com.footsalon.member.Member;
-import com.footsalon.member.MemberAccount;
 import com.footsalon.member.model.service.MemberService;
 import com.footsalon.team.dto.TeamRequest;
 import com.footsalon.teamApplicant.TeamApplicantService;
@@ -16,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +29,7 @@ public class TeamService {
     private final LocationService locationService;
     private final TeamApplicantService teamApplicantService;
     private final MemberService memberService;
+    private final MatchGameService matchGameService;
 
     @Transactional
     public void createTeam(Member member, TeamRequest request, MultipartFile teamFile) {
@@ -91,5 +95,9 @@ public class TeamService {
         System.out.println("team.getTmName() = " + team.getTmName());
         member.setTeam(team);
         member.setGrade(MemberGrade.ME01);
+    }
+
+    public List<MatchGame> getMatchGamesInfo(Team myTeam) {
+        return matchGameService.findMyMatchGameList(myTeam);
     }
 }

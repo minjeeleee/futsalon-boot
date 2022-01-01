@@ -59,7 +59,7 @@
                         <div class="tit-info">
                             <div class="state recruiting">모집중</div>
                             <div class="tit">
-                                <strong th:text="${matchBoard.title}"></strong>
+                                <strong>&#91;[[${matchBoard.location.localCity}]] &#47; [[${matchBoard.matchStyle}]]&#93; [[${matchBoard.placeName}]]</strong>
                                 <div>
                                     <c:forEach var="i" begin="1" end="${matchBox.getTmRating()}">
                                         <div style="float: left;"><i class="fas fa-star full-star"></i></div>

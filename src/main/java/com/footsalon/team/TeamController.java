@@ -1,13 +1,11 @@
 package com.footsalon.team;
 
-import com.footsalon.location.Location;
 import com.footsalon.location.LocationService;
-import com.footsalon.member.Member;
+import com.footsalon.matchGame.MatchGame;
 import com.footsalon.member.MemberAccount;
 import com.footsalon.member.model.service.MemberService;
 import com.footsalon.team.dto.TeamRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.Banner;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -71,8 +69,12 @@ public class TeamController {
 
     @GetMapping(path = "/score")
     public void teamScore(Model model, @AuthenticationPrincipal MemberAccount memberAccount) {
-        Team team = teamService.findTeamById(memberAccount.getMember().getTeam().getTmIdx());
-        model.addAttribute("team", team);
+        Team myTeam = teamService.findTeamById(memberAccount.getMember().getTeam().getTmIdx());
+//        경기내역
+        List<MatchGame> myMatchGameList = teamService.getMatchGamesInfo(myTeam);
+
+        model.addAttribute("team", myTeam);
+        model.addAttribute("matchGameList", myMatchGameList);
     }
 
     @GetMapping(path = "/team-board")

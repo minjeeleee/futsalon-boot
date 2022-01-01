@@ -14,7 +14,7 @@
             <div class="myteam-con">
                 <div th:replace = " team/include/tab :: team-tab"></div>
                 <div class="rating_area">
-                    <p><strong th:text="${team.tmName}"></strong><br>전적 ${team.gameCnt}전 ${team.tmWin}승 ${team.tmLose}패 <span style="color:#ddd;"> ㅣ </span> 평균 평점 ${team.tmRating}/5점</p>
+                    <p><strong th:text="${team.tmName}"></strong><br>전적 0전 0승 0패 <span style="color:#ddd;"> ㅣ </span> 평균 평점 0/5점</p>
                     <div class="our_rating star">
                         <c:forEach var="i" begin="1" end="${team.tmRating}">
                             <i class="fas fa-star full-star"></i>
@@ -33,37 +33,27 @@
                         <th>상대팀</th>
                         <th>경기 결과</th>
                         <th>상대팀 평가</th>
-                        <c:if test="${empty results}">
-                    <tr><td colspan="5"><br>완료된 매치가 없습니다.<br><br></td></tr>
-                    </c:if>
-                    <c:forEach items="${results}" var="results" varStatus="status">
-                        <tr>
-                            <td>${results.matchDate} ${results.matchTime}</td>
-                            <td>${results.rivalName eq team.tmName ? results.hostName : results.rivalName}</td>
+                        <tr th:if="${matchGameList == null}">
+                            <td colspan="5"><br>진행중인 매치가 없습니다.<br><br></td>
+                        </tr>
+                        <tr th:if="${matchGameList != null}" th:each="matchGame : ${matchGameList}">
+                            <td>[[${#strings.substring(matchGame.matchMaster.matchDateTime,0,10)}]]<br>[[${#strings.substring(matchGame.matchMaster.matchDateTime,11,16)}]]</td>
+                            <td>[[${matchGame.homeTeam.tmName}]] vs [[${matchGame.awayTeam.tmName}]]</td>
                             <td>
-                                <c:if test="${authentication.grade=='ME03'}">
-                                    <c:choose>
-                                        <c:when test="${empty results.winner and results.matchSchedule lt nowDate}">
-                                            <div class="selectbox">
-                                                <select>
-                                                    <option value="" disabled selected>= 결과 =</option>
-                                                    <option value="1">승</option>
-                                                    <option value="2">패</option>
-                                                </select>
-                                            </div>
-                                            <button class="btn-change-grade" onclick="updateWinner(this, '${results.mgIdx}', '${results.hostCode}', '${results.rivalCode}', '${team.tmCode}');">저장</button>
-                                        </c:when>
-                                        <c:when test="${empty results.winner and results.matchSchedule ge nowDate}">
-                                            경기예정
-                                        </c:when>
-                                        <c:when test="${not empty results.winner}">
-                                            ${results.winner eq team.tmCode?'승':'패'}
-                                        </c:when>
-                                    </c:choose>
-                                </c:if>
-                                <c:if test="${authentication.grade!='ME03'}">
-                                    ${empty results.winner?'미등록':results.winner eq team.tmCode?'승':'패'}
-                                </c:if>
+                                <th:block th:if="${#authentication.principal.grade.toString().equals('ME03')}">
+                                    <div class="selectbox">
+                                        <select>
+                                            <option value="" disabled selected>= 결과 =</option>
+                                            <option value="1">승</option>
+                                            <option value="2">패</option>
+                                        </select>
+                                    </div>
+                                    <button class="btn-change-grade" onclick="updateWinner(this, '${results.mgIdx}', '${results.hostCode}', '${results.rivalCode}', '${team.tmCode}');">저장</button>
+                                </th:block>
+                                <th:block th:unless="${#authentication.principal.grade.toString().equals('ME03')}">
+                                    <span class="result-column">경기예정</span>
+                                </th:block>
+
                             </td>
                             <td class="star">
                                 <c:if test="${authentication.grade=='ME03'}">
@@ -109,7 +99,6 @@
                             </td>
 
                         </tr>
-                    </c:forEach>
                 </table>
             </div>
         </div>

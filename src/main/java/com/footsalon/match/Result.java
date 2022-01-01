@@ -1,12 +1,19 @@
 package com.footsalon.match;
 
+import com.footsalon.matchGame.MatchGame;
+import com.footsalon.team.Team;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
-@Data
+import static javax.persistence.FetchType.LAZY;
+
+@Getter
+@Setter
 @Entity
 @DynamicInsert
 @DynamicUpdate
@@ -16,14 +23,15 @@ public class Result {
     @GeneratedValue
     private long thIdx;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = LAZY)
     @JoinColumn(name = "mgIdx")
     private MatchGame matchGame;
 
-    @Column(columnDefinition = "number default 0")
-    private int rivalRating;
-    @Column(columnDefinition = "number default 0")
-    private int hostRating;
+    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "tmIdx")
+    private Team team;
 
-    private String winner;
+    private int teamRating;
+
+    private String result;
 }

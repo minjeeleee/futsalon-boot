@@ -2,7 +2,7 @@ package com.footsalon.match;
 
 import com.footsalon.location.Location;
 import com.footsalon.match.dto.TeamMatchRequest;
-import com.footsalon.member.Member;
+import com.footsalon.matchGame.MatchGame;
 import com.footsalon.team.Team;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -33,8 +33,6 @@ public class MatchMaster {
     @JoinColumn(name = "tmIdx")
     private Team team;
 
-    private String title;           //타이틀
-
     @ManyToOne
     @JoinColumn(name = "localCode")
     private Location location;
@@ -59,7 +57,6 @@ public class MatchMaster {
         String matchDateStr = request.getMatchDateTime().replace("T", " ");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return MatchMaster.builder()
-                .title("[" + location.getLocalCity() + " | " + request.getMatchStyle() + "] " + request.getPlaceName())
                 .location(location)
                 .team(team)
                 .placeName(request.getPlaceName())
