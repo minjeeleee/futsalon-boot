@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/head :: head"></head>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/css/login/login.css"/>
+    </head>
+<body>
+<header th:replace=" fragments/header :: header"></header>
+<section>
+    <div class="section">
+        <div class="login-wrap search-page">
+            <h2><i class="fas fa-user-shield"></i> 아이디 찾기</h2>
+            <div class="login-con">
+                <th:block th:if="${#strings.isEmpty(findMember.userId)}" th:unless="${param.error}">
+                    <p>회원가입시 입력하신 이름과 이메일을 입력하세요.</p>
+                    <form action="/member/lostId" method="post">
+                        <table class="login-search-form">
+                            <tr>
+                                <th>이름</th>
+                                <td><input type="text" name="userName" id="userName" size="8" required/></td>
+                            </tr>
+                            <tr>
+                                <th>이메일</th>
+                                <td>
+                                    <input type="email" name="email" required/>
+                                </td>
+                            </tr>
+                            <tr class="no-border">
+                                <td class="btn-search" colspan="2">
+                                    <input type="submit" value="아이디 찾기"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </th:block>
+
+                <th:block th:if="${not #strings.isEmpty(findMember.userId)}">
+                    <p style="margin-bottom: 0px; font-size:20px">회원가입하신 아이디</p>
+                    <form action="/member/login-form" method="get">
+                        <table class="login-search-form">
+                            <h2 style="padding:20px" th:text="${findMember.userId}"></h2>
+                            <tr class="no-border" style="border-top:none">
+                                <td class="btn-search" colspan="2">
+                                    <input type="submit" value="로그인"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </th:block>
+
+                <th:block th:if="${param.error}">
+                    <p>회원가입시 입력하신 이름과 이메일을 입력하세요.</p>
+                    <p style="color:red;">입력하신 정보는 존재하지 않습니다.</p>
+                    <form action="/member/lostId" method="post">
+                        <table class="login-search-form">
+                            <tr>
+                                <th>이름</th>
+                                <td><input type="text" name="userName" id="userName" size="8" required/></td>
+                            </tr>
+                            <tr>
+                                <th>이메일</th>
+                                <td>
+                                    <input type="email" name="email" required/>
+                                </td>
+                            </tr>
+                            <tr class="no-border">
+                                <td class="btn-search" colspan="2">
+                                    <input type="submit" value="아이디 찾기"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </th:block>
+
+            </div>
+        </div>
+    </div>
+</section>
+<footer th:replace=" fragments/footer :: footer"></footer>
+</body>
+</head></head></head></html>

@@ -6,6 +6,7 @@ import com.footsalon.member.Member;
 import com.footsalon.member.MemberAccount;
 import com.footsalon.member.model.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberService implements UserDetailsService {
@@ -56,5 +58,9 @@ public class MemberService implements UserDetailsService {
 
     public Member findByUserId(String userId) {
         return memberRepository.findByUserId(userId);
+    }
+
+    public Member findByUserNameAndEmail(String userName, String email) {
+        return memberRepository.findByUserNameAndEmail(userName, email);
     }
 }
