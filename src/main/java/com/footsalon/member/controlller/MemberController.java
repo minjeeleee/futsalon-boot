@@ -5,6 +5,7 @@ import com.footsalon.member.model.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -38,6 +39,25 @@ public class MemberController {
         log.info("member={}",member);
         memberService.join(member);
         return "redirect:/";
+    }
+
+    @GetMapping("lostId")
+    public void lostId(Model model) {
+        Member member = new Member();
+        model.addAttribute("findMember" ,member);
+    }
+
+    @PostMapping("lostId")
+    public String findId(String userName,String email,Model model) {
+
+        Member member = new Member();
+        member = memberService.findByUserNameAndEmail(userName, email);
+
+        if(member == null) {
+            return "redirect:/member/lostId?error";
+        }
+        model.addAttribute("findMember" ,member);
+        return "member/lostId";
     }
 
 }
