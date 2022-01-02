@@ -57,7 +57,7 @@ public class Team {
     @Transient
     private int lose;
     @Transient
-    private double teamRating;
+    private int teamRating;
 
     /* create */
     public static Team createTeam(TeamRequest request, Location location) {
@@ -109,7 +109,7 @@ public class Team {
         this.lose = lose;
     }
 
-    public void setTeamRating(double teamRating) {
+    public void setTeamRating(int teamRating) {
         this.teamRating = teamRating;
     }
 }

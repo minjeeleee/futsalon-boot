@@ -27,4 +27,14 @@ public class ResultService {
         Result result = Result.createResult(winner);
         return resultRepository.save(result);
     }
+
+    @Transactional
+    public void updateRating(Long thIdx, String target, int rating) {
+        Result result = resultRepository.findById(thIdx).orElseThrow(()-> new HandlableException(ErrorCode.RESULT_DOES_NOT_EXIST));
+        if (target.equals("homeTeam")) {
+            result.setHomeRating(rating);
+        } else {
+            result.setAwayRating(rating);
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package com.footsalon.match;
 
 import com.footsalon.location.LocationService;
+import com.footsalon.match.dto.RatingRequest;
 import com.footsalon.match.dto.ResultRequest;
 import com.footsalon.match.dto.TeamMatchRequest;
 import com.footsalon.member.MemberAccount;
@@ -8,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -53,4 +51,11 @@ public class MatchMasterController {
         return "success";
     }
 
+    @PostMapping(path = "/save-rating")
+    @ResponseBody
+    public String saveRating(RatingRequest request) {
+        matchMasterService.saveRating(request);
+        return "success";
+
+    }
 }

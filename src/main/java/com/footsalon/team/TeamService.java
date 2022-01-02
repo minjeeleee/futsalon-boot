@@ -69,7 +69,7 @@ public class TeamService {
     public Team findById(Long teamIdx) {
         return teamRepository.findById(teamIdx).orElseThrow(()-> new HandlableException(ErrorCode.TEAM_DOES_NOT_EXIST));
     }
-    public Team findTeamById(Long teamIdx) {
+    public Team findTeamWithScoreById(Long teamIdx) {
         Team team = teamRepository.findById(teamIdx).orElseThrow(()->new HandlableException(ErrorCode.TEAM_DOES_NOT_EXIST));
 
 //        매치수 구하기
@@ -99,8 +99,8 @@ public class TeamService {
         }
         team.setWin(win);
         team.setLose(resultCnt-win);
-        if (resultCnt > 0 && win > 0) {
-            team.setTeamRating(ratingSum/ratingCnt);
+        if (ratingCnt > 0 && ratingSum > 0) {
+            team.setTeamRating(Math.round(ratingSum/ratingCnt));
         }
         return team;
     }

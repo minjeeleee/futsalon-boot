@@ -32,17 +32,11 @@ class TeamServiceTest {
     @Test
     @DisplayName("팀멤버찾기")
     public void findTeamMember() throws Exception {
-        Team team = teamService.findTeamById(7L);
+        Team team = teamService.findById(7L);
         List<Member> memberList = team.getMemberList();
         for (Member member : memberList) {
             System.out.println("member = " + member.getUserId());
         }
-    }
-
-    @Test
-    public void findMatchGame() throws Exception {
-        Team team = teamService.findTeamById(1L);
-//        List<MatchGame> matchGameList = matchGameRepository.findAllMatchGames(team.getTmIdx());
     }
 
 }

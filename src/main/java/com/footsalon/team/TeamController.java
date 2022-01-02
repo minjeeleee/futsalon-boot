@@ -56,23 +56,20 @@ public class TeamController {
 
     @GetMapping(path = "/modify")
     public void modifyTeam(Model model, @AuthenticationPrincipal MemberAccount memberAccount) {
-        Team team = teamService.findTeamById(memberAccount.getMember().getTeam().getTmIdx());
-        model.addAttribute("team", team);
+        model.addAttribute("team", teamService.findTeamWithScoreById(memberAccount.getMember().getTeam().getTmIdx()));
         model.addAttribute("locations", locationService.findAllLocations());
     }
 
     @GetMapping(path = "/manage")
     public void manageTeam(Model model, @AuthenticationPrincipal MemberAccount memberAccount) {
-        Team team = teamService.findTeamById(memberAccount.getMember().getTeam().getTmIdx());
+        Team team = teamService.findById(memberAccount.getMember().getTeam().getTmIdx());
         model.addAttribute("team", team);
     }
 
     @GetMapping(path = "/score")
     public void teamScore(Model model, @AuthenticationPrincipal MemberAccount memberAccount) {
-        Team myTeam = teamService.findTeamById(memberAccount.getMember().getTeam().getTmIdx());
-//        경기내역
+        Team myTeam = teamService.findTeamWithScoreById(memberAccount.getMember().getTeam().getTmIdx());
         List<MatchGame> myMatchGameList = teamService.getMatchGamesInfo(myTeam);
-
         model.addAttribute("team", myTeam);
         model.addAttribute("matchGameList", myMatchGameList);
     }

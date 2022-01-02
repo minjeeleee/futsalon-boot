@@ -16,15 +16,9 @@
                 <div class="rating_area">
                     <p><strong th:text="${team.tmName}"></strong><br>전적 [[${team.matchCnt}]]전 [[${team.win}]]승 [[${team.lose}]]패 <span style="color:#ddd;"> ㅣ </span> 평균 평점 [[${team.teamRating}]]/5점</p>
                     <div class="our_rating star">
-                        <c:forEach var="i" begin="1" end="${team.tmRating}">
+                        <th:block th:each="num: ${#numbers.sequence(1,team.teamRating)}">
                             <i class="fas fa-star full-star"></i>
-                        </c:forEach>
-                        <c:if test="${team.tmRating%1!=0}">
-                            <i class="fas fa-star-half-alt"></i>
-                        </c:if>
-                        <c:forEach var="i" begin="1" end="${5-team.tmRating}">
-                            <i class="far fa-star star"></i>
-                        </c:forEach>
+                        </th:block>
                     </div>
                 </div>
                 <table class="team-member-form">
@@ -32,15 +26,15 @@
                         <th>경기일자</th>
                         <th>상대팀</th>
                         <th>경기 결과</th>
-                        <th>상대팀 평가</th>
+                        <th>상대팀에 대한 평가</th>
                         <tr th:if="${matchGameList == null}">
                             <td colspan="5"><br>진행중인 매치가 없습니다.<br><br></td>
                         </tr>
                         <tr th:if="${matchGameList != null}" th:each="matchGame : ${matchGameList}">
-                            <td>[[${#strings.substring(matchGame.matchMaster.matchDateTime,0,10)}]]<br>[[${#strings.substring(matchGame.matchMaster.matchDateTime,11,16)}]]</td>
-                            <td>[[${matchGame.homeTeam.tmName}]] vs [[${matchGame.awayTeam.tmName}]]</td>
+                            <td>[[${#strings.substring(matchGame.matchMaster.matchDateTime,0,10)}]] [[${#strings.substring(matchGame.matchMaster.matchDateTime,11,16)}]]</td>
+                            <td th:text="${matchGame.homeTeam.tmIdx eq team.tmIdx ? matchGame.awayTeam.tmName : matchGame.homeTeam.tmName}"></td>
                             <td>
-                                <th:block th:if="${#authentication.principal.grade.toString().equals('ME03') and result == null}">
+                                <th:block th:if="${#authentication.principal.grade.toString().equals('ME03') and matchGame.result == null}">
                                     <div class="selectbox">
                                         <select>
                                             <option value="" disabled selected> = 결과 = </option>
@@ -50,46 +44,37 @@
                                     </div>
                                     <button class="btn-change-grade" th:onclick="|javascript:updateResult(this,${matchGame.mgIdx})|">저장</button>
                                 </th:block>
-                                <th:block th:unless="${#authentication.principal.grade.toString().equals('ME03')}">
-                                    <span class="result-column">경기예정</span>
-                                </th:block>
-
+                                <th:block th:if="${!#authentication.principal.grade.toString().equals('ME03') and matchGame.result == null}"><span class="result-column">미등록</span></th:block>
+                                <th:block th:if="${matchGame.result != null}" th:text="${matchGame.result.winner.tmIdx eq team.tmIdx ? '승' : '패'}"></th:block>
                             </td>
                             <td class="star">
-                                            <div class="selectbox">
-                                                <select name="${results.hostName eq team.tmName?'rivalRating':'hostRating'}">
-                                                    <option value="" disabled selected>= 평가 =</option>
-                                                    <option value="5">5</option>
-                                                    <option value="4">4</option>
-                                                    <option value="3">3</option>
-                                                    <option value="2">2</option>
-                                                    <option value="1">1</option>
-                                                </select>
-                                            </div>
-                                            <button class="btn-change-grade" onclick="updateRslt(this, '${results.mgIdx}', '${results.hostCode}', '${results.rivalCode}', '${team.tmCode}');">저장</button>
-
-                                            경기예정
-
-                                <c:if test="${results.rivalRating!=0 and results.hostName eq team.tmName}">
-                                    <c:forEach var="i" begin="1" end="${results.rivalRating}">
+                                <th:block th:if="${matchGame.result == null}">결과 미등록</th:block>
+                                <th:block th:if="${#authentication.principal.grade.toString().equals('ME03') and matchGame.result != null and
+                                                ((team.tmIdx eq matchGame.homeTeam.tmIdx and matchGame.result.awayRating == 0) or (team.tmIdx eq matchGame.awayTeam.tmIdx and matchGame.result.homeRating == 0))}">
+                                    <div class="selectbox">
+                                        <select>
+                                            <option value="" disabled selected>= 평가 =</option>
+                                            <option value="5">5</option>
+                                            <option value="4">4</option>
+                                            <option value="3">3</option>
+                                            <option value="2">2</option>
+                                            <option value="1">1</option>
+                                        </select>
+                                    </div>
+                                    <button class="btn-change-grade" th:onclick="|javascript:updateRating(this,${matchGame.mgIdx})|">저장</button>
+                                </th:block>
+                                <th:block th:if="${!#authentication.principal.grade.toString().equals('ME03') and matchGame.result != null and
+                                                ((team.tmIdx eq matchGame.homeTeam.tmIdx and matchGame.result.awayRating == 0) or (team.tmIdx eq matchGame.awayTeam.tmIdx and matchGame.result.homeRating == 0))}">평가 미등록</th:block>
+                                <th:block th:if="${matchGame.result != null and (team.tmIdx eq matchGame.homeTeam.tmIdx and matchGame.result.awayRating > 0)}">
+                                    <th:block th:each="num: ${#numbers.sequence(1,matchGame.result.awayRating)}">
                                         <i class="fas fa-star full-star"></i>
-                                    </c:forEach>
-                                    <c:forEach var="i" begin="1" end="${5-results.rivalRating}">
-                                        <i class="far fa-star"></i>
-                                    </c:forEach>
-                                </c:if>
-                                <c:if test="${results.hostRating!=0 and results.rivalName eq team.tmName}">
-                                    <c:forEach var="i" begin="1" end="${results.hostRating}">
+                                    </th:block>
+                                </th:block>
+                                <th:block th:if="${matchGame.result != null and (team.tmIdx eq matchGame.awayTeam.tmIdx and matchGame.result.homeRating > 0)}">
+                                    <th:block th:each="num: ${#numbers.sequence(1,matchGame.result.homeRating)}">
                                         <i class="fas fa-star full-star"></i>
-                                    </c:forEach>
-                                    <c:forEach var="i" begin="1" end="${5-results.hostRating}">
-                                        <i class="far fa-star"></i>
-                                    </c:forEach>
-                                </c:if>
-                                <c:if test="${authentication.grade!='ME03'}">
-                                    <c:if test="${results.rivalRating==0 and results.hostName eq team.tmName}">미등록</c:if>
-                                    <c:if test="${results.hostRating==0 and results.rivalName eq team.tmName}">미등록</c:if>
-                                </c:if>
+                                    </th:block>
+                                </th:block>
                             </td>
 
                         </tr>
@@ -123,8 +108,8 @@
     let updateResult = (e, mgIdx) => {
         let tmIdx = [[${team.tmIdx}]];
         let result = e.parentNode.childNodes[1].childNodes[1].value;
-        if(result == "" || result == null) {
-            drawMsg('<i class="fas fa-times-circle"></i><br>경기 결과를 입력해주세요.');
+        if(result == '' || result == null) {
+            drawMsg('<i class="fas fa-times-circle"></i><br>경기 결과를 선택해주세요.');
             return false;
         }
         drawQuestion('경기 결과를 저장하시겠습니까?','saveResult('+tmIdx+','+mgIdx+',"'+result+'");');
@@ -137,7 +122,32 @@
             data: { tmIdx: tmIdx, mgIdx: mgIdx, result: result },
             dataType: 'text',
             success: (text) => {
-                drawMsg('<i class="fas fa-times-circle"></i><br>결과를 저장하였습니다.');
+                drawAnswer('<i class="fas fa-times-circle"></i><br>결과를 저장하였습니다.', '/team/score');
+            },
+            error: function (e) {
+                drawMsg('<i class="fas fa-times-circle"></i><br>에러가 발생하여 요청이 실패했습니다.');
+            }
+        });
+    }
+
+    let updateRating = (e, mgIdx) => {
+        let tmIdx = [[${team.tmIdx}]];
+        let rating = e.parentNode.childNodes[1].childNodes[1].value;
+        if(rating == '' || rating == null) {
+            drawMsg('<i class="fas fa-times-circle"></i><br>상대팀 평가를 선택해주세요.');
+            return false;
+        }
+        drawQuestion('상대팀 평가를 저장하시겠습니까?','saveRating('+tmIdx+','+mgIdx+','+rating+');');
+    }
+
+    let saveRating = (tmIdx, mgIdx, rating) => {
+        $.ajax({
+            type: 'POST',
+            url: '/match/save-rating',
+            data: { tmIdx: tmIdx, mgIdx: mgIdx, rating: rating },
+            dataType: 'text',
+            success: (text) => {
+                drawAnswer('<i class="fas fa-times-circle"></i><br>평가를 저장하였습니다.', '/team/score');
             },
             error: function (e) {
                 drawMsg('<i class="fas fa-times-circle"></i><br>에러가 발생하여 요청이 실패했습니다.');

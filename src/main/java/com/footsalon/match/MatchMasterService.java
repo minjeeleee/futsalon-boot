@@ -4,6 +4,7 @@ import com.footsalon.common.code.ErrorCode;
 import com.footsalon.common.exception.HandlableException;
 import com.footsalon.location.Location;
 import com.footsalon.location.LocationService;
+import com.footsalon.match.dto.RatingRequest;
 import com.footsalon.match.dto.ResultRequest;
 import com.footsalon.match.dto.TeamMatchRequest;
 import com.footsalon.matchGame.MatchGame;
@@ -35,7 +36,7 @@ public class MatchMasterService {
 
     @Transactional
     public void createMatchMaster(TeamMatchRequest request, Long teamId) {
-        Team team = teamService.findTeamById(teamId);
+        Team team = teamService.findById(teamId);
         Location location = locationService.findLocation(request.getLocalCode());
         MatchMaster matchMaster = MatchMaster.createMatchMaster(request, location, team);
         matchMasterRepository.save(matchMaster);
@@ -48,7 +49,7 @@ public class MatchMasterService {
     @Transactional
     public String applyTeamMatch(Long mmIdx, Long tmIdx) {
         MatchMaster matchMaster = matchMasterRepository.findById(mmIdx).orElseThrow(()->new HandlableException(ErrorCode.MATCH_MASTER_DOES_NOT_EXIST));
-        Team team = teamService.findTeamById(tmIdx);
+        Team team = teamService.findById(tmIdx);
         if(matchMaster.getTeam() == team) {
             return "disable";
         }
@@ -81,5 +82,18 @@ public class MatchMasterService {
         Result result = resultService.createResult(winner);
         matchGame.updateResult(result);
 
+    }
+
+    @Transactional
+    public void saveRating(RatingRequest request) {
+        Team team = teamService.findById(request.getTmIdx());
+        MatchGame matchGame = matchGameService.findById(request.getMgIdx());
+        String target = "";
+        if (matchGame.getHomeTeam().getTmIdx() == team.getTmIdx()) {
+            target = "awayTeam";
+        } else {
+            target = "homeTeam";
+        }
+        resultService.updateRating(matchGame.getResult().getThIdx(), target, request.getRating());
     }
 }
