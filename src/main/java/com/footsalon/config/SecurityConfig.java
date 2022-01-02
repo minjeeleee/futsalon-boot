@@ -61,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.defaultSuccessUrl("/");
 		
 		http.csrf().ignoringAntMatchers("/mail");
+		http.csrf().ignoringAntMatchers("/notice/**");
 		http.csrf().ignoringAntMatchers("/member/**");
 		http.csrf().ignoringAntMatchers("/location/**");
 		http.csrf().ignoringAntMatchers("/match/**");

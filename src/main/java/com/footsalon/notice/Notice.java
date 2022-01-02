@@ -9,6 +9,8 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+import static javax.persistence.FetchType.LAZY;
+
 
 @Data
 @Entity
@@ -33,7 +35,7 @@ public class Notice {
     @ColumnDefault("'N'")
     private String delYn;
 
-    @ColumnDefault("0")
+    @ColumnDefault("1")
     private int ntMain;
 
     private int views;

@@ -38,15 +38,13 @@
 <script type="text/javascript">
     	let modify = document.getElementById('modify');
 	    let del = document.getElementById('delete');
-	    let type = document.getElementById('type');
 
         let form = document.getElementById('modify-form');
 	    let done = document.getElementById('done');
 
 	    modify.addEventListener('click', () => {
-	       document.getElementById('title').removeAttribute('readonly');
-            document.getElementById('content').removeAttribute('readonly');
-            type.removeAttribute('disabled');
+	       document.getElementById('ntTitle').removeAttribute('readonly');
+            document.getElementById('ntContent').removeAttribute('readonly');
             done.setAttribute('type','submit');
             modify.setAttribute('type','hidden');
 	    })

@@ -8,7 +8,7 @@ import com.footsalon.member.model.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,10 +25,11 @@ public class NoticeService {
 
         int cntPerPage = 5;
 
-        Page<Notice> page = noticeRepository.findAll(PageRequest.of(pageNumber-1, cntPerPage, Sort.Direction.DESC, "iqIdx"));
+        Page<Notice> page = noticeRepository.findAll(PageRequest.of(pageNumber-1, cntPerPage, Direction.DESC, "ntIdx"));
         List<Notice> notices = page.getContent();
+
         Paging pageUtil = Paging.builder()
-                .url("/inquiry/inquiry")
+                .url("/notice/notice-list")
                 .total((int)noticeRepository.count())
                 .cntPerPage(cntPerPage)
                 .blockCnt(10)
@@ -58,6 +59,12 @@ public class NoticeService {
     public void deleteNotice(long ntIdx) {
         Notice notice = noticeRepository.findById(ntIdx).orElseThrow(()-> new HandlableException(ErrorCode.UNAUTHORIZED_PAGE));
         notice.setDelYn("Y");
+        noticeRepository.save(notice);
+    }
+
+    public void updateNotice(long ntIdx) {
+        Notice notice = noticeRepository.findById(ntIdx).orElseThrow(()-> new HandlableException(ErrorCode.UNAUTHORIZED_PAGE));
+        notice.setNtMain(0);
         noticeRepository.save(notice);
     }
 }
