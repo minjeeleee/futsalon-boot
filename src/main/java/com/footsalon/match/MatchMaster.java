@@ -3,6 +3,7 @@ package com.footsalon.match;
 import com.footsalon.location.Location;
 import com.footsalon.match.dto.TeamMatchRequest;
 import com.footsalon.matchGame.MatchGame;
+import com.footsalon.result.Result;
 import com.footsalon.team.Team;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -74,5 +75,13 @@ public class MatchMaster {
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    public void addMatchGames(MatchGame matchGame) {
+        this.getMatchGames().add(matchGame);
     }
 }

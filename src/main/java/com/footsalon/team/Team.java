@@ -85,7 +85,6 @@ public class Team {
     }
 
     public void setMemberList(Member member) {
-        //this.getMemberList().add(member);
         member.setTeam(this);
     }
 
@@ -112,4 +111,5 @@ public class Team {
     public void setTeamRating(int teamRating) {
         this.teamRating = teamRating;
     }
+
 }

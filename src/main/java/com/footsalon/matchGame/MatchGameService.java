@@ -21,7 +21,8 @@ public class MatchGameService {
 
     @Transactional
     public void createMatchGame(MatchMaster matchMaster, Team rivalTeam) {
-        MatchGame matchGame = MatchGame.createTeamMatchGame(matchMaster, rivalTeam);
+        MatchGame matchGame = MatchGame.createTeamMatchGame(matchMaster.getTeam(), rivalTeam);
+        matchGame.setMatchMaster(matchMaster);
         matchGameRepository.save(matchGame);
         matchMaster.setState(1);
     }

@@ -69,6 +69,7 @@ public class TeamService {
     public Team findById(Long teamIdx) {
         return teamRepository.findById(teamIdx).orElseThrow(()-> new HandlableException(ErrorCode.TEAM_DOES_NOT_EXIST));
     }
+
     public Team findTeamWithScoreById(Long teamIdx) {
         Team team = teamRepository.findById(teamIdx).orElseThrow(()->new HandlableException(ErrorCode.TEAM_DOES_NOT_EXIST));
 

@@ -1,7 +1,9 @@
 package com.footsalon.team;
 
 import com.footsalon.location.LocationService;
+import com.footsalon.match.MatchMasterService;
 import com.footsalon.matchGame.MatchGame;
+import com.footsalon.matchGame.MatchGameService;
 import com.footsalon.member.MemberAccount;
 import com.footsalon.member.model.service.MemberService;
 import com.footsalon.team.dto.TeamRequest;
@@ -26,6 +28,8 @@ public class TeamController {
     private final TeamService teamService;
     private final LocationService locationService;
     private final MemberService memberService;
+    private final MatchMasterService matchMasterService;
+    private final MatchGameService matchGameService;
 
     @GetMapping(path = "/main")
     public String teamMain(@AuthenticationPrincipal MemberAccount member) {
@@ -74,9 +78,15 @@ public class TeamController {
         model.addAttribute("matchGameList", myMatchGameList);
     }
 
-    @GetMapping(path = "/team-board")
-    public void teamBoard() {
+    @GetMapping(path = "/board-team")
+    public void teamBoard(Model model, @AuthenticationPrincipal MemberAccount memberAccount) {
+        model.addAttribute("teamBoard", matchMasterService.findMatchMastersByTeam(memberAccount.getTeam()));
+    }
 
+    @GetMapping(path = "/board-team-away")
+    public void awayTeamBoard(Model model, @AuthenticationPrincipal MemberAccount memberAccount) {
+        matchMasterService.findyMyTeamApply(memberAccount.getTeam().getTmIdx());
+        model.addAttribute("teamBoard", matchMasterService.findMatchMastersByAwayTeam(memberAccount.getTeam()));
     }
 
     @GetMapping(path = "/leave")

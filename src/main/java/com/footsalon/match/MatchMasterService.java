@@ -58,13 +58,26 @@ public class MatchMasterService {
     }
 
     public List<MatchMaster> findMatchMastersByTeam(Team team) {
-        return matchMasterRepository.findByTeam(team);
+        List<MatchMaster> matchMasterList = matchMasterRepository.findByTeam(team, Sort.by(Sort.Direction.DESC, "regDate"));
+        for (MatchMaster matchMaster : matchMasterList) {
+            matchMaster.setTeam(teamService.findTeamWithScoreById(matchMaster.getTeam().getTmIdx()));
+        }
+        return matchMasterList;
+    }
+
+    public List<MatchMaster> findMatchMastersByAwayTeam(Team team) {
+        List<MatchMaster> matchMasterList = matchMasterRepository.findByAwayTeam(team);
+        for (MatchMaster matchMaster : matchMasterList) {
+            matchMaster.setTeam(teamService.findTeamWithScoreById(matchMaster.getTeam().getTmIdx()));
+        }
+        return matchMasterList;
     }
 
     @Transactional
     public void saveResult(ResultRequest request) {
         Team team = teamService.findById(request.getTmIdx());
         MatchGame matchGame = matchGameService.findById(request.getMgIdx());
+        MatchMaster matchMaster = matchMasterRepository.findById(matchGame.getMatchMaster().getMmIdx()).orElseThrow(()->new HandlableException(ErrorCode.MATCH_MASTER_DOES_NOT_EXIST));
         Team winner;
         if(matchGame.getHomeTeam().getTmIdx() == team.getTmIdx()) {
             if (request.getResult().equals("win")) {
@@ -81,7 +94,7 @@ public class MatchMasterService {
         }
         Result result = resultService.createResult(winner);
         matchGame.updateResult(result);
-
+        matchMaster.setState(2);
     }
 
     @Transactional
@@ -95,5 +108,10 @@ public class MatchMasterService {
             target = "homeTeam";
         }
         resultService.updateRating(matchGame.getResult().getThIdx(), target, request.getRating());
+    }
+
+    public void findyMyTeamApply(Long tmIdx) {
+//        List<MatchGame>
+//        matchGameService.findByAwayTeam(memberAccount.getTeam());
     }
 }

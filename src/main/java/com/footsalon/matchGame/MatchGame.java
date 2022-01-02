@@ -52,13 +52,17 @@ public class MatchGame {
 
     /* create */
 
-    public static MatchGame createTeamMatchGame(MatchMaster matchMaster, Team awayTeam) {
+    public static MatchGame createTeamMatchGame(Team hostTeam, Team awayTeam) {
         return MatchGame.builder()
-                .matchMaster(matchMaster)
-                .homeTeam(matchMaster.getTeam())
+                .homeTeam(hostTeam)
                 .awayTeam(awayTeam)
                 .state(1)
                 .build();
+    }
+
+    public void setMatchMaster(MatchMaster matchMaster) {
+        this.matchMaster = matchMaster;
+        matchMaster.getMatchGames().add(this);
     }
 
     public void updateResult(Result result) {
