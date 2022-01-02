@@ -1,6 +1,7 @@
 package com.footsalon.match;
 
 import com.footsalon.location.LocationService;
+import com.footsalon.match.dto.ResultRequest;
 import com.footsalon.match.dto.TeamMatchRequest;
 import com.footsalon.member.MemberAccount;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +44,13 @@ public class MatchMasterController {
     @ResponseBody
     public String applyTeamMatch(Long mmIdx, @AuthenticationPrincipal MemberAccount memberAccount) {
         return matchMasterService.applyTeamMatch(mmIdx, memberAccount.getTeam().getTmIdx());
+    }
+
+    @PostMapping(path = "/save-result")
+    @ResponseBody
+    public String saveResult(ResultRequest request) {
+        matchMasterService.saveResult(request);
+        return "success";
     }
 
 }

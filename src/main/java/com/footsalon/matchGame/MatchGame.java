@@ -1,6 +1,7 @@
 package com.footsalon.matchGame;
 
 import com.footsalon.match.MatchMaster;
+import com.footsalon.result.Result;
 import com.footsalon.member.Member;
 import com.footsalon.team.Team;
 import lombok.*;
@@ -39,11 +40,17 @@ public class MatchGame {
     @JoinColumn(name = "awayTeam")
     private Team awayTeam;
 
+    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "thIdx")
+    private Result result;
+
     @OneToMany
     @JoinColumn(name = "userId")
     private List<Member> mercenary = new ArrayList<>();
 
-    private int state;
+    private int state; //1:매치성사, 2:결과등록
+
+    /* create */
 
     public static MatchGame createTeamMatchGame(MatchMaster matchMaster, Team awayTeam) {
         return MatchGame.builder()
@@ -52,5 +59,10 @@ public class MatchGame {
                 .awayTeam(awayTeam)
                 .state(1)
                 .build();
+    }
+
+    public void updateResult(Result result) {
+        this.result = result;
+        this.state = 2;
     }
 }

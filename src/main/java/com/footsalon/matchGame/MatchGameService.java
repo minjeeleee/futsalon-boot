@@ -1,5 +1,7 @@
 package com.footsalon.matchGame;
 
+import com.footsalon.common.code.ErrorCode;
+import com.footsalon.common.exception.HandlableException;
 import com.footsalon.match.MatchMaster;
 import com.footsalon.match.MatchMasterService;
 import com.footsalon.team.Team;
@@ -26,5 +28,9 @@ public class MatchGameService {
 
     public List<MatchGame> findMyMatchGameList(Team myTeam) {
         return matchGameRepository.findAllByTmIdx(myTeam, myTeam);
+    }
+
+    public MatchGame findById(Long mgIdx) {
+        return matchGameRepository.findById(mgIdx).orElseThrow(()-> new HandlableException(ErrorCode.MATCH_GAME_DOES_NOT_EXIST));
     }
 }

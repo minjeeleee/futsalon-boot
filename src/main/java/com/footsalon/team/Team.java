@@ -50,6 +50,15 @@ public class Team {
     private LocalDateTime regDate;
     private LocalDateTime delDate;
 
+    @Transient
+    private int matchCnt;
+    @Transient
+    private int win;
+    @Transient
+    private int lose;
+    @Transient
+    private double teamRating;
+
     /* create */
     public static Team createTeam(TeamRequest request, Location location) {
         return Team.builder()
@@ -86,5 +95,21 @@ public class Team {
 
     public void setDelDate() {
         this.delDate = LocalDateTime.now();
+    }
+
+    public void setMatchCnt(int matchCnt) {
+        this.matchCnt = matchCnt;
+    }
+
+    public void setWin(int win) {
+        this.win = win;
+    }
+
+    public void setLose(int lose) {
+        this.lose = lose;
+    }
+
+    public void setTeamRating(double teamRating) {
+        this.teamRating = teamRating;
     }
 }

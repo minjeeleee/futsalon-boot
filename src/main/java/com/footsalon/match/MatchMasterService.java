@@ -4,9 +4,13 @@ import com.footsalon.common.code.ErrorCode;
 import com.footsalon.common.exception.HandlableException;
 import com.footsalon.location.Location;
 import com.footsalon.location.LocationService;
+import com.footsalon.match.dto.ResultRequest;
 import com.footsalon.match.dto.TeamMatchRequest;
+import com.footsalon.matchGame.MatchGame;
 import com.footsalon.matchGame.MatchGameService;
 import com.footsalon.member.model.service.MemberService;
+import com.footsalon.result.Result;
+import com.footsalon.result.ResultService;
 import com.footsalon.team.Team;
 import com.footsalon.team.TeamService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +31,7 @@ public class MatchMasterService {
     private final LocationService locationService;
     private final TeamService teamService;
     private final MemberService memberService;
+    private final ResultService resultService;
 
     @Transactional
     public void createMatchMaster(TeamMatchRequest request, Long teamId) {
@@ -53,5 +58,28 @@ public class MatchMasterService {
 
     public List<MatchMaster> findMatchMastersByTeam(Team team) {
         return matchMasterRepository.findByTeam(team);
+    }
+
+    @Transactional
+    public void saveResult(ResultRequest request) {
+        Team team = teamService.findById(request.getTmIdx());
+        MatchGame matchGame = matchGameService.findById(request.getMgIdx());
+        Team winner;
+        if(matchGame.getHomeTeam().getTmIdx() == team.getTmIdx()) {
+            if (request.getResult().equals("win")) {
+                winner = matchGame.getHomeTeam();
+            } else {
+                winner = matchGame.getAwayTeam();
+            }
+        } else {
+            if (request.getResult().equals("win")) {
+                winner = matchGame.getAwayTeam();
+            } else {
+                winner = matchGame.getHomeTeam();
+            }
+        }
+        Result result = resultService.createResult(winner);
+        matchGame.updateResult(result);
+
     }
 }
