@@ -48,8 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	public void configure(HttpSecurity http) throws Exception{
 		http.authorizeRequests()
 			.mvcMatchers(HttpMethod.GET,"/member/logout").authenticated()
-			.mvcMatchers(HttpMethod.GET,"/team/managing").hasAuthority("leader")
-			.mvcMatchers(HttpMethod.GET,"/team/create-form","/team/join-team").hasAuthority("normal")
+			.mvcMatchers(HttpMethod.GET,"/team/main","/team/create-form","/team/join-team").hasAuthority("normal")
+			.mvcMatchers(HttpMethod.GET,"/team/member/**").hasAuthority("member")
 			.mvcMatchers(HttpMethod.POST,"/match/apply-team-match","/match/team-match-form").hasAuthority("leader")
 			.mvcMatchers(HttpMethod.GET,"/team/create","/team/join").hasAuthority("normal")
 			.anyRequest().permitAll();

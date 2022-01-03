@@ -25,6 +25,8 @@ public interface MatchMasterRepository extends JpaRepository<MatchMaster, Long> 
     @Query("select m from MatchMaster m left join fetch MatchGame g on (m.mmIdx = g.matchMaster.mmIdx) where g.awayTeam = :awayTeam order by m.regDate desc ")
     List<MatchMaster> findByAwayTeam(@Param("awayTeam") Team awayTeam);
 
+    List<MatchMaster> findByStateAndMercenaryCntNotAndMatchDateTimeAfter(int state, int mercenaryCnt, LocalDateTime plusHours, Sort regDate);
+
 //    search
 
     List<MatchMaster> findByStateAndMercenaryCntAndLocation(int state, int mercenaryCnt, Location location, Sort regDate);
@@ -32,4 +34,11 @@ public interface MatchMasterRepository extends JpaRepository<MatchMaster, Long> 
     List<MatchMaster> findByStateAndMercenaryCntAndTeamLevel(int state, int mercenaryCnt, String teamLevel, Sort regDate);
 
     List<MatchMaster> findByStateAndMercenaryCntAndTeamLevelAndLocation(int state, int mercenaryCnt, String teamLevel, Location location, Sort regDate);
+
+    List<MatchMaster> findByStateAndMercenaryCntNotAndLocation(int state, int mercenaryCnt, Location location, Sort regDate);
+
+    List<MatchMaster> findByStateAndMercenaryCntNotAndTeamLevel(int state, int mercenaryCnt, String teamLevel, Sort regDate);
+
+    List<MatchMaster> findByStateAndMercenaryCntNotAndTeamLevelAndLocation(int state, int mercenaryCnt, String teamLevel, Location location, Sort regDate);
+
 }

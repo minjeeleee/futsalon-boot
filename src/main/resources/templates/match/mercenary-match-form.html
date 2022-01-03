@@ -12,9 +12,9 @@
 <section>
     <div class="section">
         <div class="new-match-wrap">
-            <h2><i class="far fa-futbol"></i> 팀매칭 등록</h2>
+            <h2><i class="far fa-futbol"></i> 용병매칭 등록</h2>
             <div class="search-wrap">
-                <form th:action="@{/match/create-team-match}" method="post">
+                <form th:action="@{/match/create-mercenary-match}" method="post">
                     <dl>
                         <dt>경기지역</dt>
                         <dd class="matchRegion">
@@ -49,12 +49,18 @@
                             <input type="datetime-local" id="matchDateTime" name="matchDateTime" required>
                         </dd>
                     </dl>
-
                     <dl>
-                        <dt>구장비</dt>
+                        <dt>용병비</dt>
                         <dd>
                             <input type="number" step="1000" min="0" name="expense" id="pay"/>&nbsp;&nbsp;원
                             <span id="checkMatchPay"></span>
+                        </dd>
+                    </dl>
+                    <dl class="recruit">
+                        <dt>모집인원</dt>
+                        <dd>
+                            <input type="number" step="1" min="1" name="mercenaryCnt" id="mercenary"/> 명
+                            <span id="checkMercenary"></span>
                         </dd>
                     </dl>
                     <dl>
@@ -67,7 +73,7 @@
                         </dd>
                     </dl>
                     <div class="textarea-wrap">
-                        <textarea id="contentId" name="content" placeholder="내용을 입력해주세요.">매너 게임해요!</textarea>
+                        <textarea id="contentId" name="content" placeholder="내용을 입력해주세요.">팀원 구합니다!</textarea>
                     </div>
                     <input type="hidden" name="match" value="team">
                     <input type="submit" value="등록">

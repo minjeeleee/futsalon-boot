@@ -1,6 +1,7 @@
 package com.footsalon.match;
 
 import com.footsalon.location.Location;
+import com.footsalon.match.dto.MercenaryMatchRequest;
 import com.footsalon.match.dto.TeamMatchRequest;
 import com.footsalon.matchGame.MatchGame;
 import com.footsalon.result.Result;
@@ -54,7 +55,7 @@ public class MatchMaster {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "matchMaster", fetch = LAZY)
     private List<MatchGame> matchGames = new ArrayList<>();
 
-    public static MatchMaster createMatchMaster(TeamMatchRequest request, Location location, Team team) {
+    public static MatchMaster createTeamMatchMaster(TeamMatchRequest request, Location location, Team team) {
         String matchDateStr = request.getMatchDateTime().replace("T", " ");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return MatchMaster.builder()
@@ -66,6 +67,26 @@ public class MatchMaster {
                 .matchDateTime(LocalDateTime.parse(matchDateStr, formatter))
                 .expense(request.getExpense())
                 .teamLevel(request.getTeamLevel())
+                .content(request.getContent())
+                .state(0)
+                .delYn("N")
+                .regDate(LocalDateTime.now())
+                .build();
+    }
+
+    public static MatchMaster createMercenaryMatchMaster(MercenaryMatchRequest request, Location location, Team team) {
+        String matchDateStr = request.getMatchDateTime().replace("T", " ");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return MatchMaster.builder()
+                .location(location)
+                .team(team)
+                .placeName(request.getPlaceName())
+                .placeAddress(request.getPlaceAddress())
+                .matchStyle(request.getMatchStyle())
+                .matchDateTime(LocalDateTime.parse(matchDateStr, formatter))
+                .expense(request.getExpense())
+                .teamLevel(request.getTeamLevel())
+                .mercenaryCnt(request.getMercenaryCnt())
                 .content(request.getContent())
                 .state(0)
                 .delYn("N")

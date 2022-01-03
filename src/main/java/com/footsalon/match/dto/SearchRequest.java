@@ -2,12 +2,10 @@ package com.footsalon.match.dto;
 
 import lombok.Data;
 
-import java.time.LocalDate;
-
 @Data
-public class SearchTeamRequest {
+public class SearchRequest {
 
     private String localCode;
-    private String teamLevel;
+    private String level;
 
 }

@@ -4,10 +4,7 @@ import com.footsalon.common.code.ErrorCode;
 import com.footsalon.common.exception.HandlableException;
 import com.footsalon.location.Location;
 import com.footsalon.location.LocationService;
-import com.footsalon.match.dto.RatingRequest;
-import com.footsalon.match.dto.ResultRequest;
-import com.footsalon.match.dto.SearchTeamRequest;
-import com.footsalon.match.dto.TeamMatchRequest;
+import com.footsalon.match.dto.*;
 import com.footsalon.matchGame.MatchGame;
 import com.footsalon.matchGame.MatchGameService;
 import com.footsalon.member.model.service.MemberService;
@@ -21,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,26 +34,24 @@ public class MatchMasterService {
     private final ResultService resultService;
 
     @Transactional
-    public void createMatchMaster(TeamMatchRequest request, Long teamId) {
+    public void createTeamMatchMaster(TeamMatchRequest request, Long teamId) {
         Team team = teamService.findById(teamId);
         Location location = locationService.findLocation(request.getLocalCode());
-        MatchMaster matchMaster = MatchMaster.createMatchMaster(request, location, team);
+        MatchMaster matchMaster = MatchMaster.createTeamMatchMaster(request, location, team);
         matchMasterRepository.save(matchMaster);
     }
 
-    public List<MatchMaster> findMatchBoardList() {
-        System.out.println("=====");
-        List<MatchMaster> matchMasterList = matchMasterRepository.findByStateAndMercenaryCntAndMatchDateTimeAfter(0, 0, LocalDateTime.now().plusHours(4L), Sort.by(Sort.Direction.DESC, "regDate"));
-        for (MatchMaster matchMaster : matchMasterList) {
-            Team team = matchMaster.getTeam();
-            matchMaster.setTeam(teamService.findTeamWithScoreById(team.getTmIdx()));
-        }
-        return matchMasterList;
+    @Transactional
+    public void createMercenaryMatchMaster(MercenaryMatchRequest request, Long teamId) {
+        Team team = teamService.findById(teamId);
+        Location location = locationService.findLocation(request.getLocalCode());
+        MatchMaster matchMaster = MatchMaster.createMercenaryMatchMaster(request, location, team);
+        matchMasterRepository.save(matchMaster);
     }
 
     public List<MatchMaster> findMatchBoardList(String sort) {
         List<MatchMaster> matchMasterList = new ArrayList<>();
-        if (sort.equals("latest")) {
+        if (sort.equals("") || sort.equals("latest")) {
             matchMasterList = matchMasterRepository.findByStateAndMercenaryCntAndMatchDateTimeAfter(0, 0, LocalDateTime.now().plusHours(4L), Sort.by(Sort.Direction.DESC, "regDate"));
         } else if (sort.equals("matchDate")) {
             matchMasterList = matchMasterRepository.findByStateAndMercenaryCntAndMatchDateTimeAfter(0, 0, LocalDateTime.now().plusHours(4L), Sort.by(Sort.Direction.ASC, "matchDateTime"));
@@ -69,16 +63,57 @@ public class MatchMasterService {
         return matchMasterList;
     }
 
-    public List<MatchMaster> searchTeamMatchMaster(SearchTeamRequest request) {
+    public List<MatchMaster> searchTeamMatchMaster(SearchRequest request) {
         List<MatchMaster> matchMasterList = new ArrayList<>();
-        if (request.getLocalCode() != null && request.getTeamLevel() == null) {
+        if (request.getLocalCode() != null && request.getLevel() == null) {
             Location location = locationService.findLocation(request.getLocalCode());
             matchMasterList = matchMasterRepository.findByStateAndMercenaryCntAndLocation(0, 0, location, Sort.by(Sort.Direction.DESC, "regDate"));
-        } else if (request.getLocalCode() == null && request.getTeamLevel() != null) {
-            matchMasterList = matchMasterRepository.findByStateAndMercenaryCntAndTeamLevel(0, 0, request.getTeamLevel(), Sort.by(Sort.Direction.DESC, "regDate"));
-        } else if (request.getLocalCode() != null && request.getTeamLevel() != null) {
+        } else if (request.getLocalCode() == null && request.getLevel() != null) {
+            matchMasterList = matchMasterRepository.findByStateAndMercenaryCntAndTeamLevel(0, 0, request.getLevel(), Sort.by(Sort.Direction.DESC, "regDate"));
+        } else if (request.getLocalCode() != null && request.getLevel() != null) {
             Location location = locationService.findLocation(request.getLocalCode());
-            matchMasterList = matchMasterRepository.findByStateAndMercenaryCntAndTeamLevelAndLocation(0, 0, request.getTeamLevel(), location, Sort.by(Sort.Direction.DESC, "regDate"));
+            matchMasterList = matchMasterRepository.findByStateAndMercenaryCntAndTeamLevelAndLocation(0, 0, request.getLevel(), location, Sort.by(Sort.Direction.DESC, "regDate"));
+        }
+        for (MatchMaster matchMaster : matchMasterList) {
+            Team team = matchMaster.getTeam();
+            matchMaster.setTeam(teamService.findTeamWithScoreById(team.getTmIdx()));
+        }
+        return matchMasterList;
+    }
+
+    public List<MatchMaster> searchMercenaryMatchMaster(SearchRequest request) {
+        List<MatchMaster> matchMasterList = new ArrayList<>();
+        if (request.getLocalCode() != null && request.getLevel() == null) {
+            Location location = locationService.findLocation(request.getLocalCode());
+            matchMasterList = matchMasterRepository.findByStateAndMercenaryCntNotAndLocation(0, 0, location, Sort.by(Sort.Direction.DESC, "regDate"));
+        } else if (request.getLocalCode() == null && request.getLevel() != null) {
+            matchMasterList = matchMasterRepository.findByStateAndMercenaryCntNotAndTeamLevel(0, 0, request.getLevel(), Sort.by(Sort.Direction.DESC, "regDate"));
+        } else if (request.getLocalCode() != null && request.getLevel() != null) {
+            Location location = locationService.findLocation(request.getLocalCode());
+            matchMasterList = matchMasterRepository.findByStateAndMercenaryCntNotAndTeamLevelAndLocation(0, 0, request.getLevel(), location, Sort.by(Sort.Direction.DESC, "regDate"));
+        }
+        for (MatchMaster matchMaster : matchMasterList) {
+            Team team = matchMaster.getTeam();
+            matchMaster.setTeam(teamService.findTeamWithScoreById(team.getTmIdx()));
+        }
+        return matchMasterList;
+    }
+
+    public Object findMercenaryMatchBoardList() {
+        List<MatchMaster> matchMasterList = matchMasterRepository.findByStateAndMercenaryCntNotAndMatchDateTimeAfter(0, 0, LocalDateTime.now().plusHours(4L), Sort.by(Sort.Direction.DESC, "regDate"));
+        for (MatchMaster matchMaster : matchMasterList) {
+            Team team = matchMaster.getTeam();
+            matchMaster.setTeam(teamService.findTeamWithScoreById(team.getTmIdx()));
+        }
+        return matchMasterList;
+    }
+
+    public List<MatchMaster> findMercenaryMatchBoardList(String sort) {
+        List<MatchMaster> matchMasterList = new ArrayList<>();
+        if (sort.equals("") || sort.equals("latest")) {
+            matchMasterList = matchMasterRepository.findByStateAndMercenaryCntNotAndMatchDateTimeAfter(0, 0, LocalDateTime.now().plusHours(4L), Sort.by(Sort.Direction.DESC, "regDate"));
+        } else if (sort.equals("matchDate")) {
+            matchMasterList = matchMasterRepository.findByStateAndMercenaryCntNotAndMatchDateTimeAfter(0, 0, LocalDateTime.now().plusHours(4L), Sort.by(Sort.Direction.ASC, "matchDateTime"));
         }
         for (MatchMaster matchMaster : matchMasterList) {
             Team team = matchMaster.getTeam();
@@ -150,4 +185,5 @@ public class MatchMasterService {
         }
         resultService.updateRating(matchGame.getResult().getThIdx(), target, request.getRating());
     }
+
 }

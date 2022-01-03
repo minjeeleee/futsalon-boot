@@ -1,10 +1,7 @@
 package com.footsalon.match;
 
 import com.footsalon.location.LocationService;
-import com.footsalon.match.dto.RatingRequest;
-import com.footsalon.match.dto.ResultRequest;
-import com.footsalon.match.dto.SearchTeamRequest;
-import com.footsalon.match.dto.TeamMatchRequest;
+import com.footsalon.match.dto.*;
 import com.footsalon.member.MemberAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
@@ -13,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,8 +22,8 @@ public class MatchMasterController {
 
     @GetMapping(path = "/team-list")
     public void teamList(Model model, @RequestParam @Nullable String sort) {
-        if (sort == null) model.addAttribute("matchBoardList", matchMasterService.findMatchBoardList());
-        if (sort != null) model.addAttribute("matchBoardList", matchMasterService.findMatchBoardList(sort));
+        if (sort == null) sort = "";
+        model.addAttribute("matchBoardList", matchMasterService.findMatchBoardList(sort));
         model.addAttribute("locations", locationService.findAllLocations());
     }
 
@@ -36,9 +33,27 @@ public class MatchMasterController {
     }
 
     @PostMapping(path = "/create-team-match")
-    public String createMatchMaster(TeamMatchRequest request, @AuthenticationPrincipal MemberAccount memberAccount) {
-        matchMasterService.createMatchMaster(request, memberAccount.getTeam().getTmIdx());
+    public String createTeamMatchMaster(TeamMatchRequest request, @AuthenticationPrincipal MemberAccount memberAccount) {
+        matchMasterService.createTeamMatchMaster(request, memberAccount.getTeam().getTmIdx());
         return "redirect:/match/team-list";
+    }
+
+    @GetMapping(path = "/mercenary-list")
+    public void mercenaryList(Model model, @RequestParam @Nullable String sort) {
+        if (sort == null) sort = "";
+        model.addAttribute("matchBoardList", matchMasterService.findMercenaryMatchBoardList(sort));
+        model.addAttribute("locations", locationService.findAllLocations());
+    }
+
+    @GetMapping(path = "/mercenary-match-form")
+    public void mercenaryMatchForm(Model model) {
+        model.addAttribute("locations", locationService.findAllLocations());
+    }
+
+    @PostMapping(path = "/create-mercenary-match")
+    public String createMercenaryMatchMaster(@Valid MercenaryMatchRequest request, @AuthenticationPrincipal MemberAccount memberAccount) {
+        matchMasterService.createMercenaryMatchMaster(request, memberAccount.getTeam().getTmIdx());
+        return "redirect:/match/mercenary-list";
     }
 
     @PostMapping(path = "/apply-team-match")
@@ -62,18 +77,34 @@ public class MatchMasterController {
     }
 
     @PostMapping("/team-match-search")
-    public String teamMatchcSearch(Model model, SearchTeamRequest request) {
+    public String teamMatchcSearch(Model model, SearchRequest request) {
         model.addAttribute("matchBoardList", matchMasterService.searchTeamMatchMaster(request));
         model.addAttribute("locations", locationService.findAllLocations());
         String searchType = "";
         if (request.getLocalCode() != null) {
             searchType += "경기지역";
         }
-        if (request.getTeamLevel() != null) {
+        if (request.getLevel() != null) {
             if (request.getLocalCode() != null) searchType += ", ";
             searchType += "희망실력" ;
         }
         model.addAttribute("searchType", searchType);
         return "match/team-list";
+    }
+
+    @PostMapping("/mercenary-match-search")
+    public String mercenaryMatchcSearch(Model model, SearchRequest request) {
+        model.addAttribute("matchBoardList", matchMasterService.searchMercenaryMatchMaster(request));
+        model.addAttribute("locations", locationService.findAllLocations());
+        String searchType = "";
+        if (request.getLocalCode() != null) {
+            searchType += "경기지역";
+        }
+        if (request.getLevel() != null) {
+            if (request.getLocalCode() != null) searchType += ", ";
+            searchType += "희망실력" ;
+        }
+        model.addAttribute("searchType", searchType);
+        return "match/mercenary-list";
     }
 }
