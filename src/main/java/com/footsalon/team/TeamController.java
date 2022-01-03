@@ -7,6 +7,7 @@ import com.footsalon.matchGame.MatchGameService;
 import com.footsalon.member.MemberAccount;
 import com.footsalon.member.model.service.MemberService;
 import com.footsalon.team.dto.TeamRequest;
+import com.footsalon.team.dto.TeamResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -123,6 +125,12 @@ public class TeamController {
     public String modifyTeam(Model model, TeamRequest request, @RequestParam MultipartFile teamFile, @AuthenticationPrincipal MemberAccount memberAccount) {
         teamService.modifyTeam(memberAccount.getMember().getTeam().getTmIdx(), request, teamFile);
         return "redirect:/team/main";
+    }
+
+    @PostMapping("/team-info")
+    @ResponseBody
+    public TeamResponse showTeamInfo(Long tmIdx) {
+        return teamService.getTeamInfo(tmIdx);
     }
 
 }

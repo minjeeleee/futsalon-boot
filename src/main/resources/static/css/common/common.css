@@ -99,23 +99,33 @@ footer{
 	width: 400px;
 	display: flex;
 	justify-content: end;
-	padding-right: 50px;
 }
 
 .popup-close i{
+	width:50px;
+	height:50px;
+	text-align: center;
+	line-height: 50px;
+	border-radius: 50%;
+	background-color:#555;
+	color:#fff;
 	cursor:pointer;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.411);
+	margin-right: -20px;
+	margin-bottom: -30px;
 }
 .popup-teaminfo {
+	border: 3px solid #555;
 	text-align: center;
 	width: 400px;
-	height: 400px;
+	padding:30px;
 	background-color: #fff;
-	border-radius: 50%;
+	border-radius: 15px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.411);
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.411);
 }
 
 .popup-team-img {

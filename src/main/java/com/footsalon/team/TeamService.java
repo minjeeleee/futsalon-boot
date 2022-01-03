@@ -14,6 +14,7 @@ import com.footsalon.member.Member;
 import com.footsalon.member.model.service.MemberService;
 import com.footsalon.result.ResultService;
 import com.footsalon.team.dto.TeamRequest;
+import com.footsalon.team.dto.TeamResponse;
 import com.footsalon.teamApplicant.TeamApplicantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -138,5 +139,10 @@ public class TeamService {
 
     public List<MatchGame> getMatchGamesInfo(Team myTeam) {
         return matchGameService.findMyMatchGameList(myTeam);
+    }
+
+    public TeamResponse getTeamInfo(Long tmIdx) {
+        Team team = findTeamWithScoreById(tmIdx);
+        return TeamResponse.createResponse(team);
     }
 }
