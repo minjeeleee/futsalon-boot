@@ -85,7 +85,6 @@ public class TeamController {
 
     @GetMapping(path = "/board-team-away")
     public void awayTeamBoard(Model model, @AuthenticationPrincipal MemberAccount memberAccount) {
-        matchMasterService.findyMyTeamApply(memberAccount.getTeam().getTmIdx());
         model.addAttribute("teamBoard", matchMasterService.findMatchMastersByAwayTeam(memberAccount.getTeam()));
     }
 

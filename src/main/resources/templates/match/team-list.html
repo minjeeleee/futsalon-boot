@@ -18,92 +18,77 @@
                 </div>
             </div>
             <div class="search-wrap">
-                <form onsubmit="return formCheck()" action="/matching/team/team-match-search" method="post">
+                <form onsubmit="return formCheck()" th:action="@{/match/team-match-search}" method="post">
                     <dl>
                         <dt>경기지역</dt>
                         <dd class="local">
                             <label th:each="location : ${locations}">
-                                <input type="radio" name="localCode" th:value="${location.localCode}" required /> [[${location.localCity}]]
+                                <input type="radio" name="localCode" th:value="${location.localCode}" /> [[${location.localCity}]]
                             </label>
-                        </dd>
-                    </dl>
-                    <dl>
-                        <dt>기간</dt>
-                        <dd>
-                            <input type="date" name="date" id="currentDate">
                         </dd>
                     </dl>
                     <dl>
                         <dt>상대팀 실력</dt>
                         <dd class="level-dd">
-                            <label><input type="radio" name="level" value="HIGH">상</label>
-                            <label><input type="radio" name="level" value="MIDDLE">중</label>
-                            <label><input type="radio" name="level" value="LOW">하</label>
+                            <label><input type="radio" name="teamLevel" value="HIGH">상</label>
+                            <label><input type="radio" name="teamLevel" value="MIDDLE">중</label>
+                            <label><input type="radio" name="teamLevel" value="LOW">하</label>
                         </dd>
                     </dl>
                     <input type="submit" value="검색">
-
                 </form>
             </div>
             <!-- End search wrap -->
             <div class="search-role-wrap">
                 <div class="search-role">
-                    <a href="/match/team/recent?match=team">최신순</a> <a href="/match/team/rating?match=team">별점순</a>
+                    <a th:href="@{/match/team-list?sort=latest}">최신순</a> <a th:href="@{/match/team-list?sort=matchDate}">마감순</a>
                 </div>
                 <div class="matching-write">
                     <a href="team-match-form"><i class="fas fa-pencil-alt"></i>글쓰기</a>
                 </div>
             </div>
-                <div th:each="matchBoard : ${matchBoardList}" class="match-box">
-                    <div class="tit-area">
-                        <div class="tit-info">
-                            <div class="state recruiting">모집중</div>
-                            <div class="tit">
-                                <strong>&#91;[[${matchBoard.location.localCity}]] &#47; [[${matchBoard.matchStyle}]]&#93; [[${matchBoard.placeName}]]</strong>
-                                <div>
-                                    <c:forEach var="i" begin="1" end="${matchBox.getTmRating()}">
-                                        <div style="float: left;"><i class="fas fa-star full-star"></i></div>
-                                    </c:forEach>
-                                    <c:if test="${matchBox.getTmRating()%1!=0}">
-                                        <div style="float: left;"><i class="fas fa-star-half-alt"></i></div>
-                                    </c:if>
-                                    <c:forEach var="i" begin="1" end="${5-matchBox.getTmRating()}">
-                                        <div style="float: left;"><i class="far fa-star star"></i></div>
-                                    </c:forEach>
-                                </div>
-                                <c:set var="lose" value="${matchBox.getGameCnt() - matchBox.getTmWin()}"></c:set>
-                                &nbsp;&nbsp;전적 0전 0승 0패
-                            </div>
-                        </div>
-                        <div class="profile_n_appli">
-                            <div class="profile">
-                                <div class="profile-img"></div>
-                                <div class="profile-name">
-                                    [[${matchBoard.team.tmName}]]
-                                    <span>
-										<i class="fas fa-search"></i>정보보기
-									</span>
-                                </div>
-                            </div>
-                            <div th:if="${matchBoard.state eq 0}" class="btn-appli" th:onclick="|javascript:teamMatchRequset(${matchBoard.mmIdx})|">신청하기</div>
+            <h2 th:if="${searchType != null}">[[${searchType}]] 검색결과</h2>
+            <div th:each="matchBoard : ${matchBoardList}" class="match-box">
+                <div class="tit-area">
+                    <div class="tit-info">
+                        <div class="state recruiting">모집중</div>
+                        <div class="tit">
+                            <strong>&#91;[[${matchBoard.location.localCity}]] &#47; [[${matchBoard.matchStyle}]]&#93; [[${matchBoard.placeName}]]</strong>
+                            전적 [[${matchBoard.team.matchCnt}]]전 [[${matchBoard.team.win}]]승 [[${matchBoard.team.lose}]]패&nbsp;&nbsp;
+                            별점
+                            <th:block th:each="num: ${#numbers.sequence(1,matchBoard.team.teamRating)}">
+                                <i class="fas fa-star full-star" style="display:inline-block;margin-right:-4px;color:#aaa;"></i>
+                            </th:block>
                         </div>
                     </div>
-                    <div class="match-detail">
-                        <ul>
-                            <li>
-                                <span class="tit">지역</span>&#91;[[${matchBoard.location.localCity}]]&#93; [[${matchBoard.placeName}]] - [[${matchBoard.placeAddress}]]
-                            </li>
-                            <li><span class="tit">매치일시</span>[[${#strings.substring(matchBoard.matchDateTime,0,10)}]] [[${#strings.substring(matchBoard.matchDateTime,11,16)}]]</li>
-                        </ul>
-                        <ul>
-                            <li><span class="tit">매치방식</span>[[${matchBoard.matchStyle}]]</li>
-                            <li><span class="tit">실력</span> [[${matchBoard.teamLevel == 'HIGH' ? '상' : matchBoard.teamLevel == 'MIDDLE' ? '중' : '하'}]]</li>
-                            <li><span class="tit">구장비</span>[[${matchBoard.expense}]]원</li>
-                        </ul>
-                        <div class="txt">[[${matchBoard.content}]]</div>
+                    <div class="profile_n_appli">
+                        <div class="profile">
+                            <div th:if="${matchBoard.team.file == null}" class="profile-img" style="background:url('/img/team/no-img.jpg') center center; background-size:cover;"></div>
+                            <div class="profile-name">
+                                [[${matchBoard.team.tmName}]]
+                                <span>
+                                    <i class="fas fa-search"></i>정보보기
+                                </span>
+                            </div>
+                        </div>
+                        <div th:if="${matchBoard.state eq 0}" class="btn-appli" th:onclick="|javascript:teamMatchRequset(${matchBoard.mmIdx})|">신청하기</div>
                     </div>
                 </div>
-                <!-- End 매치 박스 -->
+                <div class="match-detail">
+                    <ul>
+                        <li>
+                            <span class="tit">지역</span>&#91;[[${matchBoard.location.localCity}]]&#93; [[${matchBoard.placeName}]] - [[${matchBoard.placeAddress}]]
+                        </li>
+                        <li><span class="tit">매치일시</span>[[${#strings.substring(matchBoard.matchDateTime,0,10)}]] [[${#strings.substring(matchBoard.matchDateTime,11,16)}]]</li>
+                    </ul>
+                    <ul>
+                        <li><span class="tit">매치방식</span>[[${matchBoard.matchStyle}]]</li>
+                        <li><span class="tit">희망실력</span> [[${matchBoard.teamLevel == 'HIGH' ? '상' : matchBoard.teamLevel == 'MIDDLE' ? '중' : '하'}]]</li>
+                        <li><span class="tit">구장비</span>[[${matchBoard.expense}]]원</li>
+                    </ul>
+                    <div class="txt">[[${matchBoard.content}]]</div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -115,6 +100,54 @@
 </div>
 <footer th:replace = " fragments/footer :: footer"></footer>
 <script type="text/javascript" src="/js/common.js"></script>
-<script type="text/javascript" src="/js/match/match.js"></script>
+<script type="text/javascript">
+    let teamMatchRequset = (mmIdx) => {
+        $.ajax({
+            type: 'POST',
+            url: '/match/apply-team-match',
+            data: { mmIdx: mmIdx },
+            dataType: 'text',
+            success: (text) => {
+                if(text == 'available') {
+                    drawMsg('<i class="fas fa-times-circle"></i><br>매치가 성사되었습니다.');
+                } else {
+                    drawMsg('<i class="fas fa-times-circle"></i><br>회원님이 속한 팀은 신청하실 수 없습니다.');
+                }
+            },
+            error: function (e) {
+                if (e.status == 403) {
+                    drawMsg('<i class="fas fa-times-circle"></i><br>신청 권한이 없습니다.');
+                } else {
+                    drawMsg('<i class="fas fa-times-circle"></i><br>에러가 발생하여 요청이 실패했습니다.');
+                }
+            }
+        });
+    }
+
+    let regionRadios = document.querySelectorAll('.search-wrap .local input[type="radio"]');
+    for (let radio of regionRadios) {
+        radio.addEventListener('click', (e) => {
+            let labels = document.querySelectorAll('.search-wrap .local label');
+            for (let label of labels) label.className = '';
+            e.target.parentNode.className = 'selected';
+        });
+    }
+    let styleRadios = document.querySelectorAll('.search-wrap .level-dd input[type="radio"]');
+    for (let radio of styleRadios) {
+        radio.addEventListener('click', (e) => {
+            let labels = document.querySelectorAll('.search-wrap .level-dd label');
+            for (let label of labels) label.className = '';
+            e.target.parentNode.className = 'selected';
+        });
+    }
+    let levelRadios = document.querySelectorAll('.level-dd input[type="radio"]');
+    for (let radio of levelRadios) {
+        radio.addEventListener('click', (e) => {
+            let labels = document.querySelectorAll('.level-dd label');
+            for (let label of labels) label.className = '';
+            e.target.parentNode.className = 'selected';
+        });
+    }
+</script>
 </body>
 </html>

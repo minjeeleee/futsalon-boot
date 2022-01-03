@@ -3,9 +3,11 @@ package com.footsalon.match;
 import com.footsalon.location.LocationService;
 import com.footsalon.match.dto.RatingRequest;
 import com.footsalon.match.dto.ResultRequest;
+import com.footsalon.match.dto.SearchTeamRequest;
 import com.footsalon.match.dto.TeamMatchRequest;
 import com.footsalon.member.MemberAccount;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,8 +24,9 @@ public class MatchMasterController {
     private final MatchMasterService matchMasterService;
 
     @GetMapping(path = "/team-list")
-    public void teamList(Model model) {
-        model.addAttribute("matchBoardList", matchMasterService.findMatchBoardList());
+    public void teamList(Model model, @RequestParam @Nullable String sort) {
+        if (sort == null) model.addAttribute("matchBoardList", matchMasterService.findMatchBoardList());
+        if (sort != null) model.addAttribute("matchBoardList", matchMasterService.findMatchBoardList(sort));
         model.addAttribute("locations", locationService.findAllLocations());
     }
 
@@ -56,6 +59,21 @@ public class MatchMasterController {
     public String saveRating(RatingRequest request) {
         matchMasterService.saveRating(request);
         return "success";
+    }
 
+    @PostMapping("/team-match-search")
+    public String teamMatchcSearch(Model model, SearchTeamRequest request) {
+        model.addAttribute("matchBoardList", matchMasterService.searchTeamMatchMaster(request));
+        model.addAttribute("locations", locationService.findAllLocations());
+        String searchType = "";
+        if (request.getLocalCode() != null) {
+            searchType += "경기지역";
+        }
+        if (request.getTeamLevel() != null) {
+            if (request.getLocalCode() != null) searchType += ", ";
+            searchType += "희망실력" ;
+        }
+        model.addAttribute("searchType", searchType);
+        return "match/team-list";
     }
 }
