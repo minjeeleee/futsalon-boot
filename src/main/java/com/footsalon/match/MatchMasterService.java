@@ -42,6 +42,19 @@ public class MatchMasterService {
     }
 
     @Transactional
+    public void updateTeamMatchMaster(TeamMatchRequest request, Long teamId, Long mmIdx) {
+        System.out.println(request.toString());
+        MatchMaster matchMaster = matchMasterRepository.findById(mmIdx).orElseThrow(()->new HandlableException(ErrorCode.MATCH_MASTER_DOES_NOT_EXIST));
+        if (!request.getLocalCode().equals("") && request.getLocalCode() != null) {
+            Location location = locationService.findLocation(request.getLocalCode());
+            matchMaster.updateTeamMatchMaster(request, location);
+        } else {
+            matchMaster.updateTeamMatchMaster(request, null);
+        }
+
+    }
+
+    @Transactional
     public void createMercenaryMatchMaster(MercenaryMatchRequest request, Long teamId) {
         Team team = teamService.findById(teamId);
         Location location = locationService.findLocation(request.getLocalCode());
@@ -133,16 +146,21 @@ public class MatchMasterService {
         return "available";
     }
 
-    public List<MatchMaster> findMatchMastersByTeam(Team team) {
-        List<MatchMaster> matchMasterList = matchMasterRepository.findByTeam(team, Sort.by(Sort.Direction.DESC, "regDate"));
+    public List<MatchMaster> findTeamMatchMastersByTeam(Team team) {
+        List<MatchMaster> matchMasterList = matchMasterRepository.findByTeamAndMercenaryCnt(team, 0, Sort.by(Sort.Direction.DESC, "regDate"));
         for (MatchMaster matchMaster : matchMasterList) {
             matchMaster.setTeam(teamService.findTeamWithScoreById(matchMaster.getTeam().getTmIdx()));
         }
         return matchMasterList;
     }
 
-    public List<MatchMaster> findMatchMastersByAwayTeam(Team team) {
-        List<MatchMaster> matchMasterList = matchMasterRepository.findByAwayTeam(team);
+    public List<MatchMaster> findMercenaryMatchMastersByTeam(Team team) {
+        List<MatchMaster> matchMasterList = matchMasterRepository.findByTeamAndMercenaryCntNot(team, 0, Sort.by(Sort.Direction.DESC, "regDate"));
+        return getTeamInfoByMatchMaster(matchMasterList);
+    }
+
+    public List<MatchMaster> findTeamMatchMastersByAwayTeam(Team team) {
+        List<MatchMaster> matchMasterList = matchMasterRepository.findByAwayTeamAndMercenaryCnt(team, 0, Sort.by(Sort.Direction.DESC, "regDate"));
         for (MatchMaster matchMaster : matchMasterList) {
             matchMaster.setTeam(teamService.findTeamWithScoreById(matchMaster.getTeam().getTmIdx()));
         }
@@ -186,4 +204,14 @@ public class MatchMasterService {
         resultService.updateRating(matchGame.getResult().getThIdx(), target, request.getRating());
     }
 
+    public List<MatchMaster> getTeamInfoByMatchMaster(List<MatchMaster> matchMasterList) {
+        for (MatchMaster matchMaster : matchMasterList) {
+            matchMaster.setTeam(teamService.findTeamWithScoreById(matchMaster.getTeam().getTmIdx()));
+        }
+        return matchMasterList;
+    }
+
+    public MatchMaster findMatchMasterByMmIdx(Long mmIdx) {
+        return matchMasterRepository.findById(mmIdx).orElseThrow(()-> new HandlableException(ErrorCode.MATCH_MASTER_DOES_NOT_EXIST));
+    }
 }

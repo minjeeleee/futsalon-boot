@@ -94,6 +94,31 @@ public class MatchMaster {
                 .build();
     }
 
+    public void updateTeamMatchMaster(TeamMatchRequest request, Location location) {
+        if (location != null) {
+            this.location = location;
+        }
+        if (!request.getPlaceName().equals("")) {
+            this.placeName = request.getPlaceName();
+            this.placeAddress = request.getPlaceAddress();
+        }
+        if (!request.getMatchStyle().equals("")) {
+            this.matchStyle = request.getMatchStyle();
+        }
+        if (!request.getMatchDateTime().equals("")) {
+            String matchDateStr = request.getMatchDateTime().replace("T", " ");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            this.matchDateTime = LocalDateTime.parse(matchDateStr, formatter);
+        }
+        if (request.getExpense() != null) {
+            this.expense = request.getExpense();
+        }
+        if (request.getTeamLevel() != null) {
+            this.teamLevel = request.getTeamLevel();
+        }
+        this.content = request.getContent();
+    }
+
     public void setState(int state) {
         this.state = state;
     }

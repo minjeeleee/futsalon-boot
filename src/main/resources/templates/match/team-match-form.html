@@ -14,63 +14,76 @@
         <div class="new-match-wrap">
             <h2><i class="far fa-futbol"></i> 팀매칭 등록</h2>
             <div class="search-wrap">
-                <form th:action="@{/match/create-team-match}" method="post">
+                <form th:action="@{matchBoard == null ? '/match/create-team-match' : '/match/update-team-match'}" method="post">
                     <dl>
                         <dt>경기지역</dt>
                         <dd class="matchRegion">
-                            <label th:each="location : ${locations}">
+                            <label th:if="${matchBoard == null}" th:each="location : ${locations}">
                                 <input type="radio" name="localCode" th:value="${location.localCode}" required /> [[${location.localCity}]]
+                            </label>
+                            <label th:if="${matchBoard != null}" th:each="location : ${locations}" th:class="${matchBoard.location.localCode eq location.localCode ? 'selected' : ''}">
+                                <input type="radio" name="localCode" th:value="${location.localCode}" /> [[${location.localCity}]]
                             </label>
                         </dd>
                     </dl>
                     <dl>
                         <dt>경기장소</dt>
                         <dd>
-                            <input type="text" class="keyword" id="keyword" placeholder="경기장소를 입력하세요."/>
+                            <input type="text" class="keyword" id="keyword" placeholder="경기장소를 입력하세요." th:value="${matchBoard != null ? matchBoard.placeName : ''}" th:required="${matchBoard == null ? 'true' : 'false'}"/>
                             <i class="fas fa-search" onclick="searchPlaces();"></i>
                             <ul id="placesList"></ul>
                             <input type="hidden" name="placeName">
                             <input type="hidden" name="placeAddress">
+                            <input type="hidden" name="mmIdx" th:value="${matchBoard != null ? matchBoard.mmIdx : ''}">
                             <!--<div id="map" style="width:0px; height:0px;"></div>-->
                         </dd>
                     </dl>
                     <dl>
                         <dt>매치방식</dt>
-                        <dd class="matchStyle">
-                            <label><input type="radio" name="matchStyle" value="5:5">5 : 5</label>
-                            <label><input type="radio" name="matchStyle" value="6:6">6 : 6</label>
-                            <label><input type="radio" name="matchStyle" value="7:7">7 : 7</label>
+                        <dd class="matchStyle" th:if="${matchBoard == null}">
+                            <label><input type="radio" name="matchStyle" value="5:5" required>5 : 5</label>
+                            <label><input type="radio" name="matchStyle" value="6:6" required>6 : 6</label>
+                            <label><input type="radio" name="matchStyle" value="7:7" required>7 : 7</label>
+                            <span id="checkMatchStyle"></span>
+                        </dd>
+                        <dd class="matchStyle" th:if="${matchBoard != null}">
+                            <label th:class="${matchBoard.matchStyle eq '5:5' ? 'selected' : ''}"><input type="radio" name="matchStyle" value="5:5">5 : 5</label>
+                            <label th:class="${matchBoard.matchStyle eq '6:6' ? 'selected' : ''}"><input type="radio" name="matchStyle" value="6:6">6 : 6</label>
+                            <label th:class="${matchBoard.matchStyle eq '7:7' ? 'selected' : ''}"><input type="radio" name="matchStyle" value="7:7">7 : 7</label>
                             <span id="checkMatchStyle"></span>
                         </dd>
                     </dl>
                     <dl>
                         <dt>매치일시</dt>
                         <dd>
-                            <input type="datetime-local" id="matchDateTime" name="matchDateTime" required>
+                            <input th:if="${matchBoard == null}" type="datetime-local" id="matchDateTime" name="matchDateTime" required>
+                            <input th:if="${matchBoard != null}" type="datetime-local" id="matchDateTime" name="matchDateTime">
                         </dd>
                     </dl>
-
                     <dl>
                         <dt>구장비</dt>
                         <dd>
-                            <input type="number" step="1000" min="0" name="expense" id="pay"/>&nbsp;&nbsp;원
-                            <span id="checkMatchPay"></span>
+                            <input type="number" step="1000" min="0" name="expense" id="pay" th:value="${matchBoard != null ? matchBoard.expense : ''}" th:required="${matchBoard == null ? 'true' : 'false'}"/>&nbsp;&nbsp;원
                         </dd>
                     </dl>
                     <dl>
                         <dt>희망실력</dt>
-                        <dd class="level-dd">
-                            <label><input type="radio" name="teamLevel" value="HIGH">상</label>
-                            <label><input type="radio" name="teamLevel" value="MIDDLE">중</label>
-                            <label><input type="radio" name="teamLevel" value="LOW">하</label>
-                            <span id="checkMatchLevel"></span>
+                        <dd th:if="${matchBoard == null}" class="level-dd">
+                            <label><input type="radio" name="teamLevel" value="HIGH" required>상</label>
+                            <label><input type="radio" name="teamLevel" value="MIDDLE" required>중</label>
+                            <label><input type="radio" name="teamLevel" value="LOW" required>하</label>
+                        </dd>
+                        <dd th:if="${matchBoard != null}" class="level-dd">
+                            <label th:class="${matchBoard.teamLevel eq 'HIGH' ? 'selected' : ''}"><input type="radio" name="teamLevel" value="HIGH">상</label>
+                            <label th:class="${matchBoard.teamLevel eq 'MIDDLE' ? 'selected' : ''}"><input type="radio" name="teamLevel" value="MIDDLE">중</label>
+                            <label th:class="${matchBoard.teamLevel eq 'LOW' ? 'selected' : ''}"><input type="radio" name="teamLevel" value="LOW">하</label>
                         </dd>
                     </dl>
                     <div class="textarea-wrap">
-                        <textarea id="contentId" name="content" placeholder="내용을 입력해주세요.">매너 게임해요!</textarea>
+                        <textarea id="contentId" name="content" placeholder="내용을 입력해주세요.">[[${matchBoard == null ? '매너 게임해요!' : matchBoard.content}]]</textarea>
                     </div>
                     <input type="hidden" name="match" value="team">
-                    <input type="submit" value="등록">
+                    <input type="submit" th:value="${matchBoard == null ? '등록' : '수정'}">
                 </form>
             </div>
         </div>
@@ -96,9 +109,17 @@
     </div>
 </div>
 <footer th:replace = " fragments/footer :: footer"></footer>
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
+    let date = new Date();
+    date.setHours(date.getHours()+14); //9시간 + 매치전5시간
+    let nowDate = date.toISOString().split('.')[0];
+    let minDate = nowDate.replace('T', ' ');
+    let matchDateTime = [[${matchBoard.matchDateTime}]];
+    $('#matchDateTime').attr('min',minDate);
+    document.getElementById('matchDateTime').value = matchDateTime.substring(0,16);
+
     let searchPlaces = () => {
-        var keyword = document.getElementById('keyword').value;
+        let keyword = document.getElementById('keyword').value;
 
         if (!keyword) {
             drawMsg('<i class="fas fa-times-circle"></i><br>경기장소를 입력해주세요.');
@@ -155,7 +176,7 @@
     let regionRadios = document.querySelectorAll('.matchRegion input[type="radio"]');
     for (let radio of regionRadios) {
         radio.addEventListener('click', (e) => {
-           let labels = document.querySelectorAll('.regionRadios label');
+           let labels = document.querySelectorAll('.matchRegion label');
             for (let label of labels) label.className = '';
             e.target.parentNode.className = 'selected';
         });

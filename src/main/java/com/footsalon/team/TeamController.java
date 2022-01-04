@@ -36,7 +36,7 @@ public class TeamController {
     @GetMapping(path = "/main")
     public String teamMain(@AuthenticationPrincipal MemberAccount member) {
         if(member.getGrade().toString().equals("ME00")){ return "team/main"; }
-        else { return "redirect:/team/modify"; }
+        else { return "redirect:/team/member/modify"; }
     }
 
     @GetMapping(path = "/create")
@@ -60,19 +60,19 @@ public class TeamController {
         return teamService.tmCodeCheck(tmCode);
     }
 
-    @GetMapping(path = "/modify")
+    @GetMapping(path = "member/modify")
     public void modifyTeam(Model model, @AuthenticationPrincipal MemberAccount memberAccount) {
         model.addAttribute("team", teamService.findTeamWithScoreById(memberAccount.getMember().getTeam().getTmIdx()));
         model.addAttribute("locations", locationService.findAllLocations());
     }
 
-    @GetMapping(path = "/manage")
+    @GetMapping(path = "member/manage")
     public void manageTeam(Model model, @AuthenticationPrincipal MemberAccount memberAccount) {
         Team team = teamService.findById(memberAccount.getMember().getTeam().getTmIdx());
         model.addAttribute("team", team);
     }
 
-    @GetMapping(path = "/score")
+    @GetMapping(path = "member/score")
     public void teamScore(Model model, @AuthenticationPrincipal MemberAccount memberAccount) {
         Team myTeam = teamService.findTeamWithScoreById(memberAccount.getMember().getTeam().getTmIdx());
         List<MatchGame> myMatchGameList = teamService.getMatchGamesInfo(myTeam);
@@ -80,17 +80,22 @@ public class TeamController {
         model.addAttribute("matchGameList", myMatchGameList);
     }
 
-    @GetMapping(path = "/board-team")
+    @GetMapping(path = "member/board-team")
     public void teamBoard(Model model, @AuthenticationPrincipal MemberAccount memberAccount) {
-        model.addAttribute("teamBoard", matchMasterService.findMatchMastersByTeam(memberAccount.getTeam()));
+        model.addAttribute("teamBoard", matchMasterService.findTeamMatchMastersByTeam(memberAccount.getTeam()));
     }
 
-    @GetMapping(path = "/board-team-away")
+    @GetMapping(path = "member/board-mercenary")
+    public void mercenaryBoard(Model model, @AuthenticationPrincipal MemberAccount memberAccount) {
+        model.addAttribute("mercenaryBoard", matchMasterService.findMercenaryMatchMastersByTeam(memberAccount.getTeam()));
+    }
+
+    @GetMapping(path = "member/board-team-away")
     public void awayTeamBoard(Model model, @AuthenticationPrincipal MemberAccount memberAccount) {
-        model.addAttribute("teamBoard", matchMasterService.findMatchMastersByAwayTeam(memberAccount.getTeam()));
+        model.addAttribute("teamBoard", matchMasterService.findTeamMatchMastersByAwayTeam(memberAccount.getTeam()));
     }
 
-    @GetMapping(path = "/leave")
+    @GetMapping(path = "member/leave")
     public void leaveTeam() {
 
     }
@@ -121,7 +126,7 @@ public class TeamController {
         return "redirect:/team/modify";
     }
 
-    @PostMapping(path = "modify")
+    @PostMapping(path = "/modify")
     public String modifyTeam(Model model, TeamRequest request, @RequestParam MultipartFile teamFile, @AuthenticationPrincipal MemberAccount memberAccount) {
         teamService.modifyTeam(memberAccount.getMember().getTeam().getTmIdx(), request, teamFile);
         return "redirect:/team/main";

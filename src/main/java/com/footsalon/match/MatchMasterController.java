@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Null;
 
 @Controller
 @RequiredArgsConstructor
@@ -28,13 +29,22 @@ public class MatchMasterController {
     }
 
     @GetMapping(path = "/team-match-form")
-    public void teamMatchForm(Model model) {
+    public void teamMatchForm(Model model, @Nullable Long mmIdx) {
+        if (mmIdx != null) {
+            model.addAttribute("matchBoard", matchMasterService.findMatchMasterByMmIdx(mmIdx));
+        }
         model.addAttribute("locations", locationService.findAllLocations());
     }
 
     @PostMapping(path = "/create-team-match")
     public String createTeamMatchMaster(TeamMatchRequest request, @AuthenticationPrincipal MemberAccount memberAccount) {
         matchMasterService.createTeamMatchMaster(request, memberAccount.getTeam().getTmIdx());
+        return "redirect:/match/team-list";
+    }
+
+    @PostMapping(path = "/update-team-match")
+    public String updateTeamMatchMaster(TeamMatchRequest request, Long mmIdx, @AuthenticationPrincipal MemberAccount memberAccount) {
+        matchMasterService.updateTeamMatchMaster(request, memberAccount.getTeam().getTmIdx(), mmIdx);
         return "redirect:/match/team-list";
     }
 
