@@ -19,8 +19,10 @@ public class NoticeController {
     private final NoticeService noticeService;
 
     @GetMapping("notice-list")
-    public void noticeList(@AuthenticationPrincipal MemberAccount memer, Model model, @RequestParam(required = false, defaultValue = "1") int page) {
-        model.addAttribute(noticeService.findNoticesByPage(page,memer.getUserId()));
+    public String noticeList(Model model, @RequestParam(required = false, defaultValue = "1") int page) {
+        System.out.println(noticeService.findNoticesByPage(page));
+        model.addAttribute(noticeService.findNoticesByPage(page));
+        return "notice/notice-list";
     }
 
     @GetMapping("notice-form")
