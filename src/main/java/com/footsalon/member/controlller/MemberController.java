@@ -60,4 +60,25 @@ public class MemberController {
         return "member/lostId";
     }
 
+    @GetMapping("lostPassword")
+    public void lostPass(Model model) {
+        Member member = new Member();
+        model.addAttribute("findMember" ,member);
+    }
+
+    @PostMapping("lostPassword")
+    public String sendEmailWithPassword(String userName,String email,Model model) {
+        Member member = new Member();
+        member = memberService.findByUserNameAndEmail(userName, email);
+
+        if(member == null) {
+            return "redirect:/member/lostPassword?error";
+        }
+
+        memberService.sendEmailWithPassword(member);
+        model.addAttribute("success","입력하신 Email로 새로운 비밀번호를 전송하였습니다.");
+
+        return "redirect:/";
+    }
+
 }

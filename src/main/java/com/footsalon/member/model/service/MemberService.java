@@ -63,4 +63,8 @@ public class MemberService implements UserDetailsService {
     public Member findByUserNameAndEmail(String userName, String email) {
         return memberRepository.findByUserNameAndEmail(userName, email);
     }
+
+    public void sendEmailWithPassword(Member member) {
+
+    }
 }
