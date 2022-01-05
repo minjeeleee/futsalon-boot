@@ -102,7 +102,17 @@
     </div>
 </div>
 <footer th:replace = " fragments/footer :: footer"></footer>
+<th:block th:if="${matchBoard!=null}">
+    <script type="text/javascript" th:inline="javascript">
+        $('#matchDateTime').val('[[${matchBoard.matchDateTime}]]'.substring(1,17));
+    </script>
+</th:block>
 <script type="text/javascript">
+    let date = new Date();
+    date.setHours(date.getHours()+14); //9시간 + 매치전5시간
+    let nowDate = date.toISOString().split('.')[0];
+    $('#matchDateTime').attr('min',nowDate.substring(0,16));
+
     let searchPlaces = () => {
         var keyword = document.getElementById('keyword').value;
 

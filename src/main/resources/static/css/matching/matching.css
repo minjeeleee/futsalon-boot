@@ -149,6 +149,10 @@
 	margin-left:15px;
 	cursor:pointer;
 }
+.profile_n_appli .btn-appli.end{
+	background: #bbb;
+	cursor: default;
+}
 
 .match-box .match-detail{
 	padding:30px;

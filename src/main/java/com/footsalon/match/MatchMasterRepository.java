@@ -2,6 +2,7 @@ package com.footsalon.match;
 
 import com.footsalon.location.Location;
 import com.footsalon.team.Team;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,10 +21,14 @@ public interface MatchMasterRepository extends JpaRepository<MatchMaster, Long> 
 
     List<MatchMaster>  findByStateAndMercenaryCntAndMatchDateTimeAfter(int state, int mercenaryCnt, LocalDateTime plusHours, Sort regDate);
 
-    List<MatchMaster> findByTeam(Team team, Sort regDate);
+    List<MatchMaster> findTop5ByStateAndMercenaryCntAndMatchDateTimeAfter(int state, int mercenaryCnt, LocalDateTime plusHours, Sort regDate);
 
-    @Query("select m from MatchMaster m left join fetch MatchGame g on (m.mmIdx = g.matchMaster.mmIdx) where g.awayTeam = :awayTeam order by m.regDate desc ")
-    List<MatchMaster> findByAwayTeam(@Param("awayTeam") Team awayTeam);
+    List<MatchMaster> findByTeamAndMercenaryCnt(Team team, int mercenaryCnt, Sort regDate);
+
+    List<MatchMaster> findByTeamAndMercenaryCntNot(Team team, int mercenaryCnt, Sort regDate);
+
+    @Query("select m from MatchMaster m left join fetch MatchGame g on (m.mmIdx = g.matchMaster.mmIdx) where g.awayTeam = :awayTeam and m.mercenaryCnt = :mercenaryCnt order by m.regDate desc ")
+    List<MatchMaster> findByAwayTeamAndMercenaryCnt(@Param("awayTeam") Team awayTeam, @Param("mercenaryCnt") int mercenaryCnt, Sort regDate);
 
     List<MatchMaster> findByStateAndMercenaryCntNotAndMatchDateTimeAfter(int state, int mercenaryCnt, LocalDateTime plusHours, Sort regDate);
 
