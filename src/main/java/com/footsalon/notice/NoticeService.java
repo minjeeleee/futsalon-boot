@@ -21,11 +21,11 @@ public class NoticeService {
     private final NoticeRepository noticeRepository;
     private final MemberRepository memberRepository;
 
-    public Map<String,Object> findNoticesByPage(int pageNumber, String userId) {
+    public Map<String,Object> findNoticesByPage(int pageNumber) {
 
         int cntPerPage = 5;
 
-        Page<Notice> page = noticeRepository.findAll(PageRequest.of(pageNumber-1, cntPerPage, Direction.DESC, "ntIdx"));
+        Page<Notice> page = noticeRepository.findAll(PageRequest.of(pageNumber-1, cntPerPage, Direction.DESC, "ntIdx","ntMain"));
         List<Notice> notices = page.getContent();
 
         Paging pageUtil = Paging.builder()
@@ -35,7 +35,6 @@ public class NoticeService {
                 .blockCnt(10)
                 .curPage(pageNumber)
                 .build();
-
         return Map.of("noticeList", notices, "paging", pageUtil);
     }
 
