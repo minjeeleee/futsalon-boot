@@ -3,222 +3,110 @@
 <head th:replace = "fragments/head :: head">
 </head>
 <head>
-    <link rel="stylesheet" type="text/css" href="/css/matching/matching.css" />
+    <link rel="stylesheet" type="text/css" href="/css/matching/matching-team.css" />
 </head>
 <body>
-<c:if test="${not empty param.err}">
-    <script type="text/javascript">
-				alert("같은 팀을 상대로 신청하실 수 없습니다.");
-		</script>
-</c:if>
 
 <header th:replace = " fragments/header :: header"></header>
 
 <section>
     <div class="section">
         <div class="main-visual">
-            공지사항을 확인하세요.
+            풋살ON에서 쉽고 빠른 매칭 서비스를 이용해보세요.
         </div>
         <div class="new-match-wrap">
             <div class="search-wrap">
-                <form onsubmit="return formCheck()" action="/matching/team/team-match-search" method="post">
+                <form onsubmit="return formCheck()" th:action="@{/match/team-match-search}" method="post">
                     <dl>
                         <dt>경기지역</dt>
                         <dd class="local">
-                            <label><input type="radio" value="LC11" name="localCode">서울</label>
-                            <label><input type="radio" value="LC31" name="localCode">경기</label>
-                            <label><input type="radio" value="LC32" name="localCode">강원</label>
-                            <label><input type="radio" value="LC33" name="localCode">충청</label>
-                            <label><input type="radio" value="LC35" name="localCode">전라</label>
-                            <label><input type="radio" value="LC39" name="localCode">제주</label>
-                            <label><input type="radio" value="LC37" name="localCode">경상</label>
-                        </dd>
-                    </dl>
-                    <dl>
-                        <dd>
-                            <input type="date" name="date" id="currentDate">
+                            <label th:each="location : ${locations}">
+                                <input type="radio" name="localCode" th:value="${location.localCode}" /> [[${location.localCity}]]
+                            </label>
                         </dd>
                     </dl>
                     <dl>
                         <dt>상대팀 실력</dt>
                         <dd class="level-dd">
-                            <label><input type="radio" name="level" value="high">상</label>
-                            <label><input type="radio" name="level" value="middle">중</label>
-                            <label><input type="radio" name="level" value="low">하</label>
+                            <label><input type="radio" name="level" value="HIGH">상</label>
+                            <label><input type="radio" name="level" value="MIDDLE">중</label>
+                            <label><input type="radio" name="level" value="LOW">하</label>
                         </dd>
                     </dl>
-                    <input type="hidden" name="match" value="team">
-                    <input type="hidden" name="page" value="index">
                     <input type="submit"  value="검색">
                 </form>
             </div>
-            <h2>새로 모집중인 매치</h2>
-            <th:forEach var="matchBox" items="${matchList}">
-                <%@ include file="/WEB-INF/views/pop/team-info.jsp"%>
-                <div class="match-box">
-                    <div class="tit-area">
-                        <div class="tit-info">
-                            <th:choose>
-                                <th:when test="${matchBox.getState() == 1}">
-                                    <div class="state end">모집완료</div>
-                                </th:when>
-                                <th:when test="${matchBox.isCheckMatchTime() == true}">
-                                    <div class="state end">모집완료</div>
-                                </th:when>
-                                <th:when test="${matchBox.getState() == 0}">
-                                    <div class="state recruiting">모집중</div>
-                                </th:when>
-                            </th:choose>
-                            <div class="tit">
-                                <strong>${matchBox.getTitle()}</strong>
-                                <div>
-                                    <th:forEach var="i" begin="1" end="${matchBox.getTmRating()}">
-                                        <div style="float: left;"><i class="fas fa-star full-star"></i></div>
-                                    </th:forEach>
-                                    <th:if test="${matchBox.getTmRating()%1!=0}">
-                                        <div style="float: left;"><i class="fas fa-star-half-alt"></i></div>
-                                    </th:if>
-                                    <th:forEach var="i" begin="1" end="${5-matchBox.getTmRating()}">
-                                        <div style="float: left;"><i class="far fa-star star"></i></div>
-                                    </th:forEach>
-                                </div>
-                                <th:set var="lose" value="${matchBox.getGameCnt() - matchBox.getTmWin()}"></th:set>
-                                &nbsp;&nbsp;전적 ${matchBox.getGameCnt()}전${matchBox.getTmWin()}승<th:out value="${lose}"></th:out>패
-                            </div>
-                        </div>
-
-
-                        <div class="profile_n_appli">
-                            <div class="profile">
-                                <div class="profile-img"></div>
-                                <div class="profile-name">
-                                    ${matchBox.getTmName()}
-                                    <span>
-										<i class="fas fa-search"></i>정보보기
-									</span>
-                                </div>
-                            </div>
-                            <c:choose>
-                                <c:when test="${matchBox.getState() == 1}">
-                                    <div class="btn-appli" onclick="expiration()">신청하기</div>
-                                </c:when>
-                                <c:when test="${matchBox.getState() == 0}">
-                                    <div class="btn-appli" onclick="matchRequset(${matchBox.getMmIdx()},'${matchBox.getTmCode()}','${authentication.userId}','${matchBox.getMatchDate()}','${matchBox.getMatchTime()}','${matchBox.getTitle()}','${matchBox.getUserId()}')">신청하기</div>
-                                </c:when>
-                            </c:choose>
-
-
+            <h2 style="padding-top:50px;">새로 모집중인 매치를 확인하세요.</h2>
+            <div th:each="matchBoard : ${matchBoardList}" class="match-box">
+                <div class="tit-area">
+                    <div class="tit-info">
+                        <div class="state recruiting">모집중</div>
+                        <div class="tit">
+                            <strong>&#91;[[${matchBoard.location.localCity}]] &#47; [[${matchBoard.matchStyle}]]&#93; [[${matchBoard.placeName}]]</strong>
+                            전적 [[${matchBoard.team.matchCnt}]]전 [[${matchBoard.team.win}]]승 [[${matchBoard.team.lose}]]패&nbsp;&nbsp;
+                            별점
+                            <th:block th:each="num: ${#numbers.sequence(1,matchBoard.team.teamRating)}">
+                                <i class="fas fa-star full-star" style="display:inline-block;margin-right:-4px;color:#aaa;"></i>
+                            </th:block>
                         </div>
                     </div>
-                    <div class="match-detail">
-                        <ul>
-                            <li><span class="tit">지역</span>[${matchBox.getLocalCode()}]
-                                ${matchBox.getAddress()} <a class="view-map"
-                                                            onclick="window.open('https://map.kakao.com/link/search/${matchBox.getAddress()}', 'pop01', 'top=10, left=10, width=1000, height=600, status=no, menubar=no, toolbar=no, resizable=no');">
-                                    <i class="fas fa-map-marker-alt"></i> 지도보기
-                                </a></li>
-                            <li><span class="tit">매치날짜</span>${matchBox.getMatchDate()}
-                                ${matchBox.getMatchTime()}</li>
-                        </ul>
-                        <ul>
-                            <li><span class="tit">매치방식</span>${matchBox.getTmMatch()}:${matchBox.getTmMatch()}</li>
-                            <li><span class="tit">실력</span> <th:choose>
-                                <th:when test="${matchBox.getGrade() eq 'high'}">
-                                    상
-                                </th:when>
-                                <th:when test="${matchBox.getGrade() eq 'middle'}">
-                                    중
-                                </th:when>
-                                <th:when test="${matchBox.getGrade() eq 'low'}">
-                                    하
-                                </th:when>
-                                <th:otherwise>${matchBox.getGrade()}</th:otherwise>
-                            </th:choose></li>
-                            <li><span class="tit">구장비</span>${matchBox.getExpense()}원</li>
-                        </ul>
-                        <div class="txt">${matchBox.getContent()}</div>
+                    <div class="profile_n_appli">
+                        <div class="profile">
+                            <div th:if="${matchBoard.team.file == null}" class="profile-img" style="background:url('/img/team/no-img.jpg') center center; background-size:cover;"></div>
+                            <div class="profile-name">
+                                [[${matchBoard.team.tmName}]]
+                                <span th:onclick="|javascript:showTeamInfo(${matchBoard.team.tmIdx})|">
+                                <i class="fas fa-search"></i>정보보기
+                            </span>
+                            </div>
+                        </div>
+                        <div th:if="${matchBoard.state eq 0}" class="btn-appli" th:onclick="|javascript:teamMatchRequset(${matchBoard.mmIdx})|">신청하기</div>
                     </div>
                 </div>
-            </th:forEach>
+                <div class="match-detail">
+                    <ul>
+                        <li>
+                            <span class="tit">지역</span>&#91;[[${matchBoard.location.localCity}]]&#93; [[${matchBoard.placeName}]] - [[${matchBoard.placeAddress}]]
+                        </li>
+                        <li><span class="tit">매치일시</span>[[${#strings.substring(matchBoard.matchDateTime,0,10)}]] [[${#strings.substring(matchBoard.matchDateTime,11,16)}]]</li>
+                    </ul>
+                    <ul>
+                        <li><span class="tit">매치방식</span>[[${matchBoard.matchStyle}]]</li>
+                        <li><span class="tit">희망실력</span> [[${matchBoard.teamLevel == 'HIGH' ? '상' : matchBoard.teamLevel == 'MIDDLE' ? '중' : '하'}]]</li>
+                        <li><span class="tit">구장비</span>[[${matchBoard.expense}]]원</li>
+                    </ul>
+                    <div class="txt">[[${matchBoard.content}]]</div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
+<div class="pop-msg-wrap msg">
+    <div class="pop-msg">
+        <p></p>
+        <button onclick="btnClose();">확인</button>
+    </div>
+</div>
+<div class="pop-msg-wrap answer">
+    <div class="pop-msg">
+        <p></p>
+        <button class="close-btn">확인</button>
+    </div>
+</div>
 <footer th:replace = " fragments/footer :: footer"></footer>
-
-<script type="text/javascript">
-	let matchRequset = (idx,tmCode,user,date,time,title,hostId) => {
-		if (window.confirm("매치를 신청하시겠습니까?")) {
-			console.dir(tmCode);
-			location.href="/matching/team/subscription?matchIdx="+idx+"&tmCode="+tmCode+"&userId="+user+"&matchDate="+date+"&matchTime="+time+"&title="+title+"&match=team"+"&hostId="+hostId;
-		}
-	}
-
-	let expiration = () =>{
-		alert("모집이 완료된 매치입니다.");
-	}
-
-	let formCheck = () =>{
-		let localCode = document.getElementsByName('localCode');
-
-		console.dir(localCode);
-		let value = null;
-		localCode.forEach((e) => {
-			if (e.checked) {
-				value = e.value;
-				console.dir(e.checked);
-			}
-		})
-
-
-		if (value == null) {
-			alert("지역을 선택해주세요.");
-			return false;
-		}
-
-
-		let date = document.querySelector('#currentDate').value;
-
-
-		if(date == ""){
-			alert("경기 날짜를 선택해주세요.");
-			return false;
-		}
-
-		let level = document.getElementsByName('level');
-		let checkLevel = null;
-
-		level.forEach((e) => {
-			if (e.checked) {
-				checkLevel = e.value;
-
-			}
-		})
-		console.dir(checkLevel);
-
-		if (checkLevel == null) {
-			alert("실력을 선택해주세요.");
-			return false;
-		}
-
-
-		return true;
-	}
-
-
-	</script>
+<div th:replace="fragments/popup :: popup"></div>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/match/search.js"></script>
 <script>
-
 (() => {
 	document.querySelector('.local').addEventListener('click',e=>{
 		let checkLocal = document.getElementsByName('localCode');
-
 		checkLocal.forEach(check => {
 			if (check.checked) {
 				check.parentNode.className = 'selected';
 			}else{
 				check.parentNode.className = '';
 			}
-
 		})
 	})
 
@@ -230,25 +118,32 @@
 			}else{
 				check.parentNode.className = '';
 			}
-
 		})
 	})
-
-
-
-	let popup = document.querySelectorAll(".profile-name");
-
- 	popup.forEach(element => {
-		element.addEventListener('click', () => {
-			document.querySelector(".popup-teaminfo-wrap").style.display = 'block';
-		})
-	});
-
-	document.querySelector(".popup-close").addEventListener('click',() =>{
-		document.querySelector(".popup-teaminfo-wrap").style.display = 'none';
-	})
-
 })();
+
+let teamMatchRequset = (mmIdx) => {
+    $.ajax({
+        type: 'POST',
+        url: '/match/apply-team-match',
+        data: { mmIdx: mmIdx },
+        dataType: 'text',
+        success: (text) => {
+            if(text == 'available') {
+                drawAnswer('<i class="fas fa-times-circle"></i><br>매치가 성사되었습니다.', '/');
+            } else {
+                drawMsg('<i class="fas fa-times-circle"></i><br>회원님이 속한 팀은 신청하실 수 없습니다.');
+            }
+        },
+        error: function (e) {
+            if (e.status == 403) {
+                drawMsg('<i class="fas fa-times-circle"></i><br>신청 권한이 없습니다.');
+            } else {
+                drawMsg('<i class="fas fa-times-circle"></i><br>에러가 발생하여 요청이 실패했습니다.');
+            }
+        }
+    });
+}
 </script>
 </body>
 </html>

@@ -2,6 +2,7 @@ package com.footsalon.match;
 
 import com.footsalon.location.Location;
 import com.footsalon.team.Team;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +20,8 @@ public interface MatchMasterRepository extends JpaRepository<MatchMaster, Long> 
     List<MatchMaster> findByStateAndMatchDateTimeAfter(int state, LocalDateTime plusHours, Sort regDate);
 
     List<MatchMaster>  findByStateAndMercenaryCntAndMatchDateTimeAfter(int state, int mercenaryCnt, LocalDateTime plusHours, Sort regDate);
+
+    List<MatchMaster> findTop5ByStateAndMercenaryCntAndMatchDateTimeAfter(int state, int mercenaryCnt, LocalDateTime plusHours, Sort regDate);
 
     List<MatchMaster> findByTeamAndMercenaryCnt(Team team, int mercenaryCnt, Sort regDate);
 

@@ -98,9 +98,16 @@
         <button onclick="btnClose();">확인</button>
     </div>
 </div>
+<div class="pop-msg-wrap answer">
+    <div class="pop-msg">
+        <p></p>
+        <button class="close-btn">확인</button>
+    </div>
+</div>
 <footer th:replace = " fragments/footer :: footer"></footer>
 <div th:replace="fragments/popup :: popup"></div>
 <script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/match/search.js"></script>
 <script type="text/javascript">
     let teamMatchRequset = (mmIdx) => {
         $.ajax({
@@ -110,7 +117,7 @@
             dataType: 'text',
             success: (text) => {
                 if(text == 'available') {
-                    drawMsg('<i class="fas fa-times-circle"></i><br>매치가 성사되었습니다.');
+                    drawAnswer('<i class="fas fa-times-circle"></i><br>매치가 성사되었습니다.', '/match/team-list');
                 } else {
                     drawMsg('<i class="fas fa-times-circle"></i><br>회원님이 속한 팀은 신청하실 수 없습니다.');
                 }

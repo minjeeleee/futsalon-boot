@@ -13,6 +13,8 @@ import com.footsalon.result.ResultService;
 import com.footsalon.team.Team;
 import com.footsalon.team.TeamService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +45,6 @@ public class MatchMasterService {
 
     @Transactional
     public void updateTeamMatchMaster(TeamMatchRequest request, Long teamId, Long mmIdx) {
-        System.out.println(request.toString());
         MatchMaster matchMaster = matchMasterRepository.findById(mmIdx).orElseThrow(()->new HandlableException(ErrorCode.MATCH_MASTER_DOES_NOT_EXIST));
         if (!request.getLocalCode().equals("") && request.getLocalCode() != null) {
             Location location = locationService.findLocation(request.getLocalCode());
@@ -62,6 +63,12 @@ public class MatchMasterService {
         matchMasterRepository.save(matchMaster);
     }
 
+//    메인용
+    public List<MatchMaster> findMatchBoardList() {
+        List<MatchMaster> matchMasterList = matchMasterRepository.findTop5ByStateAndMercenaryCntAndMatchDateTimeAfter(0, 0, LocalDateTime.now().plusHours(4L), Sort.by(Sort.Direction.DESC, "regDate"));
+        return getTeamInfoByMatchMaster(matchMasterList);
+    }
+
     public List<MatchMaster> findMatchBoardList(String sort) {
         List<MatchMaster> matchMasterList = new ArrayList<>();
         if (sort.equals("") || sort.equals("latest")) {
@@ -69,11 +76,7 @@ public class MatchMasterService {
         } else if (sort.equals("matchDate")) {
             matchMasterList = matchMasterRepository.findByStateAndMercenaryCntAndMatchDateTimeAfter(0, 0, LocalDateTime.now().plusHours(4L), Sort.by(Sort.Direction.ASC, "matchDateTime"));
         }
-        for (MatchMaster matchMaster : matchMasterList) {
-            Team team = matchMaster.getTeam();
-            matchMaster.setTeam(teamService.findTeamWithScoreById(team.getTmIdx()));
-        }
-        return matchMasterList;
+        return getTeamInfoByMatchMaster(matchMasterList);
     }
 
     public List<MatchMaster> searchTeamMatchMaster(SearchRequest request) {
@@ -204,14 +207,14 @@ public class MatchMasterService {
         resultService.updateRating(matchGame.getResult().getThIdx(), target, request.getRating());
     }
 
+    public MatchMaster findMatchMasterByMmIdx(Long mmIdx) {
+        return matchMasterRepository.findById(mmIdx).orElseThrow(()-> new HandlableException(ErrorCode.MATCH_MASTER_DOES_NOT_EXIST));
+    }
+
     public List<MatchMaster> getTeamInfoByMatchMaster(List<MatchMaster> matchMasterList) {
         for (MatchMaster matchMaster : matchMasterList) {
             matchMaster.setTeam(teamService.findTeamWithScoreById(matchMaster.getTeam().getTmIdx()));
         }
         return matchMasterList;
-    }
-
-    public MatchMaster findMatchMasterByMmIdx(Long mmIdx) {
-        return matchMasterRepository.findById(mmIdx).orElseThrow(()-> new HandlableException(ErrorCode.MATCH_MASTER_DOES_NOT_EXIST));
     }
 }

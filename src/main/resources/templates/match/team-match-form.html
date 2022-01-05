@@ -14,7 +14,7 @@
         <div class="new-match-wrap">
             <h2><i class="far fa-futbol"></i> 팀매칭 등록</h2>
             <div class="search-wrap">
-                <form th:action="@{matchBoard == null ? '/match/create-team-match' : '/match/update-team-match'}" method="post">
+                <form th:action="${matchBoard == null ? '/match/create-team-match' : '/match/update-team-match'}" method="post">
                     <dl>
                         <dt>경기지역</dt>
                         <dd class="matchRegion">
@@ -109,14 +109,16 @@
     </div>
 </div>
 <footer th:replace = " fragments/footer :: footer"></footer>
+<th:block th:if="${matchBoard!=null}">
+    <script type="text/javascript" th:inline="javascript">
+        $('#matchDateTime').val('[[${matchBoard.matchDateTime}]]'.substring(1,17));
+    </script>
+</th:block>
 <script type="text/javascript" th:inline="javascript">
     let date = new Date();
     date.setHours(date.getHours()+14); //9시간 + 매치전5시간
     let nowDate = date.toISOString().split('.')[0];
-    let minDate = nowDate.replace('T', ' ');
-    let matchDateTime = [[${matchBoard.matchDateTime}]];
-    $('#matchDateTime').attr('min',minDate);
-    document.getElementById('matchDateTime').value = matchDateTime.substring(0,16);
+    $('#matchDateTime').attr('min',nowDate.substring(0,16));
 
     let searchPlaces = () => {
         let keyword = document.getElementById('keyword').value;
